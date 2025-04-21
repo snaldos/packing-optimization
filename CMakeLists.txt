@@ -10,22 +10,17 @@ include_directories(${PROJECT_SOURCE_DIR}/src)
 
 # Source files
 set(SOURCES
-        src/RoutePlanning/location.cpp
-        src/RoutePlanning/route.cpp
-        src/DataStructures/UFDS.cpp
+    src/RoutePlanning/location.cpp
+    src/RoutePlanning/route.cpp
+    src/DataStructures/UFDS.cpp
     src/main.cpp
-        src/BatchProcessor/BatchProcessor.cpp
-        src/DataParser/LocationParser.h
-        src/DataParser/DistanceParser.h
-        src/BatchProcessor/BatchDataSetManager.h
-        src/BatchProcessor/BatchInputManager.h
-        src/RoutePlanning/RouteProcessor.h
-        src/BatchProcessor/BatchDataSetManager.cpp
-        src/BatchProcessor/BatchInputManager.cpp
-        src/RoutePlanning/RouteProcessor.cpp
+    src/BatchProcessor/BatchProcessor.cpp
+    src/BatchProcessor/BatchDataSetManager.cpp
+    src/BatchProcessor/BatchInputManager.cpp
+    src/RoutePlanning/RouteProcessor.cpp
+    src/PalletPacking/DataStructures/Pallet.cpp
+    src/PalletPacking/DataStructures/Truck.cpp
 )
-
-# Copy data files to build directory
 file(COPY ${PROJECT_SOURCE_DIR}/data DESTINATION ${CMAKE_BINARY_DIR})
 
 # Copy input files to build directory

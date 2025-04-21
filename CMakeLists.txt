@@ -10,14 +10,12 @@ include_directories(${PROJECT_SOURCE_DIR}/src)
 
 # Source files
 set(SOURCES
-    src/RoutePlanning/location.cpp
-    src/RoutePlanning/route.cpp
-    src/DataStructures/UFDS.cpp
     src/main.cpp
+    src/DataParser/CSVParser.cpp
+    src/DataParser/ParserUtils.cpp
     src/BatchProcessor/BatchProcessor.cpp
     src/BatchProcessor/BatchDataSetManager.cpp
     src/BatchProcessor/BatchInputManager.cpp
-    src/RoutePlanning/RouteProcessor.cpp
     src/PalletPacking/DataStructures/Pallet.cpp
     src/PalletPacking/DataStructures/Truck.cpp
 )

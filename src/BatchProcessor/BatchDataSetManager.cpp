@@ -1,69 +1,41 @@
 #include "BatchDataSetManager.h"
 
-BatchDataSetManager::BatchDataSetManager(Graph<std::string>* driving_network,
-                   Graph<std::string>* walking_network,
-                   std::unordered_map<std::string, std::string>* id_code_map,
-                   std::unordered_map<std::string, Location>* code_location_map)
-    : driving_network_(driving_network),
-      walking_network_(walking_network),
-      id_code_map_(id_code_map),
-      code_location_map_(code_location_map) {}
-/**  @brief helper method that clears the terminal
- *   @return void
- *   Complexity: O(1)
- */
-void BatchDataSetManager::clearTerminal() {
-    std::cout << "\033[2J\033[H" << std::flush;
-    std::cout << "----- ROUTE PLANNING -----\n\n";
-}
-/** function that clears the terminal and then gives a message to the user to pick either "1: Large Data Set"
- * that if chosen sets distances_filename to "data/Distances.csv" and locations_filename to "data/Locations.csv"
- * and calls the parse_data function, "2: Test Data Set" that if chosen sets distances_filename to 
- * "data/TestDistances.csv" and locations_filename to "data/TestLocations.csv" and calls the parse_data funtion
- * and "3: exit" that if chosen terminates the function. if any other number or input is chosen it gives an error.
- * @return -1 if invalid input else 0
-*/
-int BatchDataSetManager::selectAndLoadDataset(){
-clearTerminal();
-std::cout << "Choose a Data Set:\n"
-        << "1: Large Data Set" << std::endl
-        << "2: Test Data Set\n" << std::endl
-        << "3: exit" << std::endl;
-std::string distances_filename;
-std::string locations_filename;
-while (true) {
-    int datasetChoice;
-    std::string input_dataset;
-    std::getline(std::cin, input_dataset);
+BatchDataSetManager::BatchDataSetManager(std::vector<Pallet> pallets,
+                                         Truck trucks)
+    : pallets(pallets), truck(truck) {};
 
-    try {
-        datasetChoice = std::stoi(input_dataset);
-    } catch (const std::invalid_argument &e) {
-        std::cerr << "ERROR: Input MUST be a number." << std::endl;
-        continue;
+int BatchDataSetManager::selectAndLoadDataset() {
+  BatchUtils::clearTerminal();
+  std::cout << "Write Data Set Identifier <X>:\n"
+            << "(Empty line to exit)\n";
+  std::string identifier;
+  std::string pallets_filename;
+  std::string truck_filename;
+
+  while (true) {
+    std::getline(std::cin, identifier);
+
+    identifier = ParserUtils::trim(identifier);
+    if (identifier.empty()) {
+      std::cout << "Exiting..." << std::endl;
+      return -1;
     }
 
-    switch (datasetChoice) {
-        case 1:
-            distances_filename = "data/Distances.csv";
-        locations_filename = "data/Locations.csv";
-        // Parse data
-        DataParser::parse_data(locations_filename, distances_filename, *id_code_map_,
-                               *code_location_map_, driving_network_, walking_network_);
-        return 0;
-        case 2:
-            distances_filename = "data/TestDistances.csv";
-        locations_filename = "data/TestLocations.csv";
+    pallets_filename = "data/Pallets_" + identifier + ".csv";
+    truck_filename = "data/TruckAndPallets_" + identifier + ".csv";
 
-        // Parse data
-        DataParser::parse_data(locations_filename, distances_filename, *id_code_map_,
-                               *code_location_map_, driving_network_, walking_network_);
-        return 0;
-        case 3:
-            return -1;
-        default:
-            std::cerr << "ERROR: Invalid Dataset Choice" << std::endl;
-        break;
-        }
+    std::ifstream pallets_file(pallets_filename);
+    std::ifstream trucks_file(truck_filename);
+
+    if (!pallets_file.is_open() || !trucks_file.is_open()) {
+      std::cerr << "ERROR: Could not open files." << std::endl;
+      continue;
     }
+
+    csv_data_parser.parse(pallets_filename, truck_filename, pallets, truck);
+    break;
+  }
+
+  std::cout << "Loaded dataset with identifier: " << identifier << std::endl;
+  return 0;
 }

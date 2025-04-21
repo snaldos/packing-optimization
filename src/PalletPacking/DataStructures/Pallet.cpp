@@ -1,11 +1,9 @@
 #include "Pallet.h"
 
-Pallet::Pallet(int id, int weight, int profit)
+Pallet::Pallet(std::string id, int weight, int profit)
     : id(id), weight(weight), profit(profit) {}
 
-int Pallet::get_id() const {
-  return id;
-}
+std::string Pallet::get_id() const { return id; }
 
 int Pallet::get_weight() const {
   return weight;

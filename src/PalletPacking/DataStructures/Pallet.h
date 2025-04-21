@@ -1,18 +1,19 @@
 #ifndef PALLET_H
 #define PALLET_H
 
+#include <string>
 class Pallet {
 private:
-  int id;
-  int weight;
-  int profit;
+ std::string id;
+ int weight;
+ int profit;
 
 public:
-  Pallet(int id, int weight, int profit);
+ Pallet(std::string, int weight, int profit);
 
-  int get_id() const;
-  int get_weight() const;
-  int get_profit() const;
+ std::string get_id() const;
+ int get_weight() const;
+ int get_profit() const;
 };
 
 #endif

@@ -1,25 +1,27 @@
 #ifndef DATASET_MANAGER_H
 #define DATASET_MANAGER_H
 
+#include <fstream>
+#include <iostream>
+#include <sstream>
 #include <string>
-#include <unordered_map>
-#include "../DataParser/data_parser.h"
+
+#include "../DataParser/CSVParser.h"
+#include "../DataParser/ParserUtils.h"
+#include "../PalletPacking/DataStructures/Pallet.h"
+#include "../PalletPacking/DataStructures/Truck.h"
+#include "BatchUtils.h"
 
 class BatchDataSetManager {
-public:
-    BatchDataSetManager(Graph<std::string>* driving_network,
-                   Graph<std::string>* walking_network,
-                   std::unordered_map<std::string, std::string>* id_code_map,
-                   std::unordered_map<std::string, Location>* code_location_map);
+ public:
+  BatchDataSetManager(std::vector<Pallet> pallets, Truck truck);
 
-    int selectAndLoadDataset();
+  int selectAndLoadDataset();
 
-private:
-    void clearTerminal();
-    Graph<std::string>* driving_network_;
-    Graph<std::string>* walking_network_;
-    std::unordered_map<std::string, std::string>* id_code_map_;
-    std::unordered_map<std::string, Location>* code_location_map_;
+ private:
+  CSVParser csv_data_parser;
+  std::vector<Pallet> pallets;
+  Truck truck;
 };
 
 #endif

@@ -1,5 +1,5 @@
-#ifndef DISTANCE_PARSER_H
-#define DISTANCE_PARSER_H
+#ifndef CSVPARSER_H
+#define CSVPARSER_H
 
 #include <string>
 #include <vector>

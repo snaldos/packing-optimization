@@ -13,7 +13,7 @@ set(SOURCES
     src/main.cpp
     src/Parser/CSVParser.cpp
     src/Parser/ParserUtils.cpp
-    src/Batch/BatchProcessor.cpp
+    src/Batch/BatchStateManager.cpp
     src/Batch/BatchDataSetManager.cpp
     src/Batch/BatchInputManager.cpp
     src/DataStructures/Pallet.cpp

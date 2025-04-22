@@ -1,6 +1,4 @@
-
-
-#include "Batch/BatchProcessor.h"
+#include "Batch/BatchStateManager.h"
 #include "DataStructures/Pallet.h"
 #include "DataStructures/Truck.h"
 
@@ -9,7 +7,7 @@ int main() {
   Truck truck;
 
   // Initialize batch processor
-  BatchProcessor batch_processor(pallets, truck);
-  batch_processor.start();
+  BatchStateManager batch_state_manager(pallets, truck);
+  batch_state_manager.update_state();
   return 0;
 }

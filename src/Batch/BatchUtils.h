@@ -34,5 +34,21 @@ inline bool ensureDirectory(const std::string &dir) {
   }
   return true;
 }
+
+// Function to handle menu input
+inline int getMenuChoice(int max_option) {
+  while (true) {
+    std::string input;
+    std::getline(std::cin, input);
+    try {
+      int choice = std::stoi(input);
+      if (choice >= 1 && choice <= max_option) return choice;
+    } catch (...) {
+      // Ignore invalid input
+    }
+    std::cerr << "ERROR: Invalid choice. Please enter a number between 1 and "
+              << max_option << ".\n";
+  }
+}
 }  // namespace BatchUtils
 #endif  // BATCH_UTILS_H

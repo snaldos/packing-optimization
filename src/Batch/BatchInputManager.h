@@ -11,16 +11,18 @@
 #include <unordered_map>
 #include <vector>
 
-#include "../Parser/ParserUtils.h"
 #include "../DataStructures/Pallet.h"
 #include "../DataStructures/Truck.h"
+#include "../Parser/ParserUtils.h"
+#include "BatchState.h"
 #include "BatchUtils.h"
 class BatchInputManager {
  public:
   BatchInputManager(std::vector<Pallet> pallets, Truck truck);
 
-  int getInputMode();
+  BatchState getInputMode();
   void processInput(std::istream& input_stream, std::ostream& output_stream);
+  void processFileInput();
 
  private:
   std::vector<Pallet> pallets;

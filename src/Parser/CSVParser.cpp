@@ -14,6 +14,7 @@ void CSVParser::parse(const std::string& pallets_file,
 
 void CSVParser::parse_pallets(const std::string& filename,
                               std::vector<Pallet>& pallets) {
+  pallets.clear();
   std::ifstream file(filename);
   if (!file.is_open()) {
     std::cerr << "Error opening file: " << filename << std::endl;
@@ -55,8 +56,6 @@ void CSVParser::parse_pallets(const std::string& filename,
     }
     Pallet parsed_pallet = Pallet(pallet_id, w, p);
     pallets.push_back(parsed_pallet);
-    std::cout << "Parsed pallet: " << pallet_id << ", weight: " << w
-              << ", profit: " << p << std::endl;
   }
 
   file.close();
@@ -103,9 +102,6 @@ void CSVParser::parse_truck(const std::string& filename, Truck& truck) {
     }
     truck.set_capacity(c);
     truck.set_num_pallets(p);
-
-    std::cout << "Parsed truck: capacity: " << c << ", pallets_num: " << p
-              << std::endl;
   }
 
   file.close();

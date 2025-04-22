@@ -1,8 +1,8 @@
 
 
-#include "BatchProcessor/BatchProcessor.h"
-#include "PalletPacking/DataStructures/Pallet.h"
-#include "PalletPacking/DataStructures/Truck.h"
+#include "Batch/BatchProcessor.h"
+#include "DataStructures/Pallet.h"
+#include "DataStructures/Truck.h"
 
 int main() {
   std::vector<Pallet> pallets;

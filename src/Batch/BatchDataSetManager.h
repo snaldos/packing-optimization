@@ -6,10 +6,10 @@
 #include <sstream>
 #include <string>
 
-#include "../DataParser/CSVParser.h"
-#include "../DataParser/ParserUtils.h"
-#include "../PalletPacking/DataStructures/Pallet.h"
-#include "../PalletPacking/DataStructures/Truck.h"
+#include "../Parser/CSVParser.h"
+#include "../Parser/ParserUtils.h"
+#include "../DataStructures/Pallet.h"
+#include "../DataStructures/Truck.h"
 #include "BatchUtils.h"
 
 class BatchDataSetManager {

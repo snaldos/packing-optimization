@@ -11,9 +11,9 @@
 #include <unordered_map>
 #include <vector>
 
-#include "../DataParser/ParserUtils.h"
-#include "../PalletPacking/DataStructures/Pallet.h"
-#include "../PalletPacking/DataStructures/Truck.h"
+#include "../Parser/ParserUtils.h"
+#include "../DataStructures/Pallet.h"
+#include "../DataStructures/Truck.h"
 #include "BatchUtils.h"
 class BatchInputManager {
  public:

@@ -11,13 +11,13 @@ include_directories(${PROJECT_SOURCE_DIR}/src)
 # Source files
 set(SOURCES
     src/main.cpp
-    src/DataParser/CSVParser.cpp
-    src/DataParser/ParserUtils.cpp
-    src/BatchProcessor/BatchProcessor.cpp
-    src/BatchProcessor/BatchDataSetManager.cpp
-    src/BatchProcessor/BatchInputManager.cpp
-    src/PalletPacking/DataStructures/Pallet.cpp
-    src/PalletPacking/DataStructures/Truck.cpp
+    src/Parser/CSVParser.cpp
+    src/Parser/ParserUtils.cpp
+    src/Batch/BatchProcessor.cpp
+    src/Batch/BatchDataSetManager.cpp
+    src/Batch/BatchInputManager.cpp
+    src/DataStructures/Pallet.cpp
+    src/DataStructures/Truck.cpp
 )
 file(COPY ${PROJECT_SOURCE_DIR}/data DESTINATION ${CMAKE_BINARY_DIR})
 

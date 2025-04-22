@@ -1,7 +1,7 @@
 #include "BatchDataSetManager.h"
 
 BatchDataSetManager::BatchDataSetManager(std::vector<Pallet> pallets,
-                                         Truck trucks)
+                                         Truck truck)
     : pallets(pallets), truck(truck) {};
 
 int BatchDataSetManager::selectAndLoadDataset() {
@@ -25,9 +25,9 @@ int BatchDataSetManager::selectAndLoadDataset() {
     truck_filename = "data/TruckAndPallets_" + identifier + ".csv";
 
     std::ifstream pallets_file(pallets_filename);
-    std::ifstream trucks_file(truck_filename);
+    std::ifstream truck_file(truck_filename);
 
-    if (!pallets_file.is_open() || !trucks_file.is_open()) {
+    if (!pallets_file.is_open() || !truck_file.is_open()) {
       std::cerr << "ERROR: Could not open files." << std::endl;
       continue;
     }

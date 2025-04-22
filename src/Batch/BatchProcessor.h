@@ -5,8 +5,8 @@
 #include <string>
 #include <vector>
 
-#include "../PalletPacking/DataStructures/Pallet.h"
-#include "../PalletPacking/DataStructures/Truck.h"
+#include "../DataStructures/Pallet.h"
+#include "../DataStructures/Truck.h"
 
 class BatchProcessor {
  public:

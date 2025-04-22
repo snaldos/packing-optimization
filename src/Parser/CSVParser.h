@@ -1,10 +1,11 @@
 #ifndef DISTANCE_PARSER_H
 #define DISTANCE_PARSER_H
 
-#include <vector>
 #include <string>
-#include "../PalletPacking/DataStructures/Pallet.h"
-#include "../PalletPacking/DataStructures/Truck.h"
+#include <vector>
+
+#include "../DataStructures/Pallet.h"
+#include "../DataStructures/Truck.h"
 
 class CSVParser {
  public:

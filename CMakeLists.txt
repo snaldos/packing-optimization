@@ -11,8 +11,9 @@ include_directories(${PROJECT_SOURCE_DIR}/src)
 # Source files
 set(SOURCES
     src/main.cpp
-    src/Parser/CSVParser.cpp
     src/Parser/ParserUtils.cpp
+    src/Parser/CSVParser.cpp
+    src/Batch/BatchUtils.cpp
     src/Batch/BatchStateManager.cpp
     src/Batch/BatchDataSetManager.cpp
     src/Batch/BatchInputManager.cpp

@@ -4,33 +4,24 @@ BatchInputManager::BatchInputManager(std::vector<Pallet> pallets, Truck truck)
     : pallets(pallets), truck(truck) {};
 
 BatchState BatchInputManager::getInputMode() {
-  while (true) {
-    BatchUtils::clearTerminal();
-    std::cout << "1: Terminal Input\n"
-              << "2: File Input\n"
-              << "3: Select Dataset\n"
-              << "4: Show Dataset\n"
-              << "5: Exit\n"
-              << "Choose input mode: ";
+  std::vector<std::string> options = {"Terminal Input", "File Input",
+                                      "Select Dataset", "Show Dataset", "Exit"};
+  int choice = BatchUtils::getMenuChoice(options, "Choose input mode: ");
 
-    int choice = BatchUtils::getMenuChoice(5);
-    switch (choice) {
-      case 1:
-        BatchUtils::clearTerminal();
-
-        return BatchState::TerminalInput;
-        break;
-      case 2:
-        return BatchState::FileInput;
-        break;
-
-      case 3:
-        return BatchState::SelectDataset;
-      case 4:
-        return BatchState::ShowDataset;
-      case 5:
-        return BatchState::Exit;
-    }
+  switch (choice) {
+    case 1:
+      BatchUtils::clearTerminal();
+      return BatchState::TerminalInput;
+    case 2:
+      return BatchState::FileInput;
+    case 3:
+      return BatchState::SelectDataset;
+    case 4:
+      return BatchState::ShowDataset;
+    case 5:
+      return BatchState::Exit;
+    default:
+      return BatchState::Exit;  // Fallback
   }
 }
 

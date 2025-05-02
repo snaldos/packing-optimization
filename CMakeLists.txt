@@ -20,6 +20,7 @@ set(SOURCES
     src/DataStructures/Pallet.cpp
     src/DataStructures/Truck.cpp
     src/Algorithms/BruteForce.cpp
+    src/Algorithms/DynamicProgramming.cpp
 )
 file(COPY ${PROJECT_SOURCE_DIR}/data DESTINATION ${CMAKE_BINARY_DIR})
 

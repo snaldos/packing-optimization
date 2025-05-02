@@ -1,4 +1,5 @@
 #include "Algorithms/BruteForce.h"
+#include "Algorithms/DynamicProgramming.h"
 #include "Batch/BatchStateManager.h"
 #include "DataStructures/Pallet.h"
 #include "DataStructures/Truck.h"
@@ -23,8 +24,11 @@ int main() {
 
   // Solve the knapsack problem
   BruteForce bruteForce;
+  DynamicProgramming dynamicProgramming;
   std::vector<Pallet> used_pallets;
-  unsigned int max_profit = bruteForce.bt_solve(pallets, truck, used_pallets);
+  std::string message;
+  unsigned int max_profit = dynamicProgramming.dp_solve(
+      pallets, truck, used_pallets, TableType::HashMap, message);
 
   // Output the results
   std::cout << "Maximum Profit: " << max_profit << "\n";
@@ -34,6 +38,8 @@ int main() {
               << ", Weight: " << pallet.get_weight()
               << ", Profit: " << pallet.get_profit() << "\n";
   }
+
+  std::cout << message << "\n";
 
   return 0;
 }

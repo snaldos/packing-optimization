@@ -17,8 +17,8 @@ double BruteForce::estimate_upper_bound(const std::vector<Pallet>& pallets,
       weight += w;
       bound += p;
     } else {
-      unsigned int remaining = max_weight - weight;
-      bound += (double)p / w * remaining;
+      unsigned int remaining_weight = max_weight - weight;
+      bound += (double)p / w * remaining_weight;
       break;
     }
   }

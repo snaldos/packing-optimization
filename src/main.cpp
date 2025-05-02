@@ -1,5 +1,6 @@
 #include "Algorithms/BruteForce.h"
 #include "Algorithms/DynamicProgramming.h"
+#include "Algorithms/Greedy.h"
 #include "Batch/BatchStateManager.h"
 #include "DataStructures/Pallet.h"
 #include "DataStructures/Truck.h"
@@ -22,30 +23,59 @@ int main() {
   // Create a truck with a capacity of 50
   Truck truck(50, pallets.size());
 
-  // Solve the knapsack problem
+  // Solve using Greedy
+  Greedy greedy;
+  std::vector<Pallet> used_pallets_greedy;
+  std::string message_greedy;
+  unsigned int max_profit_greedy =
+      greedy.approx_solve(pallets, truck, used_pallets_greedy, message_greedy);
+
+  // Solve using Brute Force
   BruteForce bruteForce;
+  std::vector<Pallet> used_pallets_bf;
+  std::string message_bf;
+  unsigned int max_profit_bf =
+      bruteForce.bf_solve(pallets, truck, used_pallets_bf, message_bf);
+
+  // Solve using Dynamic Programming
   DynamicProgramming dynamicProgramming;
-  std::vector<Pallet> used_pallets;
-  std::string message;
-  unsigned int max_profit = dynamicProgramming.dp_solve(
-      pallets, truck, used_pallets, TableType::Vector, message);
+  std::vector<Pallet> used_pallets_dp;
+  std::string message_dp;
+  unsigned int max_profit_dp = dynamicProgramming.dp_solve(
+      pallets, truck, used_pallets_dp, TableType::Vector, message_dp);
 
-  // max_profit = bruteForce.bf_solve(pallets, truck, used_pallets, message);
-
-  // Output the results
-  std::cout << "Maximum Profit: " << max_profit << "\n";
-  std::cout << "Selected Pallets:\n";
-  for (const auto& pallet : used_pallets) {
-    std::cout << "ID: " << pallet.get_id()
-              << ", Weight: " << pallet.get_weight()
-              << ", Profit: " << pallet.get_profit() << "\n";
+  // Output results
+  std::cout << "Greedy Algorithm:\n";
+  std::cout << "Maximum Profit: " << max_profit_greedy << "\n";
+  std::cout << "Used Pallets: ";
+  for (const auto& pallet : used_pallets_greedy) {
+    std::cout << pallet.get_id() << " " << pallet.get_weight() << " "
+              << pallet.get_profit() << ", ";
   }
+  std::cout << "\n";
+  std::cout << message_greedy << "\n";
 
-  std::cout << message << "\n";
+  std::cout << "Brute Force Algorithm:\n";
+  std::cout << "Maximum Profit: " << max_profit_bf << "\n";
+  std::cout << "Used Pallets: ";
+  for (const auto& pallet : used_pallets_bf) {
+    std::cout << pallet.get_id() << " " << pallet.get_weight() << " "
+              << pallet.get_profit() << ", ";
+  }
+  std::cout << "\n";
+  std::cout << message_bf << "\n";
 
-  max_profit = dynamicProgramming.dp_solve(pallets, truck, message);
-  std::cout << "Maximum Profit: " << max_profit << "\n";
-  std::cout << message << "\n";
+  std::cout << "Dynamic Programming Algorithm:\n";
+  std::cout << "Maximum Profit: " << max_profit_dp << "\n";
+  std::cout << "Used Pallets: ";
+  for (const auto& pallet : used_pallets_dp) {
+    std::cout << pallet.get_id() << " " << pallet.get_weight() << " "
+              << pallet.get_profit() << ", ";
+  }
+  std::cout << "\n";
+  std::cout << message_dp << "\n";
+
+  return 0;
 
   return 0;
 }

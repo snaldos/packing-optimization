@@ -21,6 +21,7 @@ set(SOURCES
     src/DataStructures/Truck.cpp
     src/Algorithms/BruteForce.cpp
     src/Algorithms/DynamicProgramming.cpp
+    src/Algorithms/Greedy.cpp
 )
 file(COPY ${PROJECT_SOURCE_DIR}/data DESTINATION ${CMAKE_BINARY_DIR})
 

@@ -2,6 +2,7 @@
 #define BRUTEFORCE_H
 
 #include <algorithm>
+#include <chrono>
 #include <cmath>
 #include <vector>
 
@@ -23,11 +24,13 @@ class BruteForce {
  public:
   // Solves the knapsack problem using brute force (backtracking)
   unsigned int bt_solve(std::vector<Pallet> pallets, const Truck& truck,
-                        std::vector<Pallet>& used_pallets);
+                        std::vector<Pallet>& used_pallets,
+                        std::string& message);
 
   // Solves the knapsack problem using brute force (explicit subset generation)
   unsigned int bf_solve(const std::vector<Pallet>& pallets, const Truck& truck,
-                        std::vector<Pallet>& used_pallets);
+                        std::vector<Pallet>& used_pallets,
+                        std::string& message);
 
  private:
   // Helper function for recursive brute force

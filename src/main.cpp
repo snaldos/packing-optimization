@@ -30,6 +30,8 @@ int main() {
   unsigned int max_profit = dynamicProgramming.dp_solve(
       pallets, truck, used_pallets, TableType::Vector, message);
 
+  // max_profit = bruteForce.bf_solve(pallets, truck, used_pallets, message);
+
   // Output the results
   std::cout << "Maximum Profit: " << max_profit << "\n";
   std::cout << "Selected Pallets:\n";

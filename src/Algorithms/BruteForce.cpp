@@ -61,7 +61,10 @@ void BruteForce::bt_helper(const std::vector<Pallet>& pallets,
 
 unsigned int BruteForce::bt_solve(std::vector<Pallet> pallets,
                                   const Truck& truck,
-                                  std::vector<Pallet>& used_pallets) {
+                                  std::vector<Pallet>& used_pallets,
+                                  std::string& message) {
+  auto start_time = std::chrono::high_resolution_clock::now();
+
   // Sort by value-to-weight ratio descending
   std::sort(pallets.begin(), pallets.end(),
             [](const Pallet& a, const Pallet& b) {
@@ -85,12 +88,22 @@ unsigned int BruteForce::bt_solve(std::vector<Pallet> pallets,
     }
   }
 
+  auto end_time = std::chrono::high_resolution_clock::now();
+  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(
+                      end_time - start_time)
+                      .count();
+
+  message = "[BF (BT)] Execution time: " + std::to_string(duration) + " ms";
+
   return best_value;
 }
 
 unsigned int BruteForce::bf_solve(const std::vector<Pallet>& pallets,
                                   const Truck& truck,
-                                  std::vector<Pallet>& used_pallets) {
+                                  std::vector<Pallet>& used_pallets,
+                                  std::string& message) {
+  auto start_time = std::chrono::high_resolution_clock::now();
+
   unsigned int n = pallets.size();
   unsigned int max_weight = truck.get_capacity();
   unsigned int best_value = 0;
@@ -122,5 +135,13 @@ unsigned int BruteForce::bf_solve(const std::vector<Pallet>& pallets,
 
   // Store the best pallets
   used_pallets = best_pallets;
+
+  auto end_time = std::chrono::high_resolution_clock::now();
+  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(
+                      end_time - start_time)
+                      .count();
+
+  message = "[BF] Execution time: " + std::to_string(duration) + " ms";
+
   return best_value;
 }

@@ -28,7 +28,7 @@ int main() {
   std::vector<Pallet> used_pallets;
   std::string message;
   unsigned int max_profit = dynamicProgramming.dp_solve(
-      pallets, truck, used_pallets, TableType::HashMap, message);
+      pallets, truck, used_pallets, TableType::Vector, message);
 
   // Output the results
   std::cout << "Maximum Profit: " << max_profit << "\n";
@@ -39,6 +39,10 @@ int main() {
               << ", Profit: " << pallet.get_profit() << "\n";
   }
 
+  std::cout << message << "\n";
+
+  max_profit = dynamicProgramming.dp_solve(pallets, truck, message);
+  std::cout << "Maximum Profit: " << max_profit << "\n";
   std::cout << message << "\n";
 
   return 0;

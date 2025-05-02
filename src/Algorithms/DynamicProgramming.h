@@ -62,7 +62,8 @@ class VectorDPTable : public DPTable {
   }
 
   std::size_t get_memory_usage() const override {
-    return table.size() * sizeof(unsigned int);
+    if (table.empty()) return 0;
+    return table.size() * table[0].size() * sizeof(unsigned int);
   }
 };
 
@@ -120,17 +121,12 @@ class HashMapDPTable : public DPTable {
   }
 
   std::size_t get_memory_usage() const override {
-    // Each entry in the hash map consists of a pair (i, w) and the value
-    // The size of the hash map itself is not trivial to calculate, but we can
-    // estimate it based on the number of entries and the size of the hash
-    // table
-    // This is a rough estimate and may vary based on the implementation of
-    // std::unordered_map
-    // and the load factor used
-    // Note: This does not account for the overhead of the hash table itself
-    // (buckets, etc.)
-    return table.size() * (sizeof(std::pair<unsigned int, unsigned int>) +
-                           sizeof(unsigned int));
+    // Each entry in the hash map consists of a key value pair between a pair of
+    // ints and an int
+
+    using Entry =
+        std::pair<std::pair<unsigned int, unsigned int>, unsigned int>;
+    return table.size() * sizeof(Entry);
   }
 };
 
@@ -142,6 +138,9 @@ class DynamicProgramming {
  public:
   unsigned int dp_solve(const std::vector<Pallet>& pallets, const Truck& truck,
                         std::vector<Pallet>& used_pallets, TableType type,
+                        std::string& message);
+
+  unsigned int dp_solve(const std::vector<Pallet>& pallets, const Truck& truck,
                         std::string& message);
 };
 

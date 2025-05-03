@@ -15,10 +15,10 @@ def solve_knapsack(data):
     x = {p["id"]: pulp.LpVariable(name=f"x_{p['id']}", cat="Binary") for p in pallets}
 
     # Objective function: Maximize the total profit of selected pallets
-    prob += pulp.lpDot([p["profit"] for p in pallets], list(x.values()))
+    prob += pulp.lpSum(p["profit"] * x[p["id"]] for p in pallets)
 
     # Constraint: Total weight of selected pallets should not exceed the truck's capacity
-    prob += pulp.lpDot([p["weight"] for p in pallets], list(x.values())) <= capacity
+    prob += pulp.lpSum(p["weight"] * x[p["id"]] for p in pallets) <= capacity
 
     # Solve the problem using CBC solver (or default solver)
     prob.solve(pulp.PULP_CBC_CMD(msg=False))

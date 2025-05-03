@@ -1,78 +1,118 @@
 #include "BatchInputManager.h"
 
-BatchInputManager::BatchInputManager(std::vector<Pallet> pallets, Truck truck)
-    : pallets(pallets), truck(truck) {};
+BatchInputManager::BatchInputManager(std::vector<Pallet>& pallets, Truck& truck)
+    : pallets(pallets), truck(truck) {
+  // Ensure the output directory exists and remove any existing files
+  std::string output_dir = BatchUtils::get_output_dir();
+  BatchUtils::ensure_directory(output_dir);
+}
 
 BatchState BatchInputManager::getInputMode() {
-  std::vector<std::string> options = {"Terminal Input", "File Input",
-                                      "Select Dataset", "Show Dataset", "Exit"};
-  int choice = BatchUtils::getMenuChoice(options, "Choose input mode: ");
+  std::string prompt = "Choose an option (empty line to exit): ";
+  std::vector<std::string> options = {"Run Algorithms", "Select Dataset",
+                                      "Show Dataset"};
+  int choice = BatchUtils::get_menu_choice(options, prompt);
 
   switch (choice) {
     case 1:
-      BatchUtils::clearTerminal();
-      return BatchState::TerminalInput;
+      BatchUtils::clear_terminal();
+      return BatchState::RunAlgorithms;
     case 2:
-      return BatchState::FileInput;
-    case 3:
       return BatchState::SelectDataset;
-    case 4:
+    case 3:
       return BatchState::ShowDataset;
-    case 5:
-      return BatchState::Exit;
     default:
       return BatchState::Exit;  // Fallback
   }
 }
 
-void BatchInputManager::processFileInput() {
-  BatchUtils::clearTerminal();
-  while (true) {
-    std::cout << "--> FILE INPUT <--\n\n"
-                 "Enter the filename (located in the input folder):\n";
-    std::string filename;
-    std::getline(std::cin, filename);
-    filename = ParserUtils::trim(filename);
-
-    if (filename.empty()) {
-      BatchUtils::clearTerminal();
-      std::cerr << "ERROR: Filename cannot be empty.\n";
-      continue;
-    }
-
-    std::ifstream input_file("input/" + filename);
-    if (!input_file.is_open()) {
-      BatchUtils::clearTerminal();
-      std::cerr << "ERROR: File does not exist.\n";
-      continue;
-    }
-    std::ofstream output_file("output/" + filename);
-    if (output_file.is_open()) {
-      processInput(input_file, output_file);
-      output_file.close();
-    } else {
-      BatchUtils::clearTerminal();
-      std::cerr << "ERROR: Could not open output file.\n";
-      processInput(input_file, std::cerr);
-    }
-    input_file.close();
-    break;
+void BatchInputManager::generate_output_file(std::string& filename,
+                                             std::vector<Pallet>& used_pallets,
+                                             unsigned int& max_profit,
+                                             std::string& message) {
+  if (filename.empty()) {
+    std::cerr << "ERROR: Filename is empty." << std::endl;
+    return;
   }
+  std::string output_dir = BatchUtils::get_output_dir();
+  std::string output_file = output_dir + "/" + filename;
+  std::ofstream file(output_file);
+  if (!file.is_open()) {
+    std::cerr << "ERROR: Could not open output file: " << output_file
+              << std::endl;
+    return;
+  }
+
+  if (!used_pallets.empty()) {
+    unsigned int total_weight = 0;
+    file << "id, profit, weight\n";
+    for (const auto& pallet : used_pallets) {
+      file << pallet.get_id() << ", " << pallet.get_profit() << ", "
+           << pallet.get_weight() << "\n";
+      total_weight += pallet.get_weight();
+    }
+    file << "\n" << "Total Weight: " << total_weight << "\n";
+  }
+  file << "Maximum Profit: " << max_profit << "\n\n";
+  file << message << "\n";
+  file.close();
 }
 
-void BatchInputManager::processInput(std::istream &input_stream,
-                                     std::ostream &output_stream) {
-  BatchUtils::clearTerminal();
-  std::cout << "--> TERMINAL INPUT <--\n\n"
-               "Enter input (end with an empty line):\n";
+void BatchInputManager::processInput() {
+  BatchUtils::clear_terminal();
+  std::string prompt = "Choose algorithm (empty line to exit): ";
   while (true) {
-    std::string input;
-    std::getline(std::cin, input);
-    input = ParserUtils::trim(input);
+    std::vector<std::string> options = {
+        "BF", "BT", "DP-VECTOR", "DP-HASHMAP", "DP-OPTIMIZED", "GREEDY-APPROX"};
+    int choice = BatchUtils::get_menu_choice(options, prompt);
 
-    if (input.empty()) {
-      break;
-      continue;
+    std::string filename;
+    std::vector<Pallet> used_pallets;
+    unsigned int max_profit = 0;
+    std::string message;
+
+    switch (choice) {
+      case 1:
+        filename = "bf.txt";
+        max_profit =
+            BruteForce().bf_solve(pallets, truck, used_pallets, message);
+        generate_output_file(filename, used_pallets, max_profit, message);
+        break;
+      case 2:
+        filename = "bt.txt";
+        max_profit =
+            BruteForce().bt_solve(pallets, truck, used_pallets, message);
+        generate_output_file(filename, used_pallets, max_profit, message);
+        break;
+      case 3:
+        filename = "dp_vector.txt";
+        max_profit = DynamicProgramming().dp_solve(pallets, truck, used_pallets,
+                                                   TableType::Vector, message);
+        generate_output_file(filename, used_pallets, max_profit, message);
+        break;
+      case 4:
+        filename = "dp_hashmap.txt";
+        max_profit = DynamicProgramming().dp_solve(pallets, truck, used_pallets,
+                                                   TableType::HashMap, message);
+        generate_output_file(filename, used_pallets, max_profit, message);
+        break;
+      case 5:
+        filename = "dp_optimized.txt";
+
+        max_profit = DynamicProgramming().dp_solve(pallets, truck, message);
+        generate_output_file(filename, used_pallets, max_profit, message);
+        break;
+
+      case 6:
+        filename = "greedy_approx.txt";
+
+        max_profit =
+            Greedy().approx_solve(pallets, truck, used_pallets, message);
+        generate_output_file(filename, used_pallets, max_profit, message);
+        break;
+      default:
+        std::cout << "Exiting process input...\n";
+        return;  // Exit the function and the loop
     }
   }
 }

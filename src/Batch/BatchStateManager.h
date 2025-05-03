@@ -12,8 +12,7 @@
 
 class BatchStateManager {
  public:
-  BatchStateManager(std::vector<Pallet> pallets, Truck truck);
-
+  BatchStateManager(std::vector<Pallet>& pallets, Truck& truck);
   void update_state();
 
  private:

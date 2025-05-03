@@ -1,26 +1,34 @@
 #include "BatchDataSetManager.h"
 
-BatchDataSetManager::BatchDataSetManager(std::vector<Pallet> pallets,
-                                         Truck truck)
-    : pallets(pallets), truck(truck) {};
+BatchDataSetManager::BatchDataSetManager(std::vector<Pallet>& pallets,
+                                         Truck& truck)
+    : pallets(pallets), truck(truck) {}
 
-int BatchDataSetManager::selectAndLoadDataset() {
-  BatchUtils::clearTerminal();
+const std::vector<Pallet>& BatchDataSetManager::get_pallets() const {
+  return pallets;
+}
+
+int BatchDataSetManager::select_and_load_dataset() {
+  BatchUtils::clear_terminal();
   while (true) {
     std::cout << "Files should be in the format:\n"
               << "Pallets_<X>.csv\n"
-              << "TruckAndPallets_<X>.csv\n";
+              << "TruckAndPallets_<X>.csv\n\n";
     std::string identifier;
-    std::cout << "<X>: ";
+    std::cout << "<X> (empty line to exit): ";
     std::getline(std::cin, identifier);
 
     identifier = ParserUtils::trim(identifier);
 
-    if (loadDataset(identifier)) {
+    if (identifier.empty()) {
+      break;
+    }
+
+    if (load_dataset(identifier)) {
       // std::cout << "Dataset loaded successfully.\n";
       break;
     } else {
-      BatchUtils::clearTerminal();
+      BatchUtils::clear_terminal();
       std::cerr << "ERROR: Could not open files." << std::endl;
       continue;
     }
@@ -29,8 +37,8 @@ int BatchDataSetManager::selectAndLoadDataset() {
   return true;
 }
 
-void BatchDataSetManager::showDataset() {
-  BatchUtils::clearTerminal();
+void BatchDataSetManager::show_dataset() {
+  BatchUtils::clear_terminal();
   std::cout << "Pallets:\n";
   for (const Pallet& pallet : pallets) {
     std::cout << "id: " << pallet.get_id()
@@ -38,21 +46,16 @@ void BatchDataSetManager::showDataset() {
               << ", weight: " << pallet.get_weight() << "\n";
   }
 
-  std::cout << "Truck:\n";
+  std::cout << "\nTruck:\n";
   std::cout << "capacity: " << truck.get_capacity()
             << ", num_pallets: " << truck.get_num_pallets() << "\n";
 
-  std::cout << "Press Enter to exit..." << std::endl;
-  while (true) {
-    std::string input;
-    std::getline(std::cin, input);
-    if (input.empty()) {
-      break;
-    }
-  }
+  std::cout << "\nPress Enter to exit...";
+  std::string input;
+  std::getline(std::cin, input);
 }
 
-bool BatchDataSetManager::loadDataset(std::string identifier) {
+bool BatchDataSetManager::load_dataset(std::string identifier) {
   std::string pallets_filename = "data/Pallets_" + identifier + ".csv";
   std::string truck_filename = "data/TruckAndPallets_" + identifier + ".csv";
 

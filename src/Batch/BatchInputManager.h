@@ -11,22 +11,27 @@
 #include <unordered_map>
 #include <vector>
 
+#include "../Algorithms/BruteForce.h"
+#include "../Algorithms/DynamicProgramming.h"
+#include "../Algorithms/Greedy.h"
 #include "../DataStructures/Pallet.h"
 #include "../DataStructures/Truck.h"
 #include "../Parser/ParserUtils.h"
 #include "BatchState.h"
 #include "BatchUtils.h"
 class BatchInputManager {
+ private:
+  void generate_output_file(std::string& filename,
+                            std::vector<Pallet>& used_pallets,
+                            unsigned int& max_profit, std::string& message);
+  std::vector<Pallet>& pallets;
+  Truck& truck;
+
  public:
-  BatchInputManager(std::vector<Pallet> pallets, Truck truck);
+  BatchInputManager(std::vector<Pallet>& pallets, Truck& truck);
 
   BatchState getInputMode();
-  void processInput(std::istream& input_stream, std::ostream& output_stream);
-  void processFileInput();
-
- private:
-  std::vector<Pallet> pallets;
-  Truck truck;
+  void processInput();
 };
 
 #endif

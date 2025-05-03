@@ -14,17 +14,16 @@
 
 class BatchDataSetManager {
  public:
-  BatchDataSetManager(std::vector<Pallet> pallets, Truck truck);
-
-  int selectAndLoadDataset();
-  void showDataset();
+  BatchDataSetManager(std::vector<Pallet>& pallets, Truck& truck);
+  int select_and_load_dataset();
+  void show_dataset();
+  const std::vector<Pallet>& get_pallets() const;
 
  private:
-  // bool loadDataset();
-  bool loadDataset(std::string identifier);
+  bool load_dataset(std::string identifier);
   CSVParser csv_data_parser;
-  std::vector<Pallet> pallets;
-  Truck truck;
+  std::vector<Pallet>& pallets;
+  Truck& truck;
 };
 
 #endif

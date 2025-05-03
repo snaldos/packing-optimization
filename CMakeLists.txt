@@ -23,10 +23,9 @@ set(SOURCES
     src/Algorithms/DynamicProgramming.cpp
     src/Algorithms/Greedy.cpp
 )
-file(COPY ${PROJECT_SOURCE_DIR}/data DESTINATION ${CMAKE_BINARY_DIR})
 
-# Copy input files to build directory
-file(COPY ${PROJECT_SOURCE_DIR}/input DESTINATION ${CMAKE_BINARY_DIR})
+# Copy data files to the build directory
+file(COPY ${PROJECT_SOURCE_DIR}/data DESTINATION ${CMAKE_BINARY_DIR})
 
 # Preprocessor definition to get project directory at runtime
 add_definitions(-DPROJECT_DIR="${CMAKE_SOURCE_DIR}")

@@ -9,17 +9,19 @@ unsigned int ILPBridge::solve_with_ilp(const std::vector<Pallet>& pallets,
   auto start_time = std::chrono::high_resolution_clock::now();
 
   // Construct paths using PROJECT_DIR
-  std::string tmp_dir = std::string(PROJECT_DIR) + "/tmp";
+  std::string tmp_dir = Utils::get_absolute_dir("/tmp");
   std::string input_path = tmp_dir + "/ilp_input.json";
   std::string output_path = tmp_dir + "/ilp_output.json";
   std::string error_log_path = tmp_dir + "/ilp_error.log";
-  std::string script_path =
-      std::string(PROJECT_DIR) + "/src/Algorithms/ilp_solver.py";
+  std::string script_path = "/src/Algorithms/ILP/ilp_solver.py";
+  script_path = Utils::get_absolute_dir(script_path);
 
   // Ensure the tmp directory exists
-  if (!std::filesystem::exists(tmp_dir)) {
-    std::filesystem::create_directory(tmp_dir);
-  }
+  // if (!std::filesystem::exists(tmp_dir)) {
+  //   std::filesystem::create_directory(tmp_dir);
+  // }
+
+  Utils::ensure_directory(tmp_dir);
 
   // Serialize input
   json input_json;
@@ -64,6 +66,6 @@ unsigned int ILPBridge::solve_with_ilp(const std::vector<Pallet>& pallets,
                       end_time - start_time)
                       .count();
 
-  message = "[ILP] Execution time: " + std::to_string(duration) + " ms";
+  message = "[ILP] Execution time: " + std::to_string(duration) + " μs";
   return total_profit;
 }

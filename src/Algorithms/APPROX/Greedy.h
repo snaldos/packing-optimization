@@ -5,8 +5,8 @@
 #include <chrono>
 #include <vector>
 
-#include "../DataStructures/Pallet.h"
-#include "../DataStructures/Truck.h"
+#include "../../DataStructures/Pallet.h"
+#include "../../DataStructures/Truck.h"
 
 /*
 
@@ -24,8 +24,10 @@
 
 class Greedy {
  public:
-  unsigned int approx_solve(const std::vector<Pallet>& pallets, const Truck& truck,
-                     std::vector<Pallet>& used_pallets, std::string& message);
+  unsigned int approx_solve(const std::vector<Pallet>& pallets,
+                            const Truck& truck,
+                            std::vector<Pallet>& used_pallets,
+                            std::string& message);
 };
 
 #endif  // GREEDY_H

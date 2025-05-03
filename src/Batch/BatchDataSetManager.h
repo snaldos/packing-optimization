@@ -10,6 +10,7 @@
 #include "../DataStructures/Truck.h"
 #include "../Parser/CSVParser.h"
 #include "../Parser/ParserUtils.h"
+#include "../Utils.h"
 #include "BatchUtils.h"
 
 class BatchDataSetManager {

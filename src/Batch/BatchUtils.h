@@ -1,18 +1,22 @@
 #ifndef BATCH_UTILS_H
 #define BATCH_UTILS_H
 
+#include <dirent.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+#include <cstdlib>
+#include <cstring>
+#include <fstream>
+#include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
 
 namespace BatchUtils {
 // Function to clear the terminal screen
 void clear_terminal();
-
-// Function to remove a directory and its contents
-bool remove_directory(const std::string& path);
-
-// Function to ensure a directory exists
-bool ensure_directory(const std::string& dir);
 
 // Function to get the output directory
 std::string get_absolute_dir(std::string path);

@@ -32,7 +32,7 @@ unsigned int Greedy::approx_solve(const std::vector<Pallet>& pallets,
                       end_time - start_time)
                       .count();
 
-  message = "[Greedy] Execution time: " + std::to_string(duration) + " ms";
+  message = "[Greedy] Execution time: " + std::to_string(duration) + " μs";
 
   return total_profit;
 }

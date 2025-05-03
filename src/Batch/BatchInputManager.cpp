@@ -3,8 +3,8 @@
 BatchInputManager::BatchInputManager(std::vector<Pallet>& pallets, Truck& truck)
     : pallets(pallets), truck(truck) {
   // Ensure the output directory exists and remove any existing files
-  std::string output_dir = BatchUtils::get_absolute_dir("/output");
-  BatchUtils::ensure_directory(output_dir);
+  std::string output_dir = Utils::get_absolute_dir("/output");
+  Utils::ensure_directory(output_dir);
 }
 
 BatchState BatchInputManager::getInputMode() {
@@ -34,7 +34,7 @@ void BatchInputManager::generate_output_file(std::string& filename,
     std::cerr << "ERROR: Filename is empty." << std::endl;
     return;
   }
-  std::string output_dir = BatchUtils::get_absolute_dir("/output");
+  std::string output_dir = Utils::get_absolute_dir("/output");
   std::string output_file = output_dir + "/" + filename;
   std::ofstream file(output_file);
   if (!file.is_open()) {

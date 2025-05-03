@@ -93,7 +93,7 @@ unsigned int BruteForce::bt_solve(std::vector<Pallet> pallets,
                       end_time - start_time)
                       .count();
 
-  message = "[BF (BT)] Execution time: " + std::to_string(duration) + " ms";
+  message = "[BF (BT)] Execution time: " + std::to_string(duration) + " μs";
 
   return best_value;
 }
@@ -110,8 +110,8 @@ unsigned int BruteForce::bf_solve(const std::vector<Pallet>& pallets,
   std::vector<Pallet> best_pallets;
 
   // Iterate through all possible subsets (2^n subsets)
-  unsigned int total_subsets = 1 << n;
-  for (unsigned int subset = 0; subset < total_subsets; ++subset) {
+  uint64_t total_subsets = 1ULL << n;
+  for (uint64_t subset = 0; subset < total_subsets; ++subset) {
     unsigned int curr_weight = 0;
     unsigned int curr_value = 0;
     std::vector<Pallet> current_pallets;
@@ -141,7 +141,7 @@ unsigned int BruteForce::bf_solve(const std::vector<Pallet>& pallets,
                       end_time - start_time)
                       .count();
 
-  message = "[BF] Execution time: " + std::to_string(duration) + " ms";
+  message = "[BF] Execution time: " + std::to_string(duration) + " μs";
 
   return best_value;
 }

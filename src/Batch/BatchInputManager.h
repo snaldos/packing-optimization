@@ -11,13 +11,14 @@
 #include <unordered_map>
 #include <vector>
 
-#include "../Algorithms/BruteForce.h"
-#include "../Algorithms/DynamicProgramming.h"
-#include "../Algorithms/Greedy.h"
-#include "../Algorithms/ILPBridge.h"
+#include "../Algorithms/APPROX/Greedy.h"
+#include "../Algorithms/BF/BruteForce.h"
+#include "../Algorithms/DP/DynamicProgramming.h"
+#include "../Algorithms/ILP/ILPBridge.h"
 #include "../DataStructures/Pallet.h"
 #include "../DataStructures/Truck.h"
 #include "../Parser/ParserUtils.h"
+#include "../Utils.h"
 #include "BatchState.h"
 #include "BatchUtils.h"
 class BatchInputManager {

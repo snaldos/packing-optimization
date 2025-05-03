@@ -8,8 +8,8 @@
 #include <unordered_map>
 #include <vector>
 
-#include "../DataStructures/Pallet.h"
-#include "../DataStructures/Truck.h"
+#include "../../DataStructures/Pallet.h"
+#include "../../DataStructures/Truck.h"
 
 /*
 

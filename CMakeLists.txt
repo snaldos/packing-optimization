@@ -29,14 +29,12 @@ set(SOURCES
     src/Batch/BatchInputManager.cpp
     src/DataStructures/Pallet.cpp
     src/DataStructures/Truck.cpp
-    src/Algorithms/BruteForce.cpp
-    src/Algorithms/DynamicProgramming.cpp
-    src/Algorithms/Greedy.cpp
-    src/Algorithms/ILPBridge.cpp
+    src/Algorithms/BF/BruteForce.cpp
+    src/Algorithms/DP/DynamicProgramming.cpp
+    src/Algorithms/APPROX/Greedy.cpp
+    src/Algorithms/ILP/ILPBridge.cpp
+    src/Utils.cpp
 )
-
-# Copy data files to the build directory
-file(COPY ${PROJECT_SOURCE_DIR}/data DESTINATION ${CMAKE_BINARY_DIR})
 
 # Preprocessor definition to get project directory at runtime
 add_definitions(-DPROJECT_DIR="${CMAKE_SOURCE_DIR}")

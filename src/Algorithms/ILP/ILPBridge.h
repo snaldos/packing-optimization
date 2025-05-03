@@ -8,8 +8,9 @@
 #include <string>
 #include <vector>
 
-#include "../DataStructures/Pallet.h"
-#include "../DataStructures/Truck.h"
+#include "../../DataStructures/Pallet.h"
+#include "../../DataStructures/Truck.h"
+#include "../../Utils.h"
 
 class ILPBridge {
  public:

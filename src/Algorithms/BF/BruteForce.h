@@ -4,10 +4,11 @@
 #include <algorithm>
 #include <chrono>
 #include <cmath>
+#include <cstdint>
 #include <vector>
 
-#include "../DataStructures/Pallet.h"
-#include "../DataStructures/Truck.h"
+#include "../../DataStructures/Pallet.h"
+#include "../../DataStructures/Truck.h"
 
 /*
 

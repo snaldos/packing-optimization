@@ -109,7 +109,7 @@ void BatchInputManager::processInput() {
         break;
       case 7:
         filename = "ilp.txt";
-        max_profit = max_profit =
+        max_profit =
             ILPBridge().solve_with_ilp(pallets, truck, used_pallets, message);
         generate_output_file(filename, used_pallets, max_profit, message);
         break;

@@ -47,3 +47,5 @@ install(TARGETS packing_optimization DESTINATION bin)
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/ DESTINATION include)
 
 target_link_libraries(packing_optimization PRIVATE nlohmann_json::nlohmann_json)
+
+target_compile_options(packing_optimization PRIVATE -Wall -Wextra -Wpedantic)

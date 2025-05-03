@@ -3,4 +3,4 @@
 **/cmake-build-debug/
 **/build/
 output/
-tmp/
+src/Algorithms/ILP/tmp/

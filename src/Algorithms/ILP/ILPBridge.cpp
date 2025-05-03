@@ -9,7 +9,7 @@ unsigned int ILPBridge::solve_with_ilp(const std::vector<Pallet>& pallets,
   auto start_time = std::chrono::high_resolution_clock::now();
 
   // Construct paths using PROJECT_DIR
-  std::string tmp_dir = Utils::get_absolute_dir("/tmp");
+  std::string tmp_dir = Utils::get_absolute_dir("/src/Algorithms/ILP/tmp");
   std::string input_path = tmp_dir + "/ilp_input.json";
   std::string output_path = tmp_dir + "/ilp_output.json";
   std::string error_log_path = tmp_dir + "/ilp_error.log";

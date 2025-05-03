@@ -16,11 +16,6 @@ unsigned int ILPBridge::solve_with_ilp(const std::vector<Pallet>& pallets,
   std::string script_path = "/src/Algorithms/ILP/ilp_solver.py";
   script_path = Utils::get_absolute_dir(script_path);
 
-  // Ensure the tmp directory exists
-  // if (!std::filesystem::exists(tmp_dir)) {
-  //   std::filesystem::create_directory(tmp_dir);
-  // }
-
   Utils::ensure_directory(tmp_dir);
 
   // Serialize input
@@ -37,7 +32,6 @@ unsigned int ILPBridge::solve_with_ilp(const std::vector<Pallet>& pallets,
   // Call Python
   std::string command = "python3 " + script_path + " " + input_path + " " +
                         output_path + " 2> " + error_log_path;
-  output_path + " 2> " + error_log_path;
   int ret = std::system(command.c_str());
   if (ret != 0) {
     std::ifstream error_log(error_log_path);

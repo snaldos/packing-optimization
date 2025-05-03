@@ -72,7 +72,7 @@ unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet>& pallets,
   message = "[DP (" +
             std::string(type == TableType::Vector ? "Vector" : "HashMap") +
             ")] Execution time: " + std::to_string(duration) +
-            " μs | Memory used: " + memory_str;
+            " μs | DP table size: " + memory_str;
 
   return dp->get(n, max_weight);
 }
@@ -120,7 +120,7 @@ unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet>& pallets,
 
   message =
       "[DP (Vector - 2 Rows)] Execution time: " + std::to_string(duration) +
-      " μs | Memory used: " + memory_str;
+      " μs | DP table size: " + memory_str;
 
   return prev[W];  // Note: `prev` holds the last filled row after final swap
 }

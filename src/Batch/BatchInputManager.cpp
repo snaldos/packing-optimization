@@ -1,11 +1,7 @@
 #include "BatchInputManager.h"
 
 BatchInputManager::BatchInputManager(std::vector<Pallet>& pallets, Truck& truck)
-    : pallets(pallets), truck(truck) {
-  // Ensure the output directory exists and remove any existing files
-  std::string output_dir = Utils::get_absolute_dir("/output");
-  Utils::ensure_directory(output_dir);
-}
+    : pallets(pallets), truck(truck) {}
 
 BatchState BatchInputManager::getInputMode() {
   std::string prompt = "Choose an option (empty line to exit): ";

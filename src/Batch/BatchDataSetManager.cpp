@@ -26,6 +26,10 @@ int BatchDataSetManager::select_and_load_dataset() {
 
     if (load_dataset(identifier)) {
       // std::cout << "Dataset loaded successfully.\n";
+      // Ensure the output directory exists and remove any existing files
+      std::string output_dir = Utils::get_absolute_dir("/output");
+      Utils::ensure_directory(output_dir);
+
       break;
     } else {
       BatchUtils::clear_terminal();

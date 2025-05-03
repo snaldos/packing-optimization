@@ -14,6 +14,7 @@
 #include "../Algorithms/BruteForce.h"
 #include "../Algorithms/DynamicProgramming.h"
 #include "../Algorithms/Greedy.h"
+#include "../Algorithms/ILPBridge.h"
 #include "../DataStructures/Pallet.h"
 #include "../DataStructures/Truck.h"
 #include "../Parser/ParserUtils.h"

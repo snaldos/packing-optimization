@@ -3,7 +3,7 @@
 BatchInputManager::BatchInputManager(std::vector<Pallet>& pallets, Truck& truck)
     : pallets(pallets), truck(truck) {
   // Ensure the output directory exists and remove any existing files
-  std::string output_dir = BatchUtils::get_output_dir();
+  std::string output_dir = BatchUtils::get_absolute_dir("/output");
   BatchUtils::ensure_directory(output_dir);
 }
 
@@ -34,7 +34,7 @@ void BatchInputManager::generate_output_file(std::string& filename,
     std::cerr << "ERROR: Filename is empty." << std::endl;
     return;
   }
-  std::string output_dir = BatchUtils::get_output_dir();
+  std::string output_dir = BatchUtils::get_absolute_dir("/output");
   std::string output_file = output_dir + "/" + filename;
   std::ofstream file(output_file);
   if (!file.is_open()) {
@@ -63,7 +63,8 @@ void BatchInputManager::processInput() {
   std::string prompt = "Choose algorithm (empty line to exit): ";
   while (true) {
     std::vector<std::string> options = {
-        "BF", "BT", "DP-VECTOR", "DP-HASHMAP", "DP-OPTIMIZED", "GREEDY-APPROX"};
+        "BF", "BT", "DP-VECTOR", "DP-HASHMAP", "DP-OPTIMIZED", "GREEDY-APPROX",
+        "ILP"};
     int choice = BatchUtils::get_menu_choice(options, prompt);
 
     std::string filename;
@@ -108,6 +109,12 @@ void BatchInputManager::processInput() {
 
         max_profit =
             Greedy().approx_solve(pallets, truck, used_pallets, message);
+        generate_output_file(filename, used_pallets, max_profit, message);
+        break;
+      case 7:
+        filename = "ilp.txt";
+        max_profit = max_profit =
+            ILPBridge().solve_with_ilp(pallets, truck, used_pallets, message);
         generate_output_file(filename, used_pallets, max_profit, message);
         break;
       default:

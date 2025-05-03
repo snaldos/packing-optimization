@@ -89,7 +89,7 @@ unsigned int BruteForce::bt_solve(std::vector<Pallet> pallets,
   }
 
   auto end_time = std::chrono::high_resolution_clock::now();
-  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(
+  auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
                       end_time - start_time)
                       .count();
 
@@ -137,7 +137,7 @@ unsigned int BruteForce::bf_solve(const std::vector<Pallet>& pallets,
   used_pallets = best_pallets;
 
   auto end_time = std::chrono::high_resolution_clock::now();
-  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(
+  auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
                       end_time - start_time)
                       .count();
 

@@ -18,7 +18,9 @@ void clear_terminal() {
   std::cout << "----- PACKING OPTIMIZATION -----\n\n";
 }
 
-std::string get_output_dir() { return std::string(PROJECT_DIR) + "/output"; }
+std::string get_absolute_dir(std::string path) {
+  return std::string(PROJECT_DIR) + path;
+}
 
 bool remove_directory(const std::string& path) {
   DIR* dir = opendir(path.c_str());

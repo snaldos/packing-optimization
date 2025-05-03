@@ -8,6 +8,16 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Include directories
 include_directories(${PROJECT_SOURCE_DIR}/src)
 
+include(FetchContent)
+
+FetchContent_Declare(
+  json
+  GIT_REPOSITORY https://github.com/nlohmann/json.git
+  GIT_TAG v3.11.2  # or latest
+)
+
+FetchContent_MakeAvailable(json)
+
 # Source files
 set(SOURCES
     src/main.cpp
@@ -22,6 +32,7 @@ set(SOURCES
     src/Algorithms/BruteForce.cpp
     src/Algorithms/DynamicProgramming.cpp
     src/Algorithms/Greedy.cpp
+    src/Algorithms/ILPBridge.cpp
 )
 
 # Copy data files to the build directory
@@ -36,3 +47,5 @@ add_executable(packing_optimization ${SOURCES})
 # Install targets
 install(TARGETS packing_optimization DESTINATION bin)
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/ DESTINATION include)
+
+target_link_libraries(packing_optimization PRIVATE nlohmann_json::nlohmann_json)

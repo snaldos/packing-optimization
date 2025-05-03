@@ -56,7 +56,7 @@ unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet>& pallets,
   std::reverse(used_pallets.begin(), used_pallets.end());
 
   auto end_time = std::chrono::high_resolution_clock::now();
-  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(
+  auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
                       end_time - start_time)
                       .count();
 
@@ -104,7 +104,7 @@ unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet>& pallets,
   }
 
   auto end_time = std::chrono::high_resolution_clock::now();
-  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(
+  auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
                       end_time - start_time)
                       .count();
 

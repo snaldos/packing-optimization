@@ -15,7 +15,7 @@ bool remove_directory(const std::string& path);
 bool ensure_directory(const std::string& dir);
 
 // Function to get the output directory
-std::string get_output_dir();
+std::string get_absolute_dir(std::string path);
 
 // Function to handle menu input and print options
 int get_menu_choice(const std::vector<std::string>& options,

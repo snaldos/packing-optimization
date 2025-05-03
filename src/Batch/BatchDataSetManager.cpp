@@ -56,16 +56,19 @@ void BatchDataSetManager::show_dataset() {
 }
 
 bool BatchDataSetManager::load_dataset(std::string identifier) {
-  std::string pallets_filename = "data/Pallets_" + identifier + ".csv";
-  std::string truck_filename = "data/TruckAndPallets_" + identifier + ".csv";
+  std::string pallets_filename = "/data/Pallets_" + identifier + ".csv";
+  std::string pallets_file_str = BatchUtils::get_absolute_dir(pallets_filename);
+  std::cout << "Loading pallets from: " << pallets_filename << std::endl;
+  std::string truck_filename = "/data/TruckAndPallets_" + identifier + ".csv";
+  std::string truck_file_str = BatchUtils::get_absolute_dir(truck_filename);
 
-  std::ifstream pallets_file(pallets_filename);
-  std::ifstream truck_file(truck_filename);
+  std::ifstream pallets_file(pallets_file_str);
+  std::ifstream truck_file(truck_file_str);
 
   if (!pallets_file.is_open() || !truck_file.is_open()) {
     return false;
   }
 
-  csv_data_parser.parse(pallets_filename, truck_filename, pallets, truck);
+  csv_data_parser.parse(pallets_file_str, truck_file_str, pallets, truck);
   return true;
 }

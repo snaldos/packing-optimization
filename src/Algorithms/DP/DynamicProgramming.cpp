@@ -8,41 +8,68 @@ std::unique_ptr<DPTable> DynamicProgramming::create_table(
     return std::make_unique<HashMapDPTable>();
 }
 
+unsigned int DynamicProgramming::dp_solve_recursive(
+    const std::vector<Pallet>& pallets, const Truck& truck,
+    std::vector<Pallet>& used_pallets, std::unique_ptr<DPTable>& dp,
+    unsigned int i, unsigned int w) {
+  if (i == 0 || w == 0) return 0;
+
+  unsigned int cached = dp->get(i, w);
+  if (cached != 0) return cached;
+
+  unsigned int result;
+  if (pallets[i - 1].get_weight() > w) {
+    result = dp_solve_recursive(pallets, truck, used_pallets, dp, i - 1, w);
+  } else {
+    unsigned int included =
+        pallets[i - 1].get_profit() +
+        dp_solve_recursive(pallets, truck, used_pallets, dp, i - 1,
+                           w - pallets[i - 1].get_weight());
+    unsigned int excluded =
+        dp_solve_recursive(pallets, truck, used_pallets, dp, i - 1, w);
+    result = std::max(included, excluded);
+  }
+
+  dp->set(i, w, result);
+  return result;
+}
+
 unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet>& pallets,
                                           const Truck& truck,
                                           std::vector<Pallet>& used_pallets,
                                           TableType type,
                                           std::string& message) {
   auto start_time = std::chrono::high_resolution_clock::now();
-
   auto dp = create_table(type, pallets.size(), truck.get_capacity());
   unsigned int n = pallets.size();
   unsigned int max_weight = truck.get_capacity();
+  unsigned int result = 0;
 
-  for (unsigned int i = 1; i <= n; i++) {
-    for (unsigned int w = 0; w <= max_weight; w++) {
-      if (pallets[i - 1].get_weight() <= w) {
-        unsigned int included = pallets[i - 1].get_profit() +
-                                dp->get(i - 1, w - pallets[i - 1].get_weight());
-        unsigned int excluded = dp->get(i - 1, w);
-        unsigned int value = std::max(included, excluded);
-
-        // Only set the value if it's non-zero (to avoid adding unnecessary
-        // entries)
-        if (value > 0) {
+  if (type == TableType::Vector) {
+    // Use bottom-up approach (your original code)
+    for (unsigned int i = 1; i <= n; i++) {
+      for (unsigned int w = 0; w <= max_weight; w++) {
+        if (pallets[i - 1].get_weight() <= w) {
+          unsigned int included =
+              pallets[i - 1].get_profit() +
+              dp->get(i - 1, w - pallets[i - 1].get_weight());
+          unsigned int excluded = dp->get(i - 1, w);
+          unsigned int value = std::max(included, excluded);
           dp->set(i, w, value);
-        }
-      } else {
-        unsigned int value = dp->get(i - 1, w);
-        // Only set the value if it's non-zero
-        if (value > 0) {
+        } else {
+          unsigned int value = dp->get(i - 1, w);
           dp->set(i, w, value);
         }
       }
     }
+    result = dp->get(n, max_weight);
+  } else {
+    // Use top-down recursive with memoization for sparse table
+    result =
+        dp_solve_recursive(pallets, truck, used_pallets, dp, n, max_weight);
   }
 
-  // Extract the used pallets (same as before)
+  // Backtracking to find used pallets (same in both cases)
   used_pallets.clear();
   unsigned int i = n, w = max_weight;
   while (i > 0 && w > 0) {
@@ -52,7 +79,6 @@ unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet>& pallets,
     }
     i--;
   }
-
   std::reverse(used_pallets.begin(), used_pallets.end());
 
   auto end_time = std::chrono::high_resolution_clock::now();
@@ -60,6 +86,7 @@ unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet>& pallets,
                       end_time - start_time)
                       .count();
 
+  std::size_t num_entries = dp->get_num_entries();
   std::size_t memory = dp->get_memory_usage();
   std::string memory_str;
   if (memory < 1024)
@@ -72,9 +99,10 @@ unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet>& pallets,
   message = "[DP (" +
             std::string(type == TableType::Vector ? "Vector" : "HashMap") +
             " Table)] Execution time: " + std::to_string(duration) +
-            " μs | DP table size: " + memory_str;
+            " μs | Memory used for " + std::to_string(num_entries) +
+            " entries: " + memory_str;
 
-  return dp->get(n, max_weight);
+  return result;
 }
 
 unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet>& pallets,
@@ -109,6 +137,7 @@ unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet>& pallets,
                       .count();
 
   // Memory: two rows of (W+1) unsigned ints
+  std::size_t num_entries = 2 * (W + 1);
   std::size_t memory = 2 * (W + 1) * sizeof(unsigned int);
   std::string memory_str;
   if (memory < 1024)
@@ -120,7 +149,8 @@ unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet>& pallets,
 
   message =
       "[DP (2 Rolling Rows)] Execution time: " + std::to_string(duration) +
-      " μs | DP table size: " + memory_str;
+      " μs | Memory used for " + std::to_string(num_entries) +
+      " entries: " + memory_str;
 
   return prev[W];  // Note: `prev` holds the last filled row after final swap
 }

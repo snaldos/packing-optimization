@@ -28,6 +28,7 @@ class DPTable {
  public:
   virtual unsigned int get(unsigned int i, unsigned int w) const = 0;
   virtual void set(unsigned int i, unsigned int w, unsigned int value) = 0;
+  virtual std::size_t get_num_entries() const = 0;
   virtual std::size_t get_memory_usage() const = 0;
   virtual ~DPTable() = default;
 };
@@ -61,9 +62,13 @@ class VectorDPTable : public DPTable {
     table[i][w] = value;
   }
 
+  std::size_t get_num_entries() const override {
+    return table.size() * table[0].size();
+  }
+
   std::size_t get_memory_usage() const override {
     if (table.empty()) return 0;
-    return table.size() * table[0].size() * sizeof(unsigned int);
+    return get_num_entries() * sizeof(unsigned int);
   }
 };
 
@@ -116,8 +121,12 @@ class HashMapDPTable : public DPTable {
   }
 
   void set(unsigned int i, unsigned int w, unsigned int value) override {
-    table[{i, w}] = value;
+    if (value > 0) {
+      table[{i, w}] = value;
+    }
   }
+
+  std::size_t get_num_entries() const override { return table.size(); }
 
   std::size_t get_memory_usage() const override {
     // Each entry in the hash map consists of a key value pair between a pair of
@@ -125,7 +134,7 @@ class HashMapDPTable : public DPTable {
 
     using Entry =
         std::pair<std::pair<unsigned int, unsigned int>, unsigned int>;
-    return table.size() * sizeof(Entry);
+    return get_num_entries() * sizeof(Entry);
   }
 };
 
@@ -133,6 +142,12 @@ class DynamicProgramming {
  private:
   std::unique_ptr<DPTable> create_table(TableType type, unsigned int n,
                                         unsigned int max_weight);
+
+  unsigned int dp_solve_recursive(const std::vector<Pallet>& pallets,
+                                  const Truck& truck,
+                                  std::vector<Pallet>& used_pallets,
+                                  std::unique_ptr<DPTable>& dp, unsigned int i,
+                                  unsigned int w);
 
  public:
   unsigned int dp_solve(const std::vector<Pallet>& pallets, const Truck& truck,

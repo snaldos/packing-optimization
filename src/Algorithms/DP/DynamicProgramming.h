@@ -70,8 +70,7 @@ class VectorDPTable : public DPTable {
 // Custom hash for pair key
 struct PairHash {
   std::size_t operator()(const std::pair<unsigned int, unsigned int>& p) const {
-    return std::hash<unsigned int>()(p.first) ^
-           (std::hash<unsigned int>()(p.second) << 1);
+    return p.first * 31 + p.second;  // Simple and fast hash function
   }
 };
 

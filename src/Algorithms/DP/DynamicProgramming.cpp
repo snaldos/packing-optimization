@@ -8,7 +8,7 @@ std::unique_ptr<DPTable> DynamicProgramming::create_table(
     return std::make_unique<HashMapDPTable>();
 }
 
-unsigned int DynamicProgramming::dp_solve_recursive(
+unsigned int DynamicProgramming::dp_solve_top_down(
     const std::vector<Pallet>& pallets, const Truck& truck,
     std::vector<Pallet>& used_pallets, std::unique_ptr<DPTable>& dp,
     unsigned int i, unsigned int w) {
@@ -19,19 +19,40 @@ unsigned int DynamicProgramming::dp_solve_recursive(
 
   unsigned int result;
   if (pallets[i - 1].get_weight() > w) {
-    result = dp_solve_recursive(pallets, truck, used_pallets, dp, i - 1, w);
+    result = dp_solve_top_down(pallets, truck, used_pallets, dp, i - 1, w);
   } else {
     unsigned int included =
         pallets[i - 1].get_profit() +
-        dp_solve_recursive(pallets, truck, used_pallets, dp, i - 1,
-                           w - pallets[i - 1].get_weight());
+        dp_solve_top_down(pallets, truck, used_pallets, dp, i - 1,
+                          w - pallets[i - 1].get_weight());
     unsigned int excluded =
-        dp_solve_recursive(pallets, truck, used_pallets, dp, i - 1, w);
+        dp_solve_top_down(pallets, truck, used_pallets, dp, i - 1, w);
     result = std::max(included, excluded);
   }
 
   dp->set(i, w, result);
   return result;
+}
+
+unsigned int DynamicProgramming::dp_solve_bottom_up(
+    const std::vector<Pallet>& pallets, const Truck& truck,
+    std::vector<Pallet>& used_pallets, std::unique_ptr<DPTable>& dp,
+    unsigned int n, unsigned int max_weight) {
+  for (unsigned int i = 1; i <= n; i++) {
+    for (unsigned int w = 0; w <= max_weight; w++) {
+      if (pallets[i - 1].get_weight() <= w) {
+        unsigned int included = pallets[i - 1].get_profit() +
+                                dp->get(i - 1, w - pallets[i - 1].get_weight());
+        unsigned int excluded = dp->get(i - 1, w);
+        unsigned int value = std::max(included, excluded);
+        dp->set(i, w, value);
+      } else {
+        unsigned int value = dp->get(i - 1, w);
+        dp->set(i, w, value);
+      }
+    }
+  }
+  return dp->get(n, max_weight);
 }
 
 unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet>& pallets,
@@ -46,27 +67,12 @@ unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet>& pallets,
   unsigned int result = 0;
 
   if (type == TableType::Vector) {
-    // Use bottom-up approach (your original code)
-    for (unsigned int i = 1; i <= n; i++) {
-      for (unsigned int w = 0; w <= max_weight; w++) {
-        if (pallets[i - 1].get_weight() <= w) {
-          unsigned int included =
-              pallets[i - 1].get_profit() +
-              dp->get(i - 1, w - pallets[i - 1].get_weight());
-          unsigned int excluded = dp->get(i - 1, w);
-          unsigned int value = std::max(included, excluded);
-          dp->set(i, w, value);
-        } else {
-          unsigned int value = dp->get(i - 1, w);
-          dp->set(i, w, value);
-        }
-      }
-    }
-    result = dp->get(n, max_weight);
+    // Use bottom-up approach
+    result =
+        dp_solve_bottom_up(pallets, truck, used_pallets, dp, n, max_weight);
   } else {
     // Use top-down recursive with memoization for sparse table
-    result =
-        dp_solve_recursive(pallets, truck, used_pallets, dp, n, max_weight);
+    result = dp_solve_top_down(pallets, truck, used_pallets, dp, n, max_weight);
   }
 
   // Backtracking to find used pallets (same in both cases)

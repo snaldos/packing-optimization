@@ -1,18 +1,24 @@
 #include "Greedy.h"
 
 unsigned int Greedy::approx_solve(const std::vector<Pallet>& pallets,
-                           const Truck& truck,
-                           std::vector<Pallet>& used_pallets,
-                           std::string& message) {
+                                  const Truck& truck,
+                                  std::vector<Pallet>& used_pallets,
+                                  std::string& message) {
   auto start_time = std::chrono::high_resolution_clock::now();
 
   // Sort pallets by profit-to-weight ratio in descending order
   std::vector<Pallet> sorted_pallets = pallets;
-  std::sort(sorted_pallets.begin(), sorted_pallets.end(),
-            [](const Pallet& a, const Pallet& b) {
-              return (double)a.get_profit() / a.get_weight() >
-                     (double)b.get_profit() / b.get_weight();
-            });
+  std::sort(
+      sorted_pallets.begin(), sorted_pallets.end(),
+      [](const Pallet& a, const Pallet& b) {
+        double ratio_a = (double)a.get_profit() / a.get_weight();
+        double ratio_b = (double)b.get_profit() / b.get_weight();
+        if (ratio_a == ratio_b) {
+          return a.get_profit() >
+                 b.get_profit();  // Larger profits first if ratios are the same
+        }
+        return ratio_a > ratio_b;
+      });
 
   unsigned int total_profit = 0;
   unsigned int remaining_weight = truck.get_capacity();

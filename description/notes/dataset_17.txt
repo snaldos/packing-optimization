@@ -3,7 +3,7 @@ In this example, the greedy algorithm gets a solution extremely far away from th
 Optimal solution:
 
 id, profit, weight
-2, 10000, 100
+2, 9999, 100
 
 Total Weight: 100
-Maximum Profit: 10000
+Maximum Profit: 9999

@@ -1,10 +1,10 @@
-In this example, the greedy algorithm gets a solution very far away from the optimal (exactly half of it).
+In this example, the greedy algorithm gets a solution very far away from the optimal
 Also the backtrack solution that proved to be very time efficient in the other scenarios took a while to find the optimal solution.
 
 Optimal solution:
 
 id, profit, weight
-51, 1000, 100
+51, 999, 100
 
 Total Weight: 100
-Maximum Profit: 1000
+Maximum Profit: 999

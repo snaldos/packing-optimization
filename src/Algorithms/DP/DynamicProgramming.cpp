@@ -14,7 +14,7 @@ unsigned int DynamicProgramming::dp_solve_top_down(
   if (i == 0 || w == 0) return 0;
 
   unsigned int cached = dp->get(i, w);
-  if (cached != 0) return cached;
+  if (cached != NOT_COMPUTED) return cached;
 
   unsigned int result;
   if (pallets[i - 1].get_weight() > w) {

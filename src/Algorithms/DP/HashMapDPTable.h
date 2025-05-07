@@ -1,10 +1,13 @@
 #ifndef HASHMAP_DPTABLE_H
 #define HASHMAP_DPTABLE_H
 
+#include <climits>
 #include <unordered_map>
 #include <utility>
 
 #include "DPTable.h"
+
+constexpr unsigned int NOT_COMPUTED = UINT_MAX;
 
 struct PairHash {
   std::size_t operator()(const std::pair<unsigned int, unsigned int>& p) const {

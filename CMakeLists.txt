@@ -31,6 +31,8 @@ set(SOURCES
     src/DataStructures/Truck.cpp
     src/Algorithms/BF/BruteForce.cpp
     src/Algorithms/DP/DynamicProgramming.cpp
+    src/Algorithms/DP/VectorDPTable.cpp
+    src/Algorithms/DP/HashMapDPTable.cpp
     src/Algorithms/APPROX/Greedy.cpp
     src/Algorithms/ILP/ILPBridge.cpp
     src/Utils.cpp

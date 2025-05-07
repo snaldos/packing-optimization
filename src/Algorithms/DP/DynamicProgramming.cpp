@@ -9,8 +9,7 @@ std::unique_ptr<DPTable> DynamicProgramming::create_table(
 }
 
 unsigned int DynamicProgramming::dp_solve_top_down(
-    const std::vector<Pallet>& pallets, const Truck& truck,
-    std::vector<Pallet>& used_pallets, std::unique_ptr<DPTable>& dp,
+    const std::vector<Pallet>& pallets, std::unique_ptr<DPTable>& dp,
     unsigned int i, unsigned int w) {
   if (i == 0 || w == 0) return 0;
 
@@ -19,14 +18,12 @@ unsigned int DynamicProgramming::dp_solve_top_down(
 
   unsigned int result;
   if (pallets[i - 1].get_weight() > w) {
-    result = dp_solve_top_down(pallets, truck, used_pallets, dp, i - 1, w);
+    result = dp_solve_top_down(pallets, dp, i - 1, w);
   } else {
     unsigned int included =
         pallets[i - 1].get_profit() +
-        dp_solve_top_down(pallets, truck, used_pallets, dp, i - 1,
-                          w - pallets[i - 1].get_weight());
-    unsigned int excluded =
-        dp_solve_top_down(pallets, truck, used_pallets, dp, i - 1, w);
+        dp_solve_top_down(pallets, dp, i - 1, w - pallets[i - 1].get_weight());
+    unsigned int excluded = dp_solve_top_down(pallets, dp, i - 1, w);
     result = std::max(included, excluded);
   }
 
@@ -35,8 +32,7 @@ unsigned int DynamicProgramming::dp_solve_top_down(
 }
 
 unsigned int DynamicProgramming::dp_solve_bottom_up(
-    const std::vector<Pallet>& pallets, const Truck& truck,
-    std::vector<Pallet>& used_pallets, std::unique_ptr<DPTable>& dp,
+    const std::vector<Pallet>& pallets, std::unique_ptr<DPTable>& dp,
     unsigned int n, unsigned int max_weight) {
   for (unsigned int i = 1; i <= n; i++) {
     for (unsigned int w = 0; w <= max_weight; w++) {
@@ -68,11 +64,10 @@ unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet>& pallets,
 
   if (type == TableType::Vector) {
     // Use bottom-up approach
-    result =
-        dp_solve_bottom_up(pallets, truck, used_pallets, dp, n, max_weight);
+    result = dp_solve_bottom_up(pallets, dp, n, max_weight);
   } else {
     // Use top-down recursive with memoization for sparse table
-    result = dp_solve_top_down(pallets, truck, used_pallets, dp, n, max_weight);
+    result = dp_solve_top_down(pallets, dp, n, max_weight);
   }
 
   // Backtracking to find used pallets (same in both cases)

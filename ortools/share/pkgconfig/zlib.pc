@@ -1,0 +1,13 @@
+prefix=/home/naldo/college/2.2/DA/projects/P2/ortools
+exec_prefix=/home/naldo/college/2.2/DA/projects/P2/ortools
+libdir=lib
+sharedlibdir=lib
+includedir=include
+
+Name: zlib
+Description: zlib compression library
+Version: 9.12.4550
+
+Requires:
+Libs: -L${libdir} -L${sharedlibdir} -lz
+Cflags: -I${includedir}

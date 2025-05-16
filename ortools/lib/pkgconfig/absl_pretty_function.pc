@@ -1,0 +1,12 @@
+prefix=/home/naldo/college/2.2/DA/projects/P2/ortools
+exec_prefix=${prefix}
+libdir=/home/naldo/college/2.2/DA/projects/P2/ortools/lib
+includedir=/home/naldo/college/2.2/DA/projects/P2/ortools/include
+
+Name: absl_pretty_function
+Description: Abseil pretty_function library
+URL: https://abseil.io/
+Version: 20240722
+Requires:
+Libs: -L${libdir}  
+Cflags: -I${includedir} -Wnon-virtual-dtor -DNOMINMAX

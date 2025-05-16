@@ -1,7 +1,18 @@
+# good
 **/.vscode/
 **/.idea/
-**/cmake-build-debug/
+**/cmake-build-*/
 **/build/
 output/
 src/Algorithms/ILP/tmp/
-.cache/
+**/.cache/
+
+# avoid build junk inside ortools
+/ortools/build/
+/ortools/temp/
+
+# skip CMake config files created at runtime
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile

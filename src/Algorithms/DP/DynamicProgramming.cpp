@@ -70,15 +70,53 @@ unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet>& pallets,
     result = dp_solve_top_down(pallets, dp, n, max_weight);
   }
 
-  // Backtracking to find used pallets (same in both cases)
+  // Backtracking to find used pallets (different logic for Vector and HashMap)
   used_pallets.clear();
   unsigned int i = n, w = max_weight;
-  while (i > 0 && w > 0) {
-    if (dp->get(i, w) != dp->get(i - 1, w)) {
-      used_pallets.push_back(pallets[i - 1]);
-      w -= pallets[i - 1].get_weight();
+  if (type == TableType::Vector) {
+    // Standard table: compare values
+    while (i > 0 && w > 0) {
+      if (dp->get(i, w) != dp->get(i - 1, w)) {
+        used_pallets.push_back(pallets[i - 1]);
+        w -= pallets[i - 1].get_weight();
+      }
+      i--;
     }
-    i--;
+  } else {
+    // HashMap (top-down): use recurrence to check inclusion, recompute if
+    // NOT_COMPUTED
+    std::function<unsigned int(unsigned int, unsigned int)> get_or_compute;
+    get_or_compute = [&](unsigned int i, unsigned int w) -> unsigned int {
+      unsigned int v = dp->get(i, w);
+      if (v != NOT_COMPUTED) return v;
+      if (i == 0 || w == 0) return 0;
+      if (pallets[i - 1].get_weight() > w) return get_or_compute(i - 1, w);
+      unsigned int included =
+          pallets[i - 1].get_profit() +
+          get_or_compute(i - 1, w - pallets[i - 1].get_weight());
+      unsigned int excluded = get_or_compute(i - 1, w);
+      return std::max(included, excluded);
+    };
+    while (i > 0 && w > 0) {
+      unsigned int curr = get_or_compute(i, w);
+      unsigned int excl = get_or_compute(i - 1, w);
+      if (curr == excl) {
+        i--;
+      } else {
+        unsigned int weight = pallets[i - 1].get_weight();
+        if (w >= weight) {
+          unsigned int incl = pallets[i - 1].get_profit();
+          unsigned int prev = get_or_compute(i - 1, w - weight);
+          if (curr == incl + prev) {
+            used_pallets.push_back(pallets[i - 1]);
+            w -= weight;
+            i--;
+            continue;
+          }
+        }
+        i--;
+      }
+    }
   }
   std::reverse(used_pallets.begin(), used_pallets.end());
 

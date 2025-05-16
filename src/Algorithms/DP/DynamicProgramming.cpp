@@ -53,22 +53,14 @@ unsigned int DynamicProgramming::dp_solve_top_down(
   while (idx > 0 && ww > 0) {
     unsigned int curr = get_or_compute(idx, ww);
     unsigned int excl = get_or_compute(idx - 1, ww);
-    if (curr == excl) {
-      idx--;
-    } else {
+    if (curr != excl) {
       unsigned int weight = pallets[idx - 1].get_weight();
       if (ww >= weight) {
-        unsigned int incl = pallets[idx - 1].get_profit();
-        unsigned int prev = get_or_compute(idx - 1, ww - weight);
-        if (curr == incl + prev) {
-          used_pallets.push_back(pallets[idx - 1]);
-          ww -= weight;
-          idx--;
-          continue;
-        }
+        used_pallets.push_back(pallets[idx - 1]);
+        ww -= weight;
       }
-      idx--;
     }
+    idx--;
   }
   std::reverse(used_pallets.begin(), used_pallets.end());
   return result;

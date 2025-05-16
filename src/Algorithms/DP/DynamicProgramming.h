@@ -1,5 +1,5 @@
-#ifndef DYNAMICPROGRAMMING_H
-#define DYNAMICPROGRAMMING_H
+#ifndef DYNAMIC_PROGRAMMING_H
+#define DYNAMIC_PROGRAMMING_H
 
 #include <algorithm>
 #include <chrono>
@@ -44,4 +44,4 @@ class DynamicProgramming {
                         std::string& message);
 };
 
-#endif  // DYNAMICPROGRAMMING_H
+#endif  // DYNAMIC_PROGRAMMING_H

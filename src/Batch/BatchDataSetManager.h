@@ -1,5 +1,5 @@
-#ifndef DATASET_MANAGER_H
-#define DATASET_MANAGER_H
+#ifndef BATCH_DATASET_MANAGER_H
+#define BATCH_DATASET_MANAGER_H
 
 #include <fstream>
 #include <iostream>
@@ -27,4 +27,4 @@ class BatchDataSetManager {
   Truck& truck;
 };
 
-#endif
+#endif  // BATCH_DATASET_MANAGER_H

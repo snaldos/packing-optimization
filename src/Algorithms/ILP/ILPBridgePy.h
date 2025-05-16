@@ -1,5 +1,5 @@
-#ifndef ILPBRIDGE_H
-#define ILPBRIDGE_H
+#ifndef ILP_BRIDGE_PY_H
+#define ILP_BRIDGE_PY_H
 
 #include <chrono>
 #include <cstdlib>
@@ -33,4 +33,4 @@ class ILPBridgePy {
                             std::string& message);
 };
 
-#endif  // ILPBRIDGE_H
+#endif  // ILPBRIDGEPY_H

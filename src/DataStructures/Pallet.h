@@ -16,4 +16,4 @@ public:
  int get_profit() const;
 };
 
-#endif
+#endif  // PALLET_H

@@ -1,5 +1,5 @@
-#ifndef INPUT_MANAGER_H
-#define INPUT_MANAGER_H
+#ifndef BATCH_INPUT_MANAGER_H
+#define BATCH_INPUT_MANAGER_H
 
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -37,4 +37,4 @@ class BatchInputManager {
   void processInput();
 };
 
-#endif
+#endif  // BATCH_INPUT_MANAGER_H

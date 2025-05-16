@@ -1,5 +1,5 @@
-#ifndef DPTABLE_H
-#define DPTABLE_H
+#ifndef DP_TABLE_H
+#define DP_TABLE_H
 
 #include <cstddef>
 
@@ -12,4 +12,4 @@ class DPTable {
   virtual ~DPTable() = default;
 };
 
-#endif // DPTABLE_H
+#endif  // DP_TABLE_H

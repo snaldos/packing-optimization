@@ -17,4 +17,4 @@ public:
  void set_num_pallets(unsigned int num_pallets);  // Setter for num_pallets
 };
 
-#endif
+#endif  // TRUCK_H

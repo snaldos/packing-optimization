@@ -1,5 +1,5 @@
-#ifndef BRUTEFORCE_H
-#define BRUTEFORCE_H
+#ifndef BRUTE_FORCE_H
+#define BRUTE_FORCE_H
 
 #include <algorithm>
 #include <chrono>
@@ -45,4 +45,4 @@ class BruteForce {
                               unsigned int curr_value, unsigned int max_weight);
 };
 
-#endif  // BRUTEFORCE_H
+#endif  // BRUTE_FORCE_H

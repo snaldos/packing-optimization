@@ -1,6 +1,6 @@
 // BatchStateManager.h
-#ifndef BATCH_PROCESSOR_H
-#define BATCH_PROCESSOR_H
+#ifndef BATCH_STATE_MANAGER_H
+#define BATCH_STATE_MANAGER_H
 
 #include <string>
 #include <vector>
@@ -20,4 +20,4 @@ class BatchStateManager {
   BatchInputManager batch_input_manager;
 };
 
-#endif
+#endif // BATCH_STATE_MANAGER_H

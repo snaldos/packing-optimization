@@ -25,9 +25,15 @@ class DynamicProgramming {
                                  std::unique_ptr<DPTable>& dp, unsigned int i,
                                  unsigned int w);
 
+  unsigned int dp_solve_top_down(const std::vector<Pallet>& pallets,
+                                 std::unique_ptr<DPTable>& dp, unsigned int i,
+                                 unsigned int w,
+                                 std::vector<Pallet>& used_pallets);
+
   unsigned int dp_solve_bottom_up(const std::vector<Pallet>& pallets,
                                   std::unique_ptr<DPTable>& dp, unsigned int n,
-                                  unsigned int max_weight);
+                                  unsigned int max_weight,
+                                  std::vector<Pallet>& used_pallets);
 
  public:
   unsigned int dp_solve(const std::vector<Pallet>& pallets, const Truck& truck,

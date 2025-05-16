@@ -31,9 +31,55 @@ unsigned int DynamicProgramming::dp_solve_top_down(
   return result;
 }
 
+unsigned int DynamicProgramming::dp_solve_top_down(
+    const std::vector<Pallet>& pallets, std::unique_ptr<DPTable>& dp,
+    unsigned int i, unsigned int w, std::vector<Pallet>& used_pallets) {
+  // Solve DP as before
+  unsigned int result = dp_solve_top_down(pallets, dp, i, w);
+  // Backtrack for used pallets (HashMap style)
+  used_pallets.clear();
+  std::function<unsigned int(unsigned int, unsigned int)> get_or_compute;
+  get_or_compute = [&](unsigned int i, unsigned int w) -> unsigned int {
+    unsigned int v = dp->get(i, w);
+    if (v != NOT_COMPUTED) return v;
+    if (i == 0 || w == 0) return 0;
+    if (pallets[i - 1].get_weight() > w) return get_or_compute(i - 1, w);
+    unsigned int included =
+        pallets[i - 1].get_profit() +
+        get_or_compute(i - 1, w - pallets[i - 1].get_weight());
+    unsigned int excluded = get_or_compute(i - 1, w);
+    return std::max(included, excluded);
+  };
+  unsigned int idx = i, ww = w;
+  while (idx > 0 && ww > 0) {
+    unsigned int curr = get_or_compute(idx, ww);
+    unsigned int excl = get_or_compute(idx - 1, ww);
+    if (curr == excl) {
+      idx--;
+    } else {
+      unsigned int weight = pallets[idx - 1].get_weight();
+      if (ww >= weight) {
+        unsigned int incl = pallets[idx - 1].get_profit();
+        unsigned int prev = get_or_compute(idx - 1, ww - weight);
+        if (curr == incl + prev) {
+          used_pallets.push_back(pallets[idx - 1]);
+          ww -= weight;
+          idx--;
+          continue;
+        }
+      }
+      idx--;
+    }
+  }
+  std::reverse(used_pallets.begin(), used_pallets.end());
+  return result;
+}
+
 unsigned int DynamicProgramming::dp_solve_bottom_up(
     const std::vector<Pallet>& pallets, std::unique_ptr<DPTable>& dp,
-    unsigned int n, unsigned int max_weight) {
+    unsigned int n, unsigned int max_weight,
+    std::vector<Pallet>& used_pallets) {
+  // Solve DP as before
   for (unsigned int i = 1; i <= n; i++) {
     for (unsigned int w = 0; w <= max_weight; w++) {
       if (pallets[i - 1].get_weight() <= w) {
@@ -48,6 +94,17 @@ unsigned int DynamicProgramming::dp_solve_bottom_up(
       }
     }
   }
+  // Backtrack for used pallets (Vector style)
+  used_pallets.clear();
+  unsigned int i = n, w = max_weight;
+  while (i > 0 && w > 0) {
+    if (dp->get(i, w) != dp->get(i - 1, w)) {
+      used_pallets.push_back(pallets[i - 1]);
+      w -= pallets[i - 1].get_weight();
+    }
+    i--;
+  }
+  std::reverse(used_pallets.begin(), used_pallets.end());
   return dp->get(n, max_weight);
 }
 
@@ -64,61 +121,11 @@ unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet>& pallets,
 
   if (type == TableType::Vector) {
     // Use bottom-up approach
-    result = dp_solve_bottom_up(pallets, dp, n, max_weight);
+    result = dp_solve_bottom_up(pallets, dp, n, max_weight, used_pallets);
   } else {
     // Use top-down recursive with memoization for sparse table
-    result = dp_solve_top_down(pallets, dp, n, max_weight);
+    result = dp_solve_top_down(pallets, dp, n, max_weight, used_pallets);
   }
-
-  // Backtracking to find used pallets (different logic for Vector and HashMap)
-  used_pallets.clear();
-  unsigned int i = n, w = max_weight;
-  if (type == TableType::Vector) {
-    // Standard table: compare values
-    while (i > 0 && w > 0) {
-      if (dp->get(i, w) != dp->get(i - 1, w)) {
-        used_pallets.push_back(pallets[i - 1]);
-        w -= pallets[i - 1].get_weight();
-      }
-      i--;
-    }
-  } else {
-    // HashMap (top-down): use recurrence to check inclusion, recompute if
-    // NOT_COMPUTED
-    std::function<unsigned int(unsigned int, unsigned int)> get_or_compute;
-    get_or_compute = [&](unsigned int i, unsigned int w) -> unsigned int {
-      unsigned int v = dp->get(i, w);
-      if (v != NOT_COMPUTED) return v;
-      if (i == 0 || w == 0) return 0;
-      if (pallets[i - 1].get_weight() > w) return get_or_compute(i - 1, w);
-      unsigned int included =
-          pallets[i - 1].get_profit() +
-          get_or_compute(i - 1, w - pallets[i - 1].get_weight());
-      unsigned int excluded = get_or_compute(i - 1, w);
-      return std::max(included, excluded);
-    };
-    while (i > 0 && w > 0) {
-      unsigned int curr = get_or_compute(i, w);
-      unsigned int excl = get_or_compute(i - 1, w);
-      if (curr == excl) {
-        i--;
-      } else {
-        unsigned int weight = pallets[i - 1].get_weight();
-        if (w >= weight) {
-          unsigned int incl = pallets[i - 1].get_profit();
-          unsigned int prev = get_or_compute(i - 1, w - weight);
-          if (curr == incl + prev) {
-            used_pallets.push_back(pallets[i - 1]);
-            w -= weight;
-            i--;
-            continue;
-          }
-        }
-        i--;
-      }
-    }
-  }
-  std::reverse(used_pallets.begin(), used_pallets.end());
 
   auto end_time = std::chrono::high_resolution_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::microseconds>(

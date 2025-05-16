@@ -34,7 +34,8 @@ set(SOURCES
     src/Algorithms/DP/VectorDPTable.cpp
     src/Algorithms/DP/HashMapDPTable.cpp
     src/Algorithms/APPROX/Greedy.cpp
-    src/Algorithms/ILP/ILPBridge.cpp
+    src/Algorithms/ILP/ILPBridgePy.cpp
+    src/Algorithms/ILP/IntegerLinearProgramming.cpp
     src/Utils.cpp
 )
 

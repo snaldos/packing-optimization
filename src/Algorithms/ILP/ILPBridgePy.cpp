@@ -1,8 +1,8 @@
-#include "ILPBridge.h"
+#include "ILPBridgePy.h"
 
 using json = nlohmann::json;
 
-unsigned int ILPBridge::solve_with_ilp(const std::vector<Pallet>& pallets,
+unsigned int ILPBridgePy::solve_ilp_py(const std::vector<Pallet>& pallets,
                                        const Truck& truck,
                                        std::vector<Pallet>& used_pallets,
                                        std::string& message) {
@@ -60,6 +60,6 @@ unsigned int ILPBridge::solve_with_ilp(const std::vector<Pallet>& pallets,
                       end_time - start_time)
                       .count();
 
-  message = "[ILP] Execution time: " + std::to_string(duration) + " μs";
+  message = "[ILP-PY] Execution time: " + std::to_string(duration) + " μs";
   return total_profit;
 }

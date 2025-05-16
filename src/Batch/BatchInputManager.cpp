@@ -58,9 +58,10 @@ void BatchInputManager::processInput() {
   BatchUtils::clear_terminal();
   std::string prompt = "Choose algorithm (empty line to exit): ";
   while (true) {
-    std::vector<std::string> options = {
-        "BF", "BT", "DP-VECTOR", "DP-HASHMAP", "DP-OPTIMIZED", "GREEDY-APPROX",
-        "ILP"};
+    std::vector<std::string> options = {"BF",           "BT",
+                                        "DP-VECTOR",    "DP-HASHMAP",
+                                        "DP-OPTIMIZED", "GREEDY-APPROX",
+                                        "ILP-CPP",      "ILP-PY"};
     int choice = BatchUtils::get_menu_choice(options, prompt);
 
     std::string filename;
@@ -108,9 +109,15 @@ void BatchInputManager::processInput() {
         generate_output_file(filename, used_pallets, max_profit, message);
         break;
       case 7:
-        filename = "ilp.txt";
+        filename = "ilp_cpp.txt";
+        max_profit = IntegerLinearProgramming().solve_ilp_cpp(
+            pallets, truck, used_pallets, message);
+        generate_output_file(filename, used_pallets, max_profit, message);
+        break;
+      case 8:
+        filename = "ilp_py.txt";
         max_profit =
-            ILPBridge().solve_with_ilp(pallets, truck, used_pallets, message);
+            ILPBridgePy().solve_ilp_py(pallets, truck, used_pallets, message);
         generate_output_file(filename, used_pallets, max_profit, message);
         break;
       default:

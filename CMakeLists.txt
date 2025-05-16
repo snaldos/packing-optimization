@@ -16,20 +16,32 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(json)
 
 # ------------------ OR-TOOLS ------------------
-# Try system-wide OR-Tools
+include(FetchContent)
+
+# Try system-wide OR-Tools first
 find_package(ortools QUIET)
 
-# If not found, try local prebuilt
+# If not found, try prebuilt in local dir
 if(NOT ortools_FOUND)
-  message(STATUS "System-wide OR-Tools not found. Trying local prebuilt version.")
+  message(STATUS "System-wide OR-Tools not found. Trying local prebuilt version...")
   list(APPEND CMAKE_PREFIX_PATH "${CMAKE_SOURCE_DIR}/ortools")
-
   find_package(ortools QUIET)
 endif()
 
-# If still not found, give a clear error
+# If still not found, use FetchContent to build from source
 if(NOT ortools_FOUND)
-  message(FATAL_ERROR "OR-Tools not found. Please install system-wide or place a prebuilt version in 'ortools/' with 'lib/cmake/ortools/ortoolsConfig.cmake'")
+  message(STATUS "Prebuilt OR-Tools not found. Fetching and building OR-Tools from source...")
+
+  FetchContent_Declare(
+    ortools
+    GIT_REPOSITORY https://github.com/google/or-tools.git
+    GIT_TAG v9.8  # Change this to the version you want
+  )
+  set(BUILD_DEPS ON CACHE BOOL "Build dependencies")
+  set(BUILD_SAMPLES OFF CACHE BOOL "Skip building OR-Tools samples")
+  set(BUILD_EXAMPLES OFF CACHE BOOL "Skip building OR-Tools examples")
+  set(BUILD_TESTING OFF CACHE BOOL "Skip OR-Tools tests")
+  FetchContent_MakeAvailable(ortools)
 endif()
 
 # ------------------ SOURCES ------------------

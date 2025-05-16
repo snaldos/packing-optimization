@@ -9,7 +9,7 @@ def solve_knapsack(data):
     pallets = data["pallets"]
 
     # Problem definition with maximization goal
-    prob = pulp.LpProblem(name="Knapsack", sense=pulp.LpMaximize)
+    prob = pulp.LpProblem(name="knapsack_ilp", sense=pulp.LpMaximize)
 
     # Create binary variables for each pallet
     x = {p["id"]: pulp.LpVariable(name=f"x_{p['id']}", cat="Binary") for p in pallets}

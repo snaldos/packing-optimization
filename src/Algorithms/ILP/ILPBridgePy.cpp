@@ -2,10 +2,10 @@
 
 using json = nlohmann::json;
 
-unsigned int ILPBridgePy::solve_ilp_py(const std::vector<Pallet>& pallets,
-                                       const Truck& truck,
-                                       std::vector<Pallet>& used_pallets,
-                                       std::string& message) {
+unsigned int ILPBridgePy::solve_ilp_py(const std::vector<Pallet> &pallets,
+                                       const Truck &truck,
+                                       std::vector<Pallet> &used_pallets,
+                                       std::string &message) {
   auto start_time = std::chrono::high_resolution_clock::now();
 
   // Construct paths using PROJECT_DIR
@@ -21,7 +21,7 @@ unsigned int ILPBridgePy::solve_ilp_py(const std::vector<Pallet>& pallets,
   // Serialize input
   json input_json;
   input_json["truck_capacity"] = truck.get_capacity();
-  for (const auto& p : pallets) {
+  for (const auto &p : pallets) {
     input_json["pallets"].push_back({{"id", p.get_id()},
                                      {"weight", p.get_weight()},
                                      {"profit", p.get_profit()}});
@@ -48,11 +48,13 @@ unsigned int ILPBridgePy::solve_ilp_py(const std::vector<Pallet>& pallets,
 
   used_pallets.clear();
   unsigned int total_profit = output_json["total_profit"];
-  for (const auto& p : output_json["used_pallets"]) {
-    auto it = std::find_if(
-        pallets.begin(), pallets.end(),
-        [&](const Pallet& pal) { return pal.get_id() == p["id"]; });
-    if (it != pallets.end()) used_pallets.push_back(*it);
+  for (const auto &p : output_json["used_pallets"]) {
+    auto it =
+        std::find_if(pallets.begin(), pallets.end(), [&](const Pallet &pal) {
+          return pal.get_id() == p["id"];
+        });
+    if (it != pallets.end())
+      used_pallets.push_back(*it);
   }
 
   auto end_time = std::chrono::high_resolution_clock::now();
@@ -60,6 +62,6 @@ unsigned int ILPBridgePy::solve_ilp_py(const std::vector<Pallet>& pallets,
                       end_time - start_time)
                       .count();
 
-  message = "[ILP-PY] Execution time: " + std::to_string(duration) + " μs";
+  message = "[ILP (PY)] Execution time: " + std::to_string(duration) + " μs";
   return total_profit;
 }

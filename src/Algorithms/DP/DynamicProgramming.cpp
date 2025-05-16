@@ -34,7 +34,6 @@ unsigned int DynamicProgramming::dp_solve_top_down(
 unsigned int DynamicProgramming::dp_solve_top_down(
     const std::vector<Pallet>& pallets, std::unique_ptr<DPTable>& dp,
     unsigned int i, unsigned int w, std::vector<Pallet>& used_pallets) {
-  // Solve DP as before
   unsigned int result = dp_solve_top_down(pallets, dp, i, w);
   // Backtrack for used pallets (HashMap style)
   used_pallets.clear();
@@ -79,7 +78,6 @@ unsigned int DynamicProgramming::dp_solve_bottom_up(
     const std::vector<Pallet>& pallets, std::unique_ptr<DPTable>& dp,
     unsigned int n, unsigned int max_weight,
     std::vector<Pallet>& used_pallets) {
-  // Solve DP as before
   for (unsigned int i = 1; i <= n; i++) {
     for (unsigned int w = 0; w <= max_weight; w++) {
       if (pallets[i - 1].get_weight() <= w) {

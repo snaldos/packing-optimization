@@ -1,24 +1,51 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.15)
 project(packing_optimization VERSION 1.0)
 
-# Set C++ standard
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Include directories
 include_directories(${PROJECT_SOURCE_DIR}/src)
 
+# ------------------ JSON LIBRARY ------------------
 include(FetchContent)
 
 FetchContent_Declare(
   json
   GIT_REPOSITORY https://github.com/nlohmann/json.git
-  GIT_TAG v3.11.2  # or latest
+  GIT_TAG v3.11.2
 )
-
 FetchContent_MakeAvailable(json)
 
-# Source files
+# ------------------ OR-TOOLS SYSTEM CHECK ------------------
+set(ORTOOLS_FOUND FALSE)
+find_package(ortools QUIET)
+if(ortools_FOUND)
+  message(STATUS "Found system-wide OR-Tools.")
+  set(USE_SYSTEM_ORTOOLS TRUE)
+else()
+  message(WARNING "System-wide OR-Tools not found. Building OR-Tools locally.")
+  set(USE_SYSTEM_ORTOOLS FALSE)
+  include(ExternalProject)
+  set(ORTOOLS_INSTALL_DIR ${CMAKE_BINARY_DIR}/ortools-install)
+
+  ExternalProject_Add(
+    ortools_external
+    PREFIX ${CMAKE_BINARY_DIR}/_deps/ortools
+    GIT_REPOSITORY https://github.com/google/or-tools.git
+    GIT_TAG v9.8
+    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${ORTOOLS_INSTALL_DIR}
+               -DBUILD_DEPS=ON
+               -DBUILD_PYTHON=OFF
+               -DBUILD_EXAMPLES=OFF
+    UPDATE_DISCONNECTED 1
+  )
+
+  # Try finding it again in the install dir
+  list(APPEND CMAKE_PREFIX_PATH "${ORTOOLS_INSTALL_DIR}")
+  find_package(ortools REQUIRED PATHS ${ORTOOLS_INSTALL_DIR})
+endif()
+
+# ------------------ SOURCES ------------------
 set(SOURCES
     src/main.cpp
     src/Parser/ParserUtils.cpp
@@ -39,16 +66,23 @@ set(SOURCES
     src/Utils.cpp
 )
 
-# Preprocessor definition to get project directory at runtime
 add_definitions(-DPROJECT_DIR="${CMAKE_SOURCE_DIR}")
 
-# Create executable
 add_executable(packing_optimization ${SOURCES})
 
-# Install targets
-install(TARGETS packing_optimization DESTINATION bin)
-install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/ DESTINATION include)
+# If OR-Tools is being built locally, add dependency
+if(NOT USE_SYSTEM_ORTOOLS)
+  add_dependencies(packing_optimization ortools_external)
+endif()
 
-target_link_libraries(packing_optimization PRIVATE nlohmann_json::nlohmann_json)
+target_link_libraries(packing_optimization
+  PRIVATE
+    nlohmann_json::nlohmann_json
+    ortools::ortools
+)
 
 target_compile_options(packing_optimization PRIVATE -Wall -Wextra -Wpedantic)
+
+# ------------------ INSTALL RULES ------------------
+install(TARGETS packing_optimization DESTINATION bin)
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/ DESTINATION include)

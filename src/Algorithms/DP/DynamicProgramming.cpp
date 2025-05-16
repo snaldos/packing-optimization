@@ -49,18 +49,14 @@ unsigned int DynamicProgramming::dp_solve_top_down(
     unsigned int excluded = get_or_compute(i - 1, w);
     return std::max(included, excluded);
   };
-  unsigned int idx = i, ww = w;
-  while (idx > 0 && ww > 0) {
-    unsigned int curr = get_or_compute(idx, ww);
-    unsigned int excl = get_or_compute(idx - 1, ww);
+  while (i > 0 && w > 0) {
+    unsigned int curr = get_or_compute(i, w);
+    unsigned int excl = get_or_compute(i - 1, w);
     if (curr != excl) {
-      unsigned int weight = pallets[idx - 1].get_weight();
-      if (ww >= weight) {
-        used_pallets.push_back(pallets[idx - 1]);
-        ww -= weight;
-      }
+      used_pallets.push_back(pallets[i - 1]);
+      w -= pallets[i - 1].get_weight();
     }
-    idx--;
+    i--;
   }
   std::reverse(used_pallets.begin(), used_pallets.end());
   return result;

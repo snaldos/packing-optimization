@@ -24,7 +24,7 @@ find_package(ortools QUIET)
 # If not found, try prebuilt in local dir
 if(NOT ortools_FOUND)
   message(STATUS "System-wide OR-Tools not found. Trying local prebuilt version...")
-  list(APPEND CMAKE_PREFIX_PATH "${CMAKE_SOURCE_DIR}/ortools")
+  list(APPEND CMAKE_PREFIX_PATH "${CMAKE_SOURCE_DIR}/external/ortools")
   find_package(ortools QUIET)
 endif()
 

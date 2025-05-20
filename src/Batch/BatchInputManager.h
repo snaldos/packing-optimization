@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "../Algorithms/APPROX/Greedy.h"
+#include "../Algorithms/BB/BranchAndBound.h"
 #include "../Algorithms/BF/BruteForce.h"
 #include "../Algorithms/DP/DynamicProgramming.h"
 #include "../Algorithms/ILP/ILPBridgePy.h"

@@ -62,6 +62,7 @@ set(SOURCES
     src/Algorithms/APPROX/Greedy.cpp
     src/Algorithms/ILP/ILPBridgePy.cpp
     src/Algorithms/ILP/IntegerLinearProgramming.cpp
+    src/Algorithms/BB/BranchAndBound.cpp
     src/Utils.cpp
 )
 

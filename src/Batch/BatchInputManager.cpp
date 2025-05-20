@@ -116,10 +116,15 @@ void BatchInputManager::processInput() {
   BatchUtils::clear_terminal();
   std::string prompt = "Choose algorithm (empty line to exit): ";
   while (true) {
-    std::vector<std::string> options = {"BF",           "BT",
-                                        "DP-VECTOR",    "DP-HASHMAP",
-                                        "DP-OPTIMIZED", "GREEDY-APPROX",
-                                        "ILP-CPP",      "ILP-PY"};
+    std::vector<std::string> options = {"BF",
+                                        "BT",
+                                        "BB",
+                                        "DP-VECTOR",
+                                        "DP-HASHMAP",
+                                        "DP-OPTIMIZED",
+                                        "GREEDY-APPROX",
+                                        "ILP-CPP",
+                                        "ILP-PY"};
     int choice = BatchUtils::get_menu_choice(options, prompt);
 
     std::string filename;
@@ -141,37 +146,43 @@ void BatchInputManager::processInput() {
       generate_output_file(filename, used_pallets, max_profit, message);
       break;
     case 3:
+      filename = "bb.txt";
+      max_profit = BranchAndBound().bb_solve(pallets, truck, used_pallets,
+                                             message, timeout_ms);
+      generate_output_file(filename, used_pallets, max_profit, message);
+      break;
+    case 4:
       filename = "dp_vector.txt";
       max_profit = DynamicProgramming().dp_solve(
           pallets, truck, used_pallets, TableType::Vector, message, timeout_ms);
       generate_output_file(filename, used_pallets, max_profit, message);
       break;
-    case 4:
+    case 5:
       filename = "dp_hashmap.txt";
       max_profit = DynamicProgramming().dp_solve(pallets, truck, used_pallets,
                                                  TableType::HashMap, message,
                                                  timeout_ms);
       generate_output_file(filename, used_pallets, max_profit, message);
       break;
-    case 5:
+    case 6:
       filename = "dp_optimized.txt";
       max_profit =
           DynamicProgramming().dp_solve(pallets, truck, message, timeout_ms);
       generate_output_file(filename, used_pallets, max_profit, message);
       break;
-    case 6:
+    case 7:
       filename = "greedy_approx.txt";
       max_profit = Greedy().approx_solve(pallets, truck, used_pallets, message,
                                          timeout_ms);
       generate_output_file(filename, used_pallets, max_profit, message);
       break;
-    case 7:
+    case 8:
       filename = "ilp_cpp.txt";
       max_profit = IntegerLinearProgramming().solve_ilp_cpp(
           pallets, truck, used_pallets, message, timeout_ms);
       generate_output_file(filename, used_pallets, max_profit, message);
       break;
-    case 8:
+    case 9:
       filename = "ilp_py.txt";
       max_profit = ILPBridgePy().solve_ilp_py(pallets, truck, used_pallets,
                                               message, timeout_ms);

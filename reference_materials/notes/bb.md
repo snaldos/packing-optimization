@@ -10,17 +10,18 @@ Finds optimal solutions in microseconds, often with different sets than DP/Greed
 
 Finds an optimal solution, but for large datasets (like 06) the solution may not be practical or meaningful (e.g., filling with 1-unit items). Still much faster than brute force, but not recommended for very large or dense problems.
 
-## DATASET 16, 21
+## DATASET 16
 
-This dataset traps approach where the pallets are sorted by value to weight ratio. Thanks to the heuristic, BT chooses to first try sorting by value and because of that, works wonders executing in microseconds what could have taken minutes or more.
+This dataset traps approaches where the pallets are sorted by value to weight ratio. Thanks to the heuristic, BT chooses to first try sorting by value and because of that, works wonders executing in microseconds what could have taken minutes or more.
 
-## DATASET 19
+## DATASET 19, 21
 
-This dataset traps approach where the pallets are sorted by value to weight ratio. It also is formulated in a way that avoids the heuristic magic so it takes a while and then sorts by value, finishing rather quickly.
+This dataset traps approaches where the pallets are sorted by value to weight ratio. It also is formulated in a way that avoids the heuristic magic so it takes a while and then sorts by value, finishing rather quickly.
 
 ## DATASET 25
 
 This dataset finally finds a way to trap in time the clever backtrack and put an end to its winning streak, leaving execution after 1 minute of trying.
+It traps both approaches where the pallets are sorted by value to weight ratio and approaches where the pallets are sorted by value.
 
 **Why does the clever backtrack still fail to solve this in under a minute?**
 

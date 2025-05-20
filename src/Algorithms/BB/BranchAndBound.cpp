@@ -88,6 +88,7 @@ unsigned int BranchAndBound::bb_solve(std::vector<Pallet> pallets,
         return (double)a.get_profit() / a.get_weight() >
                (double)b.get_profit() / b.get_weight();
     };
+    std::string sort_method = value_first ? "value" : "ratio";
     if (value_first) {
         std::sort(pallets.begin(), pallets.end(), sort_by_value);
     } else {
@@ -112,8 +113,9 @@ unsigned int BranchAndBound::bb_solve(std::vector<Pallet> pallets,
                         end_time - start_time)
                         .count();
     if (timed_out) {
-        if (value_first) {
-            std::sort(pallets.begin(), pallets.end(), sort_by_ratio);
+      std::string alt_sort_method = value_first ? "ratio" : "value";
+      if (value_first) {
+        std::sort(pallets.begin(), pallets.end(), sort_by_ratio);
         } else {
             std::sort(pallets.begin(), pallets.end(), sort_by_value);
         }
@@ -136,16 +138,20 @@ unsigned int BranchAndBound::bb_solve(std::vector<Pallet> pallets,
                                   retry_end - retry_start)
                                   .count();
         if (timed_out) {
-            message = "[BB] Timeout after both sort strategies (" +
-                      std::to_string(timeout_ms) + " ms total).";
-            used_pallets.clear();
-            return 0;
+          message = "[BB] Timeout after both sort strategies (" +
+                    std::to_string(timeout_ms) +
+                    " ms total). Initial sort: " + sort_method +
+                    ", alternative sort: " + alt_sort_method + ".";
+          used_pallets.clear();
+          return 0;
         } else {
-            message = "[BB] Execution time: " + std::to_string(retry_duration) +
-                      " μs (used alternative sort after initial timeout)";
-            return best_value;
+          message = "[BB] Execution time: " + std::to_string(retry_duration) +
+                    " μs (used alternative sort: " + alt_sort_method +
+                    ", initial sort: " + sort_method + ")";
+          return best_value;
         }
     }
-    message = "[BB] Execution time: " + std::to_string(duration) + " μs";
+    message = "[BB] Execution time: " + std::to_string(duration) +
+              " μs (sort: " + sort_method + ")";
     return best_value;
 }

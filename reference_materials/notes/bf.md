@@ -10,7 +10,7 @@ Finds the optimal solution, but is much slower than DP/Greedy. Impractical as si
 
 Finds the optimal solution, but takes over a million (2^20) possible subsets—execution is very slow (over 1 second), clearly illustrating exponential complexity. Classic case where brute force is impractical.
 
-## DATASET 04–06, 15-16
+## DATASET 04–06, 15-16, 18-25
 
 Times out after 60000 ms. Not feasible for moderate or large datasets.
 

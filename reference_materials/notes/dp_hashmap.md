@@ -10,7 +10,7 @@ HashMap uses far fewer entries than the vector table, making it much less memory
 
 Finds the optimal solution (profit 32, weight 98) with 702 entries (8 KB, 328 μs). Fewer entries than vector, but slower and more memory per entry.
 
-## DATASET 04-05, 11
+## DATASET 04-05, 11, 18-25
 
 Here, the table is not sparse—HashMap uses over half as many entries as vector, but each entry is more expensive. No advantage over vector in this scenarios.
 

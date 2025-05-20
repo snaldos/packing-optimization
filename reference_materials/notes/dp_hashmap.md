@@ -24,3 +24,7 @@ HashMap is both more memory efficient (less than half the memory of vector) and 
 
 ## DATASET 12, 17
 Here, HashMap is 4 times faster while occupying 1/4 of the total memory for a vector table being the clear winner.
+
+## DATASET 26
+
+In this scenario, the DP HashMap approach is vastly superior to the vector-based DP methods. Since only a small subset of weight states are actually used (total weight is much less than capacity), the HashMap solution is both faster (294 μs) and dramatically more memory efficient (just 5 KB for 465 entries). This highlights the advantage of top-down memoization for sparse problems with large capacities and few items.

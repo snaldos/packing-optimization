@@ -9,3 +9,7 @@ Finds the correct max profit with minimal memory and very fast execution. Cannot
 ## DATASET 06
 
 Correct max profit (2047) with 4096 entries (16 KB, 412 ms). This is a case when using this is significantly more memory efficient going from 31MB to 16KB, an astounding difference.
+
+## DATASET 17
+
+For such a small dataset using this optimized approach ends up being redundant since it uses almost the same space as the normal dp vector table approach while not being able to identify the used pallets.

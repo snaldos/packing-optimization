@@ -72,17 +72,27 @@ unsigned int BruteForce::bt_solve(std::vector<Pallet> pallets,
   unsigned int half_timeout = timeout_ms / 2;
   bool timed_out = false;
 
-  // Heuristic: if largest pallet >= 70% of capacity, try weight sort first
-  double max_weight = 0;
-  for (const auto &p : pallets) {
-    if (p.get_weight() > max_weight)
-      max_weight = p.get_weight();
+  // Improved heuristic: prioritize by value if a single pallet is both heavy
+  // and valuable
+  double max_value = 0, max_weight = 0, total_value = 0;
+  for (unsigned int i = 0; i < pallets.size(); ++i) {
+    double v = pallets[i].get_profit();
+    double w = pallets[i].get_weight();
+    total_value += v;
+    if (v > max_value) {
+      max_value = v;
+      max_weight = w;
+    }
   }
-  bool weight_first = (max_weight >= 0.7 * truck.get_capacity());
+  double capacity = truck.get_capacity();
+  // Heuristic: if the most valuable pallet is heavy (>=80% capacity) and
+  // valuable (>=60% total value), try value sort first
+  bool value_first =
+      (max_weight >= 0.8 * capacity) && (max_value >= 0.6 * total_value);
 
   // Sorting lambdas
-  auto sort_by_weight = [](const Pallet &a, const Pallet &b) {
-    return a.get_weight() > b.get_weight();
+  auto sort_by_value = [](const Pallet &a, const Pallet &b) {
+    return a.get_profit() > b.get_profit();
   };
   auto sort_by_ratio = [](const Pallet &a, const Pallet &b) {
     return (double)a.get_profit() / a.get_weight() >
@@ -90,8 +100,8 @@ unsigned int BruteForce::bt_solve(std::vector<Pallet> pallets,
   };
 
   // Choose which sort to try first
-  if (weight_first) {
-    std::sort(pallets.begin(), pallets.end(), sort_by_weight);
+  if (value_first) {
+    std::sort(pallets.begin(), pallets.end(), sort_by_value);
   } else {
     std::sort(pallets.begin(), pallets.end(), sort_by_ratio);
   }
@@ -121,10 +131,10 @@ unsigned int BruteForce::bt_solve(std::vector<Pallet> pallets,
 
   if (timed_out) {
     // Retry with the other sort for the remaining half of the timeout
-    if (weight_first) {
+    if (value_first) {
       std::sort(pallets.begin(), pallets.end(), sort_by_ratio);
     } else {
-      std::sort(pallets.begin(), pallets.end(), sort_by_weight);
+      std::sort(pallets.begin(), pallets.end(), sort_by_value);
     }
     curr_used.assign(n, false);
     best_used.assign(n, false);

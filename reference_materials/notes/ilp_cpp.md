@@ -9,3 +9,7 @@ Finds optimal solutions, sometimes with different sets than DP/Greedy, confirmin
 ## DATASET 06
 
 Optimal (profit 2047, weight 2047). For large, dense problems, ILP is correct and much faster.
+
+## DATASET 17
+
+For very small datasets, ILP is overkill and slower than other approaches.

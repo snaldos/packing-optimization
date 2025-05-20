@@ -22,5 +22,5 @@ For large, dense problems, such as this one (optimal: profit 2047, weight 2047),
 
 HashMap is both more memory efficient (less than half the memory of vector) and faster than DP Vector. Shows that top-down can outperform bottom-up in both time and space for some problems.
 
-## DATASET 12
+## DATASET 12, 17
 Here, HashMap is 4 times faster while occupying 1/4 of the total memory for a vector table being the clear winner.

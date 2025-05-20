@@ -1,9 +1,0 @@
-In this example, the greedy algorithm gets a solution extremely far away from the optimal which puts in cause its usability and trustworthiness
-
-Optimal solution:
-
-id, profit, weight
-2, 9999, 100
-
-Total Weight: 100
-Maximum Profit: 9999

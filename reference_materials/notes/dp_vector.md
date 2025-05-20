@@ -2,7 +2,7 @@
 
 The DP Vector (bottom-up) is ideal for small to medium, dense problems where most weight/capacity states are used. It is fast and simple, and can reconstruct a meaningful solution (e.g., with fewer, higher-value items) if such exists, since it explores all combinations.
 
-## DATASET 01–03, 05, 07–16
+## DATASET 01–03, 05, 07–17
 
 Optimal, fast, and uses moderate memory for this size.
 

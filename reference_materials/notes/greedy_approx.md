@@ -14,9 +14,9 @@ Near-optimal. Not always optimal for larger/complex datasets.
 
 Fails: selects the small, low-value item due to its better profit/weight ratio. Classic greedy failure case—does not find the optimal solution.
 
-## DATASET 16
+## DATASET 16, 17
 
-Classic greedy trap: greedy selects many small items and misses the single large, high-value item (far from optimal).
+Classic greedy trap: greedy selects small items and misses the single large, high-value item (far from optimal).
 
 ## DATASET 19, 21
 

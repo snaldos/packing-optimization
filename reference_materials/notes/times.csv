@@ -1,238 +1,238 @@
-Dataset, Algorithm, Time (μs)
-01, BF, 611
-01, BT, 39
-01, BB, 28
-01, DP-Vector, 105
-01, DP-HashMap, 93
-01, DP-Optimized, 48
-01, Greedy, 10
-01, ILP-CPP, 13405
-01, ILP-PY, 145438
-02, BF, 18623
-02, BT, 93
-02, BB, 28
-02, DP-Vector, 199
-02, DP-HashMap, 483
-02, DP-Optimized, 100
-02, Greedy, 19
-02, ILP-CPP, 5905
-02, ILP-PY, 80247
-03, BF, 431
-03, BT, 44
-03, BB, 23
-03, DP-Vector, 126
-03, DP-HashMap, 100
-03, DP-Optimized, 47
-03, Greedy, 9
-03, ILP-CPP, 3763
-03, ILP-PY, 85776
-04, BF, -1
-04, BT, 1110833
-04, BB, 83
-04, DP-Vector, 2148
-04, DP-HashMap, 7378
-04, DP-Optimized, 835
-04, Greedy, 31
-04, ILP-CPP, 33912
-04, ILP-PY, 84831
-05, BF, -1
-05, BT, 1927951
-05, BB, 25
-05, DP-Vector, 80
-05, DP-HashMap, 195
-05, DP-Optimized, 28
-05, Greedy, 16
-05, ILP-CPP, 1139
-05, ILP-PY, 51127
-06, BF, -1
-06, BT, -1
-06, BB, -1
-06, DP-Vector, 810080
-06, DP-HashMap, 7846688
-06, DP-Optimized, 413930
-06, Greedy, 1759
-06, ILP-CPP, 19204
-06, ILP-PY, 197291
-07, BF, 18698
-07, BT, 2573
-07, BB, 70
-07, DP-Vector, 896
-07, DP-HashMap, 802
-07, DP-Optimized, 410
-07, Greedy, 15
-07, ILP-CPP, 2942
-07, ILP-PY, 79614
-08, BF, 18538
-08, BT, 2102
-08, BB, 81
-08, DP-Vector, 555
-08, DP-HashMap, 518
-08, DP-Optimized, 255
-08, Greedy, 15
-08, ILP-CPP, 1942
-08, ILP-PY, 84246
-09, BF, 76233
-09, BT, 5125
-09, BB, 19
-09, DP-Vector, 123
-09, DP-HashMap, 102
-09, DP-Optimized, 55
-09, Greedy, 16
-09, ILP-CPP, 3264
-09, ILP-PY, 78413
-10, BF, 8
-10, BT, 4
-10, BB, 12
-10, DP-Vector, 10
-10, DP-HashMap, 9
-10, DP-Optimized, 5
-10, Greedy, 5
-10, ILP-CPP, 1232
-10, ILP-PY, 77042
-11, BF, 1422435
-11, BT, 80428
-11, BB, 44
-11, DP-Vector, 225
-11, DP-HashMap, 753
-11, DP-Optimized, 105
-11, Greedy, 16
-11, ILP-CPP, 6122
-11, ILP-PY, 81443
-12, BF, 826201
-12, BT, 134007
-12, BB, 20
-12, DP-Vector, 2842
-12, DP-HashMap, 1179
-12, DP-Optimized, 1024
-12, Greedy, 14
-12, ILP-CPP, 1753
-12, ILP-PY, 81128
-13, BF, 8043
-13, BT, 1139
-13, BB, 837
-13, DP-Vector, 111
-13, DP-HashMap, 107
-13, DP-Optimized, 46
-13, Greedy, 11
-13, ILP-CPP, 2701
-13, ILP-PY, 82158
-14, BF, 19
-14, BT, 11
-14, BB, 16
-14, DP-Vector, 16
-14, DP-HashMap, 51
-14, DP-Optimized, 8
-14, Greedy, 6
-14, ILP-CPP, 2615
-14, ILP-PY, 78416
-15, BF, -1
-15, BT, -1
-15, BB, 29
-15, DP-Vector, 499
-15, DP-HashMap, 206
-15, DP-Optimized, 321
-15, Greedy, 30
-15, ILP-CPP, 2951
-15, ILP-PY, 81281
-16, BF, -1
-16, BT, -1
-16, BB, 28
-16, DP-Vector, 595
-16, DP-HashMap, 674
-16, DP-Optimized, 391
-16, Greedy, 28
-16, ILP-CPP, 2138
-16, ILP-PY, 78650
-17, BF, 10
-17, BT, 8
-17, BB, 13
-17, DP-Vector, 29
-17, DP-HashMap, 18
-17, DP-Optimized, 18
-17, Greedy, 8
-17, ILP-CPP, 2436
-17, ILP-PY, 83113
-18, BF, -1
-18, BT, -1
-18, BB, 63
-18, DP-Vector, 1188
-18, DP-HashMap, 2759
-18, DP-Optimized, 608
-18, Greedy, 70
-18, ILP-CPP, 3393
-18, ILP-PY, 82213
-19, BF, -1
-19, BT, -1
-19, BB, 33
-19, DP-Vector, 1349
-19, DP-HashMap, 3427
-19, DP-Optimized, 484
-19, Greedy, 60
-19, ILP-CPP, 2250
-19, ILP-PY, 82068
-20, BF, -1
-20, BT, -1
-20, BB, 230
-20, DP-Vector, 1333
-20, DP-HashMap, 2736
-20, DP-Optimized, 488
-20, Greedy, 45
-20, ILP-CPP, 1565
-20, ILP-PY, 83223
-21, BF, -1
-21, BT, -1
-21, BB, 26
-21, DP-Vector, 5321
-21, DP-HashMap, 22311
-21, DP-Optimized, 2576
-21, Greedy, 46
-21, ILP-CPP, 1318
-21, ILP-PY, 86655
-22, BF, -1
-22, BT, -1
-22, BB, 149
-22, DP-Vector, 1334
-22, DP-HashMap, 5142
-22, DP-Optimized, 660
-22, Greedy, 59
-22, ILP-CPP, 1969
-22, ILP-PY, 84284
-23, BF, -1
-23, BT, -1
-23, BB, 267
-23, DP-Vector, 3961
-23, DP-HashMap, 13435
-23, DP-Optimized, 1779
-23, Greedy, 117
-23, ILP-CPP, 2131
-23, ILP-PY, 92567
-24, BF, -1
-24, BT, -1
-24, BB, 192
-24, DP-Vector, 5146
-24, DP-HashMap, 24429
-24, DP-Optimized, 2015
-24, Greedy, 100
-24, ILP-CPP, 5224
-24, ILP-PY, 92273
-25, BF, -1
-25, BT, -1
-25, BB, -1
-25, DP-Vector, 5638
-25, DP-HashMap, 22046
-25, DP-Optimized, 3790
-25, Greedy, 48
-25, ILP-CPP, 2795
-25, ILP-PY, 86063
-26, BF, -1
-26, BT, -1
-26, BB, 47
-26, DP-Vector, 322897
-26, DP-HashMap, 394
-26, DP-Optimized, 149518
-26, Greedy, 24
-26, ILP-CPP, 2845
-26, ILP-PY, 86402
+Dataset, Algorithm, Time (μs), Flag
+01, BF, 611, 0
+01, BT, 39, 0
+01, BB, 28, 0
+01, DP-Vector, 105, 0
+01, DP-HashMap, 93, 0
+01, DP-Optimized, 48, 0
+01, Greedy, 10, 0
+01, ILP-CPP, 13405, 0
+01, ILP-PY, 145438, 0
+02, BF, 18623, 0
+02, BT, 93, 0
+02, BB, 28, 0
+02, DP-Vector, 199, 0
+02, DP-HashMap, 483, 0
+02, DP-Optimized, 100, 0
+02, Greedy, 19, 0
+02, ILP-CPP, 5905, 0
+02, ILP-PY, 80247, 0
+03, BF, 431, 0
+03, BT, 44, 0
+03, BB, 23, 0
+03, DP-Vector, 126, 0
+03, DP-HashMap, 100, 0
+03, DP-Optimized, 47, 0
+03, Greedy, 9, 0
+03, ILP-CPP, 3763, 0
+03, ILP-PY, 85776, 0
+04, BF, -1, 1
+04, BT, 1110833, 0
+04, BB, 83, 0
+04, DP-Vector, 2148, 0
+04, DP-HashMap, 7378, 0
+04, DP-Optimized, 835, 0
+04, Greedy, 31, 1
+04, ILP-CPP, 33912, 0
+04, ILP-PY, 84831, 0
+05, BF, -1, 1
+05, BT, 1927951, 0
+05, BB, 25, 0
+05, DP-Vector, 80, 0
+05, DP-HashMap, 195, 0
+05, DP-Optimized, 28, 0
+05, Greedy, 16, 0
+05, ILP-CPP, 1139, 0
+05, ILP-PY, 51127, 0
+06, BF, -1, 1
+06, BT, -1, 1
+06, BB, -1, 1
+06, DP-Vector, 810080, 0
+06, DP-HashMap, 7846688, 0
+06, DP-Optimized, 413930, 0
+06, Greedy, 1759, 0
+06, ILP-CPP, 19204, 0
+06, ILP-PY, 197291, 0
+07, BF, 18698, 0
+07, BT, 2573, 0
+07, BB, 70, 0
+07, DP-Vector, 896, 0
+07, DP-HashMap, 802, 0
+07, DP-Optimized, 410, 0
+07, Greedy, 15, 0
+07, ILP-CPP, 2942, 0
+07, ILP-PY, 79614, 0
+08, BF, 18538, 0
+08, BT, 2102, 0
+08, BB, 81, 0
+08, DP-Vector, 555, 0
+08, DP-HashMap, 518, 0
+08, DP-Optimized, 255, 0
+08, Greedy, 15, 0
+08, ILP-CPP, 1942, 0
+08, ILP-PY, 84246, 0
+09, BF, 76233, 0
+09, BT, 5125, 0
+09, BB, 19, 0
+09, DP-Vector, 123, 0
+09, DP-HashMap, 102, 0
+09, DP-Optimized, 55, 0
+09, Greedy, 16, 0
+09, ILP-CPP, 3264, 0
+09, ILP-PY, 78413, 0
+10, BF, 8, 0
+10, BT, 4, 0
+10, BB, 12, 0
+10, DP-Vector, 10, 0
+10, DP-HashMap, 9, 0
+10, DP-Optimized, 5, 0
+10, Greedy, 5, 1
+10, ILP-CPP, 1232, 0
+10, ILP-PY, 77042, 0
+11, BF, 1422435, 0
+11, BT, 80428, 0
+11, BB, 44, 0
+11, DP-Vector, 225, 0
+11, DP-HashMap, 753, 0
+11, DP-Optimized, 105, 0
+11, Greedy, 16, 1
+11, ILP-CPP, 6122, 0
+11, ILP-PY, 81443, 0
+12, BF, 826201, 0
+12, BT, 134007, 0
+12, BB, 20, 0
+12, DP-Vector, 2842, 0
+12, DP-HashMap, 1179, 0
+12, DP-Optimized, 1024, 0
+12, Greedy, 14, 0
+12, ILP-CPP, 1753, 0
+12, ILP-PY, 81128, 0
+13, BF, 8043, 0
+13, BT, 1139, 0
+13, BB, 837, 0
+13, DP-Vector, 111, 0
+13, DP-HashMap, 107, 0
+13, DP-Optimized, 46, 0
+13, Greedy, 11, 0
+13, ILP-CPP, 2701, 0
+13, ILP-PY, 82158, 0
+14, BF, 19, 0
+14, BT, 11, 0
+14, BB, 16, 0
+14, DP-Vector, 16, 0
+14, DP-HashMap, 51, 0
+14, DP-Optimized, 8, 0
+14, Greedy, 6, 1
+14, ILP-CPP, 2615, 0
+14, ILP-PY, 78416, 0
+15, BF, -1, 1
+15, BT, -1, 1
+15, BB, 29, 0
+15, DP-Vector, 499, 0
+15, DP-HashMap, 206, 0
+15, DP-Optimized, 321, 0
+15, Greedy, 30, 0
+15, ILP-CPP, 2951, 0
+15, ILP-PY, 81281, 0
+16, BF, -1, 1
+16, BT, -1, 1
+16, BB, 28, 0
+16, DP-Vector, 595, 0
+16, DP-HashMap, 674, 0
+16, DP-Optimized, 391, 0
+16, Greedy, 28, 1
+16, ILP-CPP, 2138, 0
+16, ILP-PY, 78650, 0
+17, BF, 10, 0
+17, BT, 8, 0
+17, BB, 13, 0
+17, DP-Vector, 29, 0
+17, DP-HashMap, 18, 0
+17, DP-Optimized, 18, 0
+17, Greedy, 8, 1
+17, ILP-CPP, 2436, 0
+17, ILP-PY, 83113, 0
+18, BF, -1, 1
+18, BT, -1, 1
+18, BB, 63, 0
+18, DP-Vector, 1188, 0
+18, DP-HashMap, 2759, 0
+18, DP-Optimized, 608, 0
+18, Greedy, 70, 1
+18, ILP-CPP, 3393, 0
+18, ILP-PY, 82213, 0
+19, BF, -1, 1
+19, BT, -1, 1
+19, BB, 33, 1
+19, DP-Vector, 1349, 0
+19, DP-HashMap, 3427, 0
+19, DP-Optimized, 484, 0
+19, Greedy, 60, 1
+19, ILP-CPP, 2250, 0
+19, ILP-PY, 82068, 0
+20, BF, -1, 1
+20, BT, -1, 1
+20, BB, 230, 0
+20, DP-Vector, 1333, 0
+20, DP-HashMap, 2736, 0
+20, DP-Optimized, 488, 0
+20, Greedy, 45, 0
+20, ILP-CPP, 1565, 0
+20, ILP-PY, 83223, 0
+21, BF, -1, 1
+21, BT, -1, 1
+21, BB, 26, 1
+21, DP-Vector, 5321, 0
+21, DP-HashMap, 22311, 0
+21, DP-Optimized, 2576, 0
+21, Greedy, 46, 1
+21, ILP-CPP, 1318, 0
+21, ILP-PY, 86655, 0
+22, BF, -1, 1
+22, BT, -1, 1
+22, BB, 149, 0
+22, DP-Vector, 1334, 0
+22, DP-HashMap, 5142, 0
+22, DP-Optimized, 660, 0
+22, Greedy, 59, 1
+22, ILP-CPP, 1969, 0
+22, ILP-PY, 84284, 0
+23, BF, -1, 1
+23, BT, -1, 1
+23, BB, 267, 0
+23, DP-Vector, 3961, 0
+23, DP-HashMap, 13435, 0
+23, DP-Optimized, 1779, 0
+23, Greedy, 117, 0
+23, ILP-CPP, 2131, 0
+23, ILP-PY, 92567, 0
+24, BF, -1, 1
+24, BT, -1, 1
+24, BB, 192, 0
+24, DP-Vector, 5146, 0
+24, DP-HashMap, 24429, 0
+24, DP-Optimized, 2015, 0
+24, Greedy, 100, 0
+24, ILP-CPP, 5224, 0
+24, ILP-PY, 92273, 0
+25, BF, -1, 1
+25, BT, -1, 1
+25, BB, -1, 1
+25, DP-Vector, 5638, 0
+25, DP-HashMap, 22046, 0
+25, DP-Optimized, 3790, 0
+25, Greedy, 48, 1
+25, ILP-CPP, 2795, 0
+25, ILP-PY, 86063, 0
+26, BF, -1, 1
+26, BT, -1, 1
+26, BB, 47, 0
+26, DP-Vector, 322897, 0
+26, DP-HashMap, 394, 0
+26, DP-Optimized, 149518, 0
+26, Greedy, 24, 0
+26, ILP-CPP, 2845, 0
+26, ILP-PY, 86402, 0
 
 
 

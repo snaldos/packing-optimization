@@ -1,13 +1,11 @@
 # BACKTRACKING (BF-BT)
 
-## DATASET 01
+Backtracking (branch and bound) prunes the search space and is much faster than brute force, always finding the optimum. However, it may return any optimal set—including those with many small items—so the solution is not always the most meaningful in real-world contexts where, for example, fewer high-value items are preferred. Multiple optimal sets may exist.
 
-The backtracking (branch and bound) approach is much faster than pure brute force (14 μs vs 372 μs) and still finds an optimal solution. It explores the solution space more efficiently by pruning branches that cannot improve the result. The set of pallets found is different from the DP/Brute Force solution, but the total profit is the same, showing that multiple optimal solutions exist for this dataset.
+## DATASET 01–03, 07–10
 
-## DATASET 02
+Finds optimal solutions in microseconds, often with different sets than DP/Greedy, showing multiple optima.
 
-Backtracking (branch and bound) remains extremely fast (12 μs) and finds the optimal solution (profit 32, total weight 98). The set of pallets is the same as brute force and DP, confirming the uniqueness of the optimal solution for this dataset. This method is highly efficient for small to medium datasets.
+## DATASET 04–06
 
-## DATASET 03
-
-Backtracking (branch and bound) is extremely fast (9 μs) and finds an optimal solution (profit 40, total weight 94). The set of pallets is different from the DP/Brute Force solution, confirming that multiple optimal solutions exist for this dataset. This method is highly efficient for small to medium datasets.
+Finds an optimal solution, but for large datasets (like 06) the solution is not practical or meaningful (e.g., filling with 1-unit items). Still much faster than brute force, but not recommended for very large or dense problems.

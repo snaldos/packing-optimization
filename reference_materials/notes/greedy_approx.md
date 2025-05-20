@@ -1,13 +1,15 @@
 # GREEDY APPROXIMATION
 
-## DATASET 01
+Greedy sorts by profit-to-weight and fills the truck. Fastest and most memory-efficient, but not always optimal or meaningful: it may miss solutions with fewer, higher-value items if those don't have the best ratio. Multiple optimal sets may exist.
 
-The greedy algorithm sorts pallets by profit-to-weight ratio and selects them until the truck is full. For dataset 01, it finds an optimal solution (maximum profit 29), but the set of pallets differs from the DP/Brute Force solution. This shows that the greedy approach can be optimal for some instances, but this is not guaranteed for all datasets. It is the fastest method (11 μs) and uses minimal memory.
+## DATASET 01–03, 05–09
 
-## DATASET 02
+Finds optimal solutions in microseconds. Sometimes produces a different set than DP/ILP.
 
-The greedy algorithm finds the optimal profit (32, total weight 98) and the same set of pallets as the exact methods. This shows that for dataset 02, the greedy approach is effective. It remains the fastest method (27 μs) and is suitable for quick approximations, though optimality is not guaranteed for all datasets.
+## DATASET 04
 
-## DATASET 03
+Near-optimal (profit 158, weight 490) in 28 μs. Not always optimal for larger/complex datasets.
 
-The greedy algorithm finds the optimal profit (40, total weight 94) and a valid set of pallets, but the combination differs from the DP/ILP solution. It remains the fastest method (5 μs) and is suitable for quick approximations, though optimality is not guaranteed for all datasets. In this case, it finds an optimal profit but with a different set of items.
+## DATASET 10
+
+Fails: selects the small, low-value item due to its better profit/weight ratio. Classic greedy failure case—does not find the optimal solution.

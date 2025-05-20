@@ -1,13 +1,11 @@
 # DP OPTIMIZED (2 Rolling Rows)
 
-## DATASET 01
+The most memory-efficient DP method, using only two rows. Cannot reconstruct the set of used pallets, only the max profit. Ideal for large or memory-constrained cases.
 
-The optimized DP approach with two rolling rows is the most memory-efficient, using only 808 bytes for 202 entries. It is also the fastest among the DP methods. However, it cannot reconstruct the set of used pallets, only the maximum profit. This makes it ideal for large datasets where only the optimal value is needed and not the actual selection of items.
+## DATASET 01–05, 07-10
 
-## DATASET 02
+Finds the correct max profit with minimal memory and very fast execution. Cannot reconstruct used pallets.
 
-The optimized DP approach (2 rolling rows) finds the correct maximum profit (32) with minimal memory (808 B) and very fast execution (25 μs). As before, it cannot reconstruct the used pallets, but is ideal for large datasets or when only the optimal value is needed.
+## DATASET 06
 
-## DATASET 03
-
-The optimized DP approach (2 rolling rows) finds the correct maximum profit (40) with minimal memory (808 B) and very fast execution (11 μs). As before, it cannot reconstruct the used pallets, but is ideal for large datasets or when only the optimal value is needed.
+Correct max profit (2047) with 4096 entries (16 KB, 412 ms). This is a case when using this is significantly more memory efficient going from 31MB to 16KB, an astounding difference.

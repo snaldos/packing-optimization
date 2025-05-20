@@ -1,13 +1,15 @@
 # DP VECTOR
 
-## DATASET 01
+The DP Vector (bottom-up) is ideal for small to medium, dense problems where most weight/capacity states are used. It is fast and simple, and can reconstruct a meaningful solution (e.g., with fewer, higher-value items) if such exists, since it explores all combinations.
 
-The bottom-up DP approach using a vector table is very fast and provides the optimal solution. It uses a full table, which results in higher memory usage (1010 entries, 3 KB) compared to the HashMap approach, but the access is faster and the execution time is lower. This method is ideal for small to medium datasets where memory is not a constraint and backtracking is required.
+## DATASET 01–03, 05, 07–10
 
-## DATASET 02
+Optimal, fast, and uses moderate memory (all 1-unit, high-profit pallets for 09). Remains efficient for this size.
 
-The DP Vector approach again finds the optimal solution (profit 32, total weight 98) with 1515 entries (5 KB) and an execution time of 59 μs. It is faster than the HashMap approach and uses more memory, but remains efficient for this dataset size. The vector table is a good choice for problems where memory is not a constraint and fast access is needed.
+## DATASET 04
 
-## DATASET 03
+Optimal, starting to become memory expensive.
 
-The DP Vector approach again finds the optimal solution (profit 40, total weight 97) with 1010 entries (3 KB) and an execution time of 48 μs. It remains faster than the HashMap approach and is well-suited for this dataset size. The vector table is efficient for problems where memory is not a constraint and fast access is needed.
+## DATASET 06
+
+Optimal (profit 2047, weight 2047), 8.4M entries (31 MB, 901540 μs). Memory use is very high for large, dense problems.

@@ -1,13 +1,11 @@
 # ILP (PYTHON)
 
-## DATASET 01
+Python ILP (PuLP) is correct but much slower than C++ ILP. Like C++ ILP, it can be configured to prefer more meaningful solutions (e.g., fewer, higher-value items) if secondary objectives are added. By default, it returns any optimal set.
 
-The Python ILP approach (using PuLP) also finds an optimal solution, with a different but valid set of pallets. The execution time is much higher than the C++ version (78954 μs), mainly due to Python overhead and process startup. This method is useful for prototyping or when using Python-based solvers, but is not recommended for performance-critical applications on small datasets.
+## DATASET 01–05, 07–10
 
-## DATASET 02
+Finds optimal solutions, sometimes with different sets than C++ ILP/DP, confirming multiple optima.
 
-The Python ILP approach (PuLP) also finds the optimal solution (profit 32, total weight 98), but is much slower than the C++ version (82221 μs). The results match the other exact methods, confirming the correctness of the approach. This method is best for prototyping or when using Python-based solvers.
+## DATASET 06
 
-## DATASET 03
-
-The Python ILP approach (PuLP) finds the optimal solution (profit 40, total weight 94) with an execution time of 80246 μs. The results match the C++ ILP and greedy solutions, confirming the correctness of the approach. This method is best for prototyping or when using Python-based solvers, but is much slower than the C++ version.
+Optimal (profit 2047, weight 2047) in 199 ms. For large, dense problems, Python ILP is correct but much slower cpp ILP.

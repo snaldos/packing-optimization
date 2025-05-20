@@ -6,10 +6,10 @@ Backtracking (branch and bound) prunes the search space and is much faster than 
 
 Finds optimal solutions in microseconds, often with different sets than DP/Greedy, showing multiple optima.
 
-## DATASET 16
-
-Timeout after 60000 ms. This dataset is a 'trap' for both greedy (which fails badly) and backtracking. Backtracking is slow here because the optimal solution is a single large item, but the search space is dominated by many small items with similar profit/weight ratios. Pruning is ineffective, so backtracking explores too many branches before finding the best one, leading to a timeout.
-
 ## DATASET 04–06
 
 Finds an optimal solution, but for large datasets (like 06) the solution may not be practical or meaningful (e.g., filling with 1-unit items). Still much faster than brute force, but not recommended for very large or dense problems.
+
+## DATASET 16
+
+This dataset traps approach where the pallets are sorted by value to weight ratio. Thanks to the heuristic, BT chooses to first try sorting by value and because of that, works wonders executing in microseconds what could take minutes or more.

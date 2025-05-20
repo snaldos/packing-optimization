@@ -6,10 +6,6 @@ Greedy sorts by profit-to-weight and fills the truck. Fastest and most memory-ef
 
 Finds optimal solutions in microseconds. Sometimes produces a different set than DP/ILP.
 
-## DATASET 16
-
-Classic greedy trap: greedy selects many small items and misses the single large, high-value item (far from optimal). Backtracking also fails here (times out), making this a rare case where both greedy and backtracking are ineffective.
-
 ## DATASET 04, 11, 14
 
 Near-optimal. Not always optimal for larger/complex datasets.
@@ -17,3 +13,7 @@ Near-optimal. Not always optimal for larger/complex datasets.
 ## DATASET 10
 
 Fails: selects the small, low-value item due to its better profit/weight ratio. Classic greedy failure case—does not find the optimal solution.
+
+## DATASET 16
+
+Classic greedy trap: greedy selects many small items and misses the single large, high-value item (far from optimal).

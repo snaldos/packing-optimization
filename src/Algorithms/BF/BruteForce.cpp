@@ -69,22 +69,41 @@ unsigned int BruteForce::bt_solve(std::vector<Pallet> pallets,
                                   std::string &message,
                                   unsigned int timeout_ms) {
   auto start_time = std::chrono::steady_clock::now();
-  auto deadline = start_time + std::chrono::milliseconds(timeout_ms);
+  unsigned int half_timeout = timeout_ms / 2;
   bool timed_out = false;
 
-  std::sort(pallets.begin(), pallets.end(),
-            [](const Pallet &a, const Pallet &b) {
-              return (double)a.get_profit() / a.get_weight() >
-                     (double)b.get_profit() / b.get_weight();
-            });
+  // Heuristic: if largest pallet >= 70% of capacity, try weight sort first
+  double max_weight = 0;
+  for (const auto &p : pallets) {
+    if (p.get_weight() > max_weight)
+      max_weight = p.get_weight();
+  }
+  bool weight_first = (max_weight >= 0.7 * truck.get_capacity());
+
+  // Sorting lambdas
+  auto sort_by_weight = [](const Pallet &a, const Pallet &b) {
+    return a.get_weight() > b.get_weight();
+  };
+  auto sort_by_ratio = [](const Pallet &a, const Pallet &b) {
+    return (double)a.get_profit() / a.get_weight() >
+           (double)b.get_profit() / b.get_weight();
+  };
+
+  // Choose which sort to try first
+  if (weight_first) {
+    std::sort(pallets.begin(), pallets.end(), sort_by_weight);
+  } else {
+    std::sort(pallets.begin(), pallets.end(), sort_by_ratio);
+  }
 
   unsigned int n = pallets.size();
   std::vector<bool> curr_used(n, false);
   std::vector<bool> best_used(n, false);
   unsigned int best_value = 0;
-  unsigned int max_weight = truck.get_capacity();
+  unsigned int truck_capacity = truck.get_capacity();
+  auto deadline = start_time + std::chrono::milliseconds(half_timeout);
 
-  bt_helper(pallets, 0, 0, 0, max_weight, curr_used, best_used, best_value,
+  bt_helper(pallets, 0, 0, 0, truck_capacity, curr_used, best_used, best_value,
             deadline, timed_out);
 
   // Collect the used pallets
@@ -101,9 +120,40 @@ unsigned int BruteForce::bt_solve(std::vector<Pallet> pallets,
                       .count();
 
   if (timed_out) {
-    message = "[BF (BT)] Timeout after " + std::to_string(timeout_ms) + " ms.";
+    // Retry with the other sort for the remaining half of the timeout
+    if (weight_first) {
+      std::sort(pallets.begin(), pallets.end(), sort_by_ratio);
+    } else {
+      std::sort(pallets.begin(), pallets.end(), sort_by_weight);
+    }
+    curr_used.assign(n, false);
+    best_used.assign(n, false);
+    best_value = 0;
     used_pallets.clear();
-    return 0;
+    timed_out = false;
+    auto retry_start = std::chrono::steady_clock::now();
+    auto retry_deadline = retry_start + std::chrono::milliseconds(half_timeout);
+    bt_helper(pallets, 0, 0, 0, truck_capacity, curr_used, best_used,
+              best_value, retry_deadline, timed_out);
+    for (unsigned int i = 0; i < n; ++i) {
+      if (best_used[i]) {
+        used_pallets.push_back(pallets[i]);
+      }
+    }
+    auto retry_end = std::chrono::steady_clock::now();
+    auto retry_duration = std::chrono::duration_cast<std::chrono::microseconds>(
+                              retry_end - retry_start)
+                              .count();
+    if (timed_out) {
+      message = "[BF (BT)] Timeout after both sort strategies (" +
+                std::to_string(timeout_ms) + " ms total).";
+      used_pallets.clear();
+      return 0;
+    } else {
+      message = "[BF (BT)] Execution time: " + std::to_string(retry_duration) +
+                " μs (used alternative sort after initial timeout)";
+      return best_value;
+    }
   }
 
   message = "[BF (BT)] Execution time: " + std::to_string(duration) + " μs";

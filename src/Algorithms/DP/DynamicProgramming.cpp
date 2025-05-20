@@ -9,8 +9,13 @@ std::unique_ptr<DPTable> DynamicProgramming::create_table(
 }
 
 unsigned int DynamicProgramming::dp_solve_top_down(
-    const std::vector<Pallet>& pallets, std::unique_ptr<DPTable>& dp,
-    unsigned int i, unsigned int w) {
+    const std::vector<Pallet> &pallets, std::unique_ptr<DPTable> &dp,
+    unsigned int i, unsigned int w,
+    std::chrono::steady_clock::time_point deadline, bool &timed_out) {
+  if (std::chrono::steady_clock::now() > deadline) {
+    timed_out = true;
+    return 0;
+  }
   if (i == 0 || w == 0) return 0;
 
   unsigned int cached = dp->get(i, w);
@@ -18,12 +23,14 @@ unsigned int DynamicProgramming::dp_solve_top_down(
 
   unsigned int result;
   if (pallets[i - 1].get_weight() > w) {
-    result = dp_solve_top_down(pallets, dp, i - 1, w);
+    result = dp_solve_top_down(pallets, dp, i - 1, w, deadline, timed_out);
   } else {
     unsigned int included =
         pallets[i - 1].get_profit() +
-        dp_solve_top_down(pallets, dp, i - 1, w - pallets[i - 1].get_weight());
-    unsigned int excluded = dp_solve_top_down(pallets, dp, i - 1, w);
+        dp_solve_top_down(pallets, dp, i - 1, w - pallets[i - 1].get_weight(),
+                          deadline, timed_out);
+    unsigned int excluded =
+        dp_solve_top_down(pallets, dp, i - 1, w, deadline, timed_out);
     result = std::max(included, excluded);
   }
 
@@ -32,9 +39,13 @@ unsigned int DynamicProgramming::dp_solve_top_down(
 }
 
 unsigned int DynamicProgramming::dp_solve_top_down(
-    const std::vector<Pallet>& pallets, std::unique_ptr<DPTable>& dp,
-    unsigned int i, unsigned int w, std::vector<Pallet>& used_pallets) {
-  unsigned int result = dp_solve_top_down(pallets, dp, i, w);
+    const std::vector<Pallet> &pallets, std::unique_ptr<DPTable> &dp,
+    unsigned int i, unsigned int w, std::vector<Pallet> &used_pallets,
+    std::chrono::steady_clock::time_point deadline, bool &timed_out) {
+  unsigned int result =
+      dp_solve_top_down(pallets, dp, i, w, deadline, timed_out);
+  if (timed_out)
+    return 0;
   // Backtrack for used pallets (HashMap style)
   used_pallets.clear();
   std::function<unsigned int(unsigned int, unsigned int)> get_or_compute;
@@ -63,11 +74,15 @@ unsigned int DynamicProgramming::dp_solve_top_down(
 }
 
 unsigned int DynamicProgramming::dp_solve_bottom_up(
-    const std::vector<Pallet>& pallets, std::unique_ptr<DPTable>& dp,
-    unsigned int n, unsigned int max_weight,
-    std::vector<Pallet>& used_pallets) {
+    const std::vector<Pallet> &pallets, std::unique_ptr<DPTable> &dp,
+    unsigned int n, unsigned int max_weight, std::vector<Pallet> &used_pallets,
+    std::chrono::steady_clock::time_point deadline, bool &timed_out) {
   for (unsigned int i = 1; i <= n; i++) {
     for (unsigned int w = 0; w <= max_weight; w++) {
+      if (std::chrono::steady_clock::now() > deadline) {
+        timed_out = true;
+        return 0;
+      }
       if (pallets[i - 1].get_weight() <= w) {
         unsigned int included = pallets[i - 1].get_profit() +
                                 dp->get(i - 1, w - pallets[i - 1].get_weight());
@@ -94,26 +109,30 @@ unsigned int DynamicProgramming::dp_solve_bottom_up(
   return dp->get(n, max_weight);
 }
 
-unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet>& pallets,
-                                          const Truck& truck,
-                                          std::vector<Pallet>& used_pallets,
-                                          TableType type,
-                                          std::string& message) {
-  auto start_time = std::chrono::high_resolution_clock::now();
+unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet> &pallets,
+                                          const Truck &truck,
+                                          std::vector<Pallet> &used_pallets,
+                                          TableType type, std::string &message,
+                                          unsigned int timeout_ms) {
+  auto start_time = std::chrono::steady_clock::now();
+  auto deadline = start_time + std::chrono::milliseconds(timeout_ms);
   auto dp = create_table(type, pallets.size(), truck.get_capacity());
   unsigned int n = pallets.size();
   unsigned int max_weight = truck.get_capacity();
   unsigned int result = 0;
+  bool timed_out = false;
 
   if (type == TableType::Vector) {
     // Use bottom-up approach
-    result = dp_solve_bottom_up(pallets, dp, n, max_weight, used_pallets);
+    result = dp_solve_bottom_up(pallets, dp, n, max_weight, used_pallets,
+                                deadline, timed_out);
   } else {
     // Use top-down recursive with memoization for sparse table
-    result = dp_solve_top_down(pallets, dp, n, max_weight, used_pallets);
+    result = dp_solve_top_down(pallets, dp, n, max_weight, used_pallets,
+                               deadline, timed_out);
   }
 
-  auto end_time = std::chrono::high_resolution_clock::now();
+  auto end_time = std::chrono::steady_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
                       end_time - start_time)
                       .count();
@@ -128,6 +147,14 @@ unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet>& pallets,
   else
     memory_str = std::to_string(memory / (1024 * 1024)) + " MB";
 
+  if (timed_out) {
+    message = "[DP (" +
+              std::string(type == TableType::Vector ? "Vector" : "HashMap") +
+              " Table)] Timeout after " + std::to_string(timeout_ms) +
+              " ms | Partial/No solution.";
+    return 0;
+  }
+
   message = "[DP (" +
             std::string(type == TableType::Vector ? "Vector" : "HashMap") +
             " Table)] Execution time: " + std::to_string(duration) +
@@ -137,10 +164,12 @@ unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet>& pallets,
   return result;
 }
 
-unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet>& pallets,
-                                          const Truck& truck,
-                                          std::string& message) {
-  auto start_time = std::chrono::high_resolution_clock::now();
+unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet> &pallets,
+                                          const Truck &truck,
+                                          std::string &message,
+                                          unsigned int timeout_ms) {
+  auto start_time = std::chrono::steady_clock::now();
+  auto deadline = start_time + std::chrono::milliseconds(timeout_ms);
 
   unsigned int n = pallets.size();
   unsigned int W = truck.get_capacity();
@@ -151,6 +180,11 @@ unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet>& pallets,
 
   for (unsigned int i = 1; i <= n; ++i) {
     for (unsigned int w = 0; w <= W; ++w) {
+      if (std::chrono::steady_clock::now() > deadline) {
+        message = "[DP (2 Rolling Rows)] Timeout after " +
+                  std::to_string(timeout_ms) + " ms | Partial/No solution.";
+        return 0;
+      }
       if (pallets[i - 1].get_weight() <= w) {
         unsigned int include =
             pallets[i - 1].get_profit() + prev[w - pallets[i - 1].get_weight()];
@@ -163,7 +197,7 @@ unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet>& pallets,
     std::swap(prev, curr);
   }
 
-  auto end_time = std::chrono::high_resolution_clock::now();
+  auto end_time = std::chrono::steady_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
                       end_time - start_time)
                       .count();

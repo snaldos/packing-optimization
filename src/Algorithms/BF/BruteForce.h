@@ -24,25 +24,28 @@ try to improve efficiency
 class BruteForce {
  public:
   // Solves the knapsack problem using brute force (backtracking)
-  unsigned int bt_solve(std::vector<Pallet> pallets, const Truck& truck,
-                        std::vector<Pallet>& used_pallets,
-                        std::string& message);
+   unsigned int bt_solve(std::vector<Pallet> pallets, const Truck &truck,
+                         std::vector<Pallet> &used_pallets,
+                         std::string &message, unsigned int timeout_ms);
 
-  // Solves the knapsack problem using brute force (explicit subset generation)
-  unsigned int bf_solve(const std::vector<Pallet>& pallets, const Truck& truck,
-                        std::vector<Pallet>& used_pallets,
-                        std::string& message);
+   // Solves the knapsack problem using brute force (explicit subset generation)
+   unsigned int bf_solve(const std::vector<Pallet> &pallets, const Truck &truck,
+                         std::vector<Pallet> &used_pallets,
+                         std::string &message, unsigned int timeout_ms);
 
  private:
   // Helper function for recursive brute force
-  void bt_helper(const std::vector<Pallet>& pallets, unsigned int index,
-                 unsigned int curr_weight, unsigned int curr_value,
-                 unsigned int max_weight, std::vector<bool>& curr_used,
-                 std::vector<bool>& best_used, unsigned int& best_value);
+   void bt_helper(const std::vector<Pallet> &pallets, unsigned int index,
+                  unsigned int curr_weight, unsigned int curr_value,
+                  unsigned int max_weight, std::vector<bool> &curr_used,
+                  std::vector<bool> &best_used, unsigned int &best_value,
+                  std::chrono::steady_clock::time_point deadline,
+                  bool &timed_out);
 
-  double estimate_upper_bound(const std::vector<Pallet>& pallets,
-                              unsigned int index, unsigned int curr_weight,
-                              unsigned int curr_value, unsigned int max_weight);
+   double estimate_upper_bound(const std::vector<Pallet> &pallets,
+                               unsigned int index, unsigned int curr_weight,
+                               unsigned int curr_value,
+                               unsigned int max_weight);
 };
 
 #endif  // BRUTE_FORCE_H

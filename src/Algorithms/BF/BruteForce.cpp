@@ -1,7 +1,7 @@
 #include "BruteForce.h"
 
 // Upper bound using fractional knapsack (greedy estimate)
-double BruteForce::estimate_upper_bound(const std::vector<Pallet>& pallets,
+double BruteForce::estimate_upper_bound(const std::vector<Pallet> &pallets,
                                         unsigned int index,
                                         unsigned int curr_weight,
                                         unsigned int curr_value,
@@ -26,19 +26,25 @@ double BruteForce::estimate_upper_bound(const std::vector<Pallet>& pallets,
   return bound;
 }
 
-void BruteForce::bt_helper(const std::vector<Pallet>& pallets,
+void BruteForce::bt_helper(const std::vector<Pallet> &pallets,
                            unsigned int index, unsigned int curr_weight,
                            unsigned int curr_value, unsigned int max_weight,
-                           std::vector<bool>& curr_used,
-                           std::vector<bool>& best_used,
-                           unsigned int& best_value) {
-  if (curr_weight > max_weight) return;
-
-  // Upper bound pruning
+                           std::vector<bool> &curr_used,
+                           std::vector<bool> &best_used,
+                           unsigned int &best_value,
+                           std::chrono::steady_clock::time_point deadline,
+                           bool &timed_out) {
+  if (timed_out)
+    return;
+  if (std::chrono::steady_clock::now() > deadline) {
+    timed_out = true;
+    return;
+  }
+  if (curr_weight > max_weight)
+    return;
   if (estimate_upper_bound(pallets, index, curr_weight, curr_value,
                            max_weight) <= best_value)
     return;
-
   if (index == pallets.size()) {
     if (curr_value > best_value) {
       best_value = curr_value;
@@ -46,28 +52,28 @@ void BruteForce::bt_helper(const std::vector<Pallet>& pallets,
     }
     return;
   }
-
   // Include
   curr_used[index] = true;
   bt_helper(pallets, index + 1, curr_weight + pallets[index].get_weight(),
             curr_value + pallets[index].get_profit(), max_weight, curr_used,
-            best_used, best_value);
-
+            best_used, best_value, deadline, timed_out);
   // Exclude
   curr_used[index] = false;
   bt_helper(pallets, index + 1, curr_weight, curr_value, max_weight, curr_used,
-            best_used, best_value);
+            best_used, best_value, deadline, timed_out);
 }
 
 unsigned int BruteForce::bt_solve(std::vector<Pallet> pallets,
-                                  const Truck& truck,
-                                  std::vector<Pallet>& used_pallets,
-                                  std::string& message) {
-  auto start_time = std::chrono::high_resolution_clock::now();
+                                  const Truck &truck,
+                                  std::vector<Pallet> &used_pallets,
+                                  std::string &message,
+                                  unsigned int timeout_ms) {
+  auto start_time = std::chrono::steady_clock::now();
+  auto deadline = start_time + std::chrono::milliseconds(timeout_ms);
+  bool timed_out = false;
 
-  // Sort by value-to-weight ratio descending
   std::sort(pallets.begin(), pallets.end(),
-            [](const Pallet& a, const Pallet& b) {
+            [](const Pallet &a, const Pallet &b) {
               return (double)a.get_profit() / a.get_weight() >
                      (double)b.get_profit() / b.get_weight();
             });
@@ -78,7 +84,8 @@ unsigned int BruteForce::bt_solve(std::vector<Pallet> pallets,
   unsigned int best_value = 0;
   unsigned int max_weight = truck.get_capacity();
 
-  bt_helper(pallets, 0, 0, 0, max_weight, curr_used, best_used, best_value);
+  bt_helper(pallets, 0, 0, 0, max_weight, curr_used, best_used, best_value,
+            deadline, timed_out);
 
   // Collect the used pallets
   used_pallets.clear();
@@ -88,21 +95,28 @@ unsigned int BruteForce::bt_solve(std::vector<Pallet> pallets,
     }
   }
 
-  auto end_time = std::chrono::high_resolution_clock::now();
+  auto end_time = std::chrono::steady_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
                       end_time - start_time)
                       .count();
 
-  message = "[BF (BT)] Execution time: " + std::to_string(duration) + " μs";
+  if (timed_out) {
+    message = "[BF (BT)] Timeout after " + std::to_string(timeout_ms) + " ms.";
+    return 0;
+  }
 
+  message = "[BF (BT)] Execution time: " + std::to_string(duration) + " μs";
   return best_value;
 }
 
-unsigned int BruteForce::bf_solve(const std::vector<Pallet>& pallets,
-                                  const Truck& truck,
-                                  std::vector<Pallet>& used_pallets,
-                                  std::string& message) {
-  auto start_time = std::chrono::high_resolution_clock::now();
+unsigned int BruteForce::bf_solve(const std::vector<Pallet> &pallets,
+                                  const Truck &truck,
+                                  std::vector<Pallet> &used_pallets,
+                                  std::string &message,
+                                  unsigned int timeout_ms) {
+  auto start_time = std::chrono::steady_clock::now();
+  auto deadline = start_time + std::chrono::milliseconds(timeout_ms);
+  bool timed_out = false;
 
   unsigned int n = pallets.size();
   unsigned int max_weight = truck.get_capacity();
@@ -112,21 +126,22 @@ unsigned int BruteForce::bf_solve(const std::vector<Pallet>& pallets,
   // Iterate through all possible subsets (2^n subsets)
   uint64_t total_subsets = 1ULL << n;
   for (uint64_t subset = 0; subset < total_subsets; ++subset) {
+    if (std::chrono::steady_clock::now() > deadline) {
+      timed_out = true;
+      best_pallets.clear();
+      best_value = 0;
+      break;
+    }
     unsigned int curr_weight = 0;
     unsigned int curr_value = 0;
     std::vector<Pallet> current_pallets;
-
-    // Check each pallet in the subset
     for (unsigned int i = 0; i < n; ++i) {
-      // If the i-th bit is set
-      if (subset & (1 << i)) {
+      if (subset & (1ULL << i)) {
         curr_weight += pallets[i].get_weight();
         curr_value += pallets[i].get_profit();
         current_pallets.push_back(pallets[i]);
       }
     }
-
-    // Update the best solution if valid and better
     if (curr_weight <= max_weight && curr_value > best_value) {
       best_value = curr_value;
       best_pallets = current_pallets;
@@ -136,12 +151,16 @@ unsigned int BruteForce::bf_solve(const std::vector<Pallet>& pallets,
   // Store the best pallets
   used_pallets = best_pallets;
 
-  auto end_time = std::chrono::high_resolution_clock::now();
+  auto end_time = std::chrono::steady_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
                       end_time - start_time)
                       .count();
 
-  message = "[BF] Execution time: " + std::to_string(duration) + " μs";
+  if (timed_out) {
+    message = "[BF] Timeout after " + std::to_string(timeout_ms) + " ms.";
+    return 0;
+  }
 
+  message = "[BF] Execution time: " + std::to_string(duration) + " μs";
   return best_value;
 }

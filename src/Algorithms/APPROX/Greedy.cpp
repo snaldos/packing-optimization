@@ -1,10 +1,12 @@
 #include "Greedy.h"
 
-unsigned int Greedy::approx_solve(const std::vector<Pallet>& pallets,
-                                  const Truck& truck,
-                                  std::vector<Pallet>& used_pallets,
-                                  std::string& message) {
+unsigned int Greedy::approx_solve(const std::vector<Pallet> &pallets,
+                                  const Truck &truck,
+                                  std::vector<Pallet> &used_pallets,
+                                  std::string &message,
+                                  unsigned int timeout_ms) {
   auto start_time = std::chrono::high_resolution_clock::now();
+  auto timeout = std::chrono::milliseconds(timeout_ms);
 
   // Sort pallets by profit-to-weight ratio in descending order
   std::vector<Pallet> sorted_pallets = pallets;
@@ -26,6 +28,12 @@ unsigned int Greedy::approx_solve(const std::vector<Pallet>& pallets,
 
   // Select pallets greedily
   for (const auto& pallet : sorted_pallets) {
+    auto now = std::chrono::high_resolution_clock::now();
+    if (now - start_time > timeout) {
+      message = "[Greedy] Timeout: Algorithm exceeded " +
+                std::to_string(timeout_ms) + " ms.";
+      return 0;
+    }
     if (pallet.get_weight() <= remaining_weight) {
       used_pallets.push_back(pallet);
       total_profit += pallet.get_profit();

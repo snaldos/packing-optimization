@@ -11,10 +11,10 @@
 
 class IntegerLinearProgramming {
  public:
-  unsigned int solve_ilp_cpp(const std::vector<Pallet>& pallets,
-                             const Truck& truck,
-                             std::vector<Pallet>& used_pallets,
-                             std::string& message);
+   unsigned int solve_ilp_cpp(const std::vector<Pallet> &pallets,
+                              const Truck &truck,
+                              std::vector<Pallet> &used_pallets,
+                              std::string &message, unsigned int timeout_ms);
 };
 
 #endif  // INTEGER_LINEAR_PROGRAMMING_H

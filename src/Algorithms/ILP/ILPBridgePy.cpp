@@ -5,7 +5,8 @@ using json = nlohmann::json;
 unsigned int ILPBridgePy::solve_ilp_py(const std::vector<Pallet> &pallets,
                                        const Truck &truck,
                                        std::vector<Pallet> &used_pallets,
-                                       std::string &message) {
+                                       std::string &message,
+                                       unsigned int timeout_ms) {
   auto start_time = std::chrono::high_resolution_clock::now();
 
   // Construct paths using PROJECT_DIR
@@ -29,9 +30,10 @@ unsigned int ILPBridgePy::solve_ilp_py(const std::vector<Pallet> &pallets,
 
   std::ofstream(input_path) << input_json.dump(4);
 
-  // Call Python
+  // Call Python with timeout
   std::string command = "python3 " + script_path + " " + input_path + " " +
-                        output_path + " 2> " + error_log_path;
+                        output_path + " " + std::to_string(timeout_ms) +
+                        " 2> " + error_log_path;
   int ret = std::system(command.c_str());
   if (ret != 0) {
     std::ifstream error_log(error_log_path);
@@ -47,6 +49,10 @@ unsigned int ILPBridgePy::solve_ilp_py(const std::vector<Pallet> &pallets,
   in >> output_json;
 
   used_pallets.clear();
+  if (output_json.contains("timeout") && output_json["timeout"]) {
+    message = "[ILP (PY)] Timeout after " + std::to_string(timeout_ms) + " ms.";
+    return 0;
+  }
   unsigned int total_profit = output_json["total_profit"];
   for (const auto &p : output_json["used_pallets"]) {
     auto it =

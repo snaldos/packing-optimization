@@ -21,27 +21,33 @@ class DynamicProgramming {
   std::unique_ptr<DPTable> create_table(TableType type, unsigned int n,
                                         unsigned int max_weight);
 
-  unsigned int dp_solve_top_down(const std::vector<Pallet>& pallets,
-                                 std::unique_ptr<DPTable>& dp, unsigned int i,
-                                 unsigned int w);
-
-  unsigned int dp_solve_top_down(const std::vector<Pallet>& pallets,
-                                 std::unique_ptr<DPTable>& dp, unsigned int i,
+  unsigned int dp_solve_top_down(const std::vector<Pallet> &pallets,
+                                 std::unique_ptr<DPTable> &dp, unsigned int i,
                                  unsigned int w,
-                                 std::vector<Pallet>& used_pallets);
+                                 std::chrono::steady_clock::time_point deadline,
+                                 bool &timed_out);
 
-  unsigned int dp_solve_bottom_up(const std::vector<Pallet>& pallets,
-                                  std::unique_ptr<DPTable>& dp, unsigned int n,
-                                  unsigned int max_weight,
-                                  std::vector<Pallet>& used_pallets);
+  unsigned int dp_solve_top_down(const std::vector<Pallet> &pallets,
+                                 std::unique_ptr<DPTable> &dp, unsigned int i,
+                                 unsigned int w,
+                                 std::vector<Pallet> &used_pallets,
+                                 std::chrono::steady_clock::time_point deadline,
+                                 bool &timed_out);
 
- public:
-  unsigned int dp_solve(const std::vector<Pallet>& pallets, const Truck& truck,
-                        std::vector<Pallet>& used_pallets, TableType type,
-                        std::string& message);
+  unsigned int
+  dp_solve_bottom_up(const std::vector<Pallet> &pallets,
+                     std::unique_ptr<DPTable> &dp, unsigned int n,
+                     unsigned int max_weight, std::vector<Pallet> &used_pallets,
+                     std::chrono::steady_clock::time_point deadline,
+                     bool &timed_out);
 
-  unsigned int dp_solve(const std::vector<Pallet>& pallets, const Truck& truck,
-                        std::string& message);
+public:
+   unsigned int dp_solve(const std::vector<Pallet> &pallets, const Truck &truck,
+                         std::vector<Pallet> &used_pallets, TableType type,
+                         std::string &message, unsigned int timeout_ms);
+
+   unsigned int dp_solve(const std::vector<Pallet> &pallets, const Truck &truck,
+                         std::string &message, unsigned int timeout_ms);
 };
 
 #endif  // DYNAMIC_PROGRAMMING_H

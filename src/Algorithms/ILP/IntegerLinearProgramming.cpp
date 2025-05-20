@@ -1,8 +1,10 @@
 #include "IntegerLinearProgramming.h"
+#include "absl/time/time.h"
 
 unsigned int IntegerLinearProgramming::solve_ilp_cpp(
     const std::vector<Pallet> &pallets, const Truck &truck,
-    std::vector<Pallet> &used_pallets, std::string &message) {
+    std::vector<Pallet> &used_pallets, std::string &message,
+    unsigned int timeout_ms) {
   auto start_time = std::chrono::high_resolution_clock::now();
   unsigned int n = pallets.size();
   unsigned int max_weight = truck.get_capacity();
@@ -11,6 +13,9 @@ unsigned int IntegerLinearProgramming::solve_ilp_cpp(
   operations_research::MPSolver solver(
       "knapsack_ilp",
       operations_research::MPSolver::CBC_MIXED_INTEGER_PROGRAMMING);
+
+  // Set time limit (milliseconds)
+  solver.SetTimeLimit(absl::Milliseconds(timeout_ms));
 
   // variables: x[i] = 1 if pallet i is used, 0 otherwise
   std::vector<operations_research::MPVariable *> x;
@@ -38,6 +43,12 @@ unsigned int IntegerLinearProgramming::solve_ilp_cpp(
   const operations_research::MPSolver::ResultStatus status = solver.Solve();
 
   used_pallets.clear();
+  if (status == operations_research::MPSolver::ABNORMAL ||
+      status == operations_research::MPSolver::NOT_SOLVED) {
+    message =
+        "[ILP (CPP)] Timeout after " + std::to_string(timeout_ms) + " ms.";
+    return 0;
+  }
   if (status != operations_research::MPSolver::OPTIMAL &&
       status != operations_research::MPSolver::FEASIBLE) {
     message = "[ILP CPP] No feasible solution found.";

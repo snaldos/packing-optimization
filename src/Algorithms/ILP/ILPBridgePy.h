@@ -27,10 +27,10 @@
 
 class ILPBridgePy {
  public:
-  unsigned int solve_ilp_py(const std::vector<Pallet>& pallets,
-                            const Truck& truck,
-                            std::vector<Pallet>& used_pallets,
-                            std::string& message);
+   unsigned int solve_ilp_py(const std::vector<Pallet> &pallets,
+                             const Truck &truck,
+                             std::vector<Pallet> &used_pallets,
+                             std::string &message, unsigned int timeout_ms);
 };
 
 #endif  // ILPBRIDGEPY_H

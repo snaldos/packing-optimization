@@ -24,10 +24,10 @@
 
 class Greedy {
  public:
-  unsigned int approx_solve(const std::vector<Pallet>& pallets,
-                            const Truck& truck,
-                            std::vector<Pallet>& used_pallets,
-                            std::string& message);
+   unsigned int approx_solve(const std::vector<Pallet> &pallets,
+                             const Truck &truck,
+                             std::vector<Pallet> &used_pallets,
+                             std::string &message, unsigned int timeout_ms);
 };
 
 #endif  // GREEDY_H

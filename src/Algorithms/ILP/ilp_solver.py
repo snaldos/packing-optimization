@@ -1,10 +1,11 @@
 import json
 import sys
+import time
 
 import pulp
 
 
-def solve_knapsack(data):
+def solve_knapsack(data, timeout_s=None):
     capacity = data["truck_capacity"]
     pallets = data["pallets"]
 
@@ -21,7 +22,14 @@ def solve_knapsack(data):
     prob += pulp.lpSum(p["weight"] * x[p["id"]] for p in pallets) <= capacity
 
     # Solve the problem using CBC solver (or default solver)
-    prob.solve(pulp.PULP_CBC_CMD(msg=False))
+    solver = pulp.PULP_CBC_CMD(msg=False)
+    if timeout_s is not None:
+        solver.timeLimit = timeout_s
+    status = prob.solve(solver)
+
+    # Check for timeout (CBC returns status 0 if stopped by time limit)
+    if status == pulp.LpStatusNotSolved:
+        return {"timeout": True, "total_profit": 0, "used_pallets": []}
 
     # Collect the pallets selected in the optimal solution
     used_pallets = [p for p in pallets if x[p["id"]].value() == 1.0]
@@ -30,7 +38,7 @@ def solve_knapsack(data):
     total_profit = sum(p["profit"] for p in used_pallets)
 
     # Return the result as a dictionary
-    return {"total_profit": total_profit, "used_pallets": used_pallets}
+    return {"timeout": False, "total_profit": total_profit, "used_pallets": used_pallets}
 
 
 if __name__ == "__main__":
@@ -38,7 +46,14 @@ if __name__ == "__main__":
     with open(input_path, "r") as f:
         data = json.load(f)
 
-    result = solve_knapsack(data)
+    timeout_s = None
+    if len(sys.argv) > 3:
+        try:
+            timeout_s = float(sys.argv[3]) / 1000.0
+        except Exception:
+            timeout_s = None
+
+    result = solve_knapsack(data, timeout_s)
 
     # Write the JSON result to stdout
     output_path = sys.argv[2]

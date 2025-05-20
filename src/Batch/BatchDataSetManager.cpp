@@ -1,16 +1,19 @@
 #include "BatchDataSetManager.h"
 
-BatchDataSetManager::BatchDataSetManager(std::vector<Pallet>& pallets,
-                                         Truck& truck)
+BatchDataSetManager::BatchDataSetManager(std::vector<Pallet> &pallets,
+                                         Truck &truck)
     : pallets(pallets), truck(truck) {}
 
-const std::vector<Pallet>& BatchDataSetManager::get_pallets() const {
+const std::vector<Pallet> &BatchDataSetManager::get_pallets() const {
   return pallets;
 }
 
 int BatchDataSetManager::select_and_load_dataset() {
   BatchUtils::clear_terminal();
   while (true) {
+    if (!current_identifier.empty()) {
+      std::cout << "Current dataset: " << current_identifier << "\n";
+    }
     std::cout << "Files should be in the format:\n"
               << "Pallets_<X>.csv\n"
               << "TruckAndPallets_<X>.csv\n\n";
@@ -25,11 +28,16 @@ int BatchDataSetManager::select_and_load_dataset() {
     }
 
     if (load_dataset(identifier)) {
-      // std::cout << "Dataset loaded successfully.\n";
-      // Ensure the output directory exists and remove any existing files
       std::string output_dir = Utils::get_absolute_dir("/output");
       Utils::ensure_directory(output_dir);
-
+      if (!current_identifier.empty()) {
+        BatchUtils::clear_terminal();
+        std::cout << "Dataset updated to: " << identifier << "\n";
+        std::cout << "Press Enter to continue...";
+        std::string dummy;
+        std::getline(std::cin, dummy);
+      }
+      current_identifier = identifier;
       break;
     } else {
       BatchUtils::clear_terminal();
@@ -43,8 +51,11 @@ int BatchDataSetManager::select_and_load_dataset() {
 
 void BatchDataSetManager::show_dataset() {
   BatchUtils::clear_terminal();
+  if (!current_identifier.empty()) {
+    std::cout << "Current dataset: " << current_identifier << "\n";
+  }
   std::cout << "Pallets:\n";
-  for (const Pallet& pallet : pallets) {
+  for (const Pallet &pallet : pallets) {
     std::cout << "id: " << pallet.get_id()
               << ", profit: " << pallet.get_profit()
               << ", weight: " << pallet.get_weight() << "\n";
@@ -62,7 +73,6 @@ void BatchDataSetManager::show_dataset() {
 bool BatchDataSetManager::load_dataset(std::string identifier) {
   std::string pallets_filename = "/data/Pallets_" + identifier + ".csv";
   std::string pallets_file_str = Utils::get_absolute_dir(pallets_filename);
-  std::cout << "Loading pallets from: " << pallets_filename << std::endl;
   std::string truck_filename = "/data/TruckAndPallets_" + identifier + ".csv";
   std::string truck_file_str = Utils::get_absolute_dir(truck_filename);
 

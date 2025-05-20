@@ -150,8 +150,7 @@ unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet> &pallets,
   if (timed_out) {
     message = "[DP (" +
               std::string(type == TableType::Vector ? "Vector" : "HashMap") +
-              " Table)] Timeout after " + std::to_string(timeout_ms) +
-              " ms | Partial/No solution.";
+              " Table)] Timeout after " + std::to_string(timeout_ms) + " ms.";
     return 0;
   }
 
@@ -182,7 +181,7 @@ unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet> &pallets,
     for (unsigned int w = 0; w <= W; ++w) {
       if (std::chrono::steady_clock::now() > deadline) {
         message = "[DP (2 Rolling Rows)] Timeout after " +
-                  std::to_string(timeout_ms) + " ms | Partial/No solution.";
+                  std::to_string(timeout_ms) + " ms.";
         return 0;
       }
       if (pallets[i - 1].get_weight() <= w) {

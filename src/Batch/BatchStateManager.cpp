@@ -20,6 +20,9 @@ void BatchStateManager::update_state() {
       case BatchState::ShowDataset:
         batch_data_manager.show_dataset();
         break;
+      case BatchState::SelectTimeout:
+        batch_input_manager.select_timeout();
+        break;
       case BatchState::Exit:
         return;
       default:

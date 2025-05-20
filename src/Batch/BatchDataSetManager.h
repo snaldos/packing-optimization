@@ -25,6 +25,7 @@ class BatchDataSetManager {
   CSVParser csv_data_parser;
   std::vector<Pallet>& pallets;
   Truck& truck;
+  std::string current_identifier; // Tracks the current dataset identifier
 };
 
 #endif  // BATCH_DATASET_MANAGER_H

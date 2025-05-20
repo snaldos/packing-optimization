@@ -6,7 +6,7 @@ BatchInputManager::BatchInputManager(std::vector<Pallet> &pallets, Truck &truck)
 BatchState BatchInputManager::getInputMode() {
   std::string prompt = "Choose an option (empty line to exit): ";
   std::vector<std::string> options = {"Run Algorithms", "Select Dataset",
-                                      "Show Dataset"};
+                                      "Show Dataset", "Change Timeout"};
   int choice = BatchUtils::get_menu_choice(options, prompt);
 
   switch (choice) {
@@ -17,8 +17,63 @@ BatchState BatchInputManager::getInputMode() {
     return BatchState::SelectDataset;
   case 3:
     return BatchState::ShowDataset;
+  case 4:
+    return BatchState::SelectTimeout;
   default:
     return BatchState::Exit; // Fallback
+  }
+}
+
+void BatchInputManager::select_timeout() {
+  BatchUtils::clear_terminal();
+  while (true) {
+    std::cout << "Current timeout: " << timeout_ms << " ms ("
+              << (timeout_ms / 1000.0) << " seconds)\n";
+    std::cout << "Enter new timeout in milliseconds (empty line to exit): ";
+    std::string input;
+    std::getline(std::cin, input);
+    if (input.empty()) {
+      return;
+    }
+    // Check if input is all digits (optionally allow leading +)
+    std::string trimmed = ParserUtils::trim(input);
+    if (trimmed.empty() || (trimmed[0] == '+' && trimmed.size() == 1)) {
+      BatchUtils::clear_terminal();
+      std::cerr
+          << "ERROR: Invalid input. Please enter a non-negative integer.\n";
+      continue;
+    }
+    size_t idx = 0;
+    if (trimmed[0] == '+')
+      idx = 1;
+    bool all_digits = true;
+    for (; idx < trimmed.size(); ++idx) {
+      if (!isdigit(trimmed[idx])) {
+        all_digits = false;
+        break;
+      }
+    }
+    if (!all_digits) {
+      BatchUtils::clear_terminal();
+      std::cerr
+          << "ERROR: Invalid input. Please enter a non-negative integer.\n";
+      continue;
+    }
+    try {
+      unsigned int new_timeout = std::stoul(trimmed);
+      timeout_ms = new_timeout;
+      BatchUtils::clear_terminal();
+      std::cout << "Timeout updated to " << timeout_ms << " ms ("
+                << (timeout_ms / 1000.0) << " seconds).\n";
+      std::cout << "Press Enter to continue...";
+      std::getline(std::cin, input);
+      return;
+    } catch (...) {
+      BatchUtils::clear_terminal();
+      std::cerr
+          << "ERROR: Invalid input. Please enter a non-negative integer.\n";
+      continue;
+    }
   }
 }
 
@@ -71,33 +126,28 @@ void BatchInputManager::processInput() {
     std::vector<Pallet> used_pallets;
     unsigned int max_profit = 0;
     std::string message;
-    unsigned int timeout_ms;
 
     switch (choice) {
     case 1:
       filename = "bf.txt";
-      timeout_ms = 60000; // 1 minute
       max_profit = BruteForce().bf_solve(pallets, truck, used_pallets, message,
                                          timeout_ms);
       generate_output_file(filename, used_pallets, max_profit, message);
       break;
     case 2:
       filename = "bt.txt";
-      timeout_ms = 60000; // 1 minute
       max_profit = BruteForce().bt_solve(pallets, truck, used_pallets, message,
                                          timeout_ms);
       generate_output_file(filename, used_pallets, max_profit, message);
       break;
     case 3:
       filename = "dp_vector.txt";
-      timeout_ms = 60000; // 1 minute
       max_profit = DynamicProgramming().dp_solve(
           pallets, truck, used_pallets, TableType::Vector, message, timeout_ms);
       generate_output_file(filename, used_pallets, max_profit, message);
       break;
     case 4:
       filename = "dp_hashmap.txt";
-      timeout_ms = 60000; // 1 minute
       max_profit = DynamicProgramming().dp_solve(pallets, truck, used_pallets,
                                                  TableType::HashMap, message,
                                                  timeout_ms);
@@ -105,31 +155,24 @@ void BatchInputManager::processInput() {
       break;
     case 5:
       filename = "dp_optimized.txt";
-      timeout_ms = 60000; // 1 minute
-
       max_profit =
           DynamicProgramming().dp_solve(pallets, truck, message, timeout_ms);
       generate_output_file(filename, used_pallets, max_profit, message);
       break;
-
     case 6:
       filename = "greedy_approx.txt";
-      timeout_ms = 60000; // 1 minute
-
       max_profit = Greedy().approx_solve(pallets, truck, used_pallets, message,
                                          timeout_ms);
       generate_output_file(filename, used_pallets, max_profit, message);
       break;
     case 7:
       filename = "ilp_cpp.txt";
-      timeout_ms = 60000; // 1 minute
       max_profit = IntegerLinearProgramming().solve_ilp_cpp(
           pallets, truck, used_pallets, message, timeout_ms);
       generate_output_file(filename, used_pallets, max_profit, message);
       break;
     case 8:
       filename = "ilp_py.txt";
-      timeout_ms = 60000; // 1 minute
       max_profit = ILPBridgePy().solve_ilp_py(pallets, truck, used_pallets,
                                               message, timeout_ms);
       generate_output_file(filename, used_pallets, max_profit, message);

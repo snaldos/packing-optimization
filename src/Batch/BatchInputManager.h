@@ -29,12 +29,16 @@ class BatchInputManager {
                             unsigned int& max_profit, std::string& message);
   std::vector<Pallet>& pallets;
   Truck& truck;
+  unsigned int timeout_ms = 60000; // Default 1 minute
 
- public:
+public:
   BatchInputManager(std::vector<Pallet>& pallets, Truck& truck);
 
   BatchState getInputMode();
   void processInput();
+  void set_timeout_ms(unsigned int ms) { timeout_ms = ms; }
+  unsigned int get_timeout_ms() const { return timeout_ms; }
+  void select_timeout();
 };
 
 #endif  // BATCH_INPUT_MANAGER_H

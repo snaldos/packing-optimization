@@ -86,9 +86,9 @@ unsigned int BruteForce::bt_solve(std::vector<Pallet> pallets,
   }
   double capacity = truck.get_capacity();
   // Heuristic: if the most valuable pallet is heavy (>=80% capacity) and
-  // valuable (>=60% total value), try value sort first
+  // valuable (>=50% total value), try value sort first
   bool value_first =
-      (max_weight >= 0.8 * capacity) && (max_value >= 0.6 * total_value);
+      (max_weight >= 0.8 * capacity) && (max_value >= 0.5 * total_value);
 
   // Sorting lambdas
   auto sort_by_value = [](const Pallet &a, const Pallet &b) {

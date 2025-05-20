@@ -102,6 +102,7 @@ unsigned int BruteForce::bt_solve(std::vector<Pallet> pallets,
 
   if (timed_out) {
     message = "[BF (BT)] Timeout after " + std::to_string(timeout_ms) + " ms.";
+    used_pallets.clear();
     return 0;
   }
 
@@ -128,8 +129,6 @@ unsigned int BruteForce::bf_solve(const std::vector<Pallet> &pallets,
   for (uint64_t subset = 0; subset < total_subsets; ++subset) {
     if (std::chrono::steady_clock::now() > deadline) {
       timed_out = true;
-      best_pallets.clear();
-      best_value = 0;
       break;
     }
     unsigned int curr_weight = 0;
@@ -157,6 +156,7 @@ unsigned int BruteForce::bf_solve(const std::vector<Pallet> &pallets,
                       .count();
 
   if (timed_out) {
+    used_pallets.clear();
     message = "[BF] Timeout after " + std::to_string(timeout_ms) + " ms.";
     return 0;
   }

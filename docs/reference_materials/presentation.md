@@ -8,6 +8,28 @@ Packing optimization is a classic problem in combinatorial optimization, with ap
 
 ---
 
+## Table of Contents
+
+- [Packing Optimization: Algorithmic Strategies \& Analysis](#packing-optimization-algorithmic-strategies--analysis)
+  - [Introduction](#introduction)
+  - [Table of Contents](#table-of-contents)
+  - [Identification of Work and Group Members](#identification-of-work-and-group-members)
+  - [Class Diagram \& File Involvement](#class-diagram--file-involvement)
+  - [Reading the Dataset](#reading-the-dataset)
+  - [Implemented Functionalities \& Algorithms](#implemented-functionalities--algorithms)
+  - [Strategy Analysis](#strategy-analysis)
+  - [Data Structures Used](#data-structures-used)
+  - [Time \& Space Complexities](#time--space-complexities)
+  - [Comparative Analysis](#comparative-analysis)
+  - [Summary Table: Strengths \& Weaknesses](#summary-table-strengths--weaknesses)
+  - [User Interface \& Example of Use](#user-interface--example-of-use)
+  - [Highlight: Custom Branch \& Bound Pruning \& Main Difficulties](#highlight-custom-branch--bound-pruning--main-difficulties)
+    - [Functionality to Highlight](#functionality-to-highlight)
+    - [Main Difficulties](#main-difficulties)
+  - [Conclusion](#conclusion)
+
+---
+
 ## Identification of Work and Group Members
 
 - **Project:** Packing Optimization Algorithms

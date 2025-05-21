@@ -1,0 +1,29 @@
+\doxysection{Branch\+And\+Bound.\+h}
+\hypertarget{BranchAndBound_8h_source}{}\label{BranchAndBound_8h_source}\index{src/Algorithms/BB/BranchAndBound.h@{src/Algorithms/BB/BranchAndBound.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <chrono>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}../../DataStructures/Pallet.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}../../DataStructures/Truck.h"{}}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classBranchAndBound}{BranchAndBound}}\ \{}
+\DoxyCodeLine{00019\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00032\ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classBranchAndBound_a6864388ea353fc51aa3647eee9405cf6}{bb\_solve}}(std::vector<Pallet>\ pallets,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTruck}{Truck}}\ \&truck,}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<Pallet>\ \&used\_pallets,\ std::string\ \&message,}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ timeout\_ms);}
+\DoxyCodeLine{00035\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00046\ \ \ \textcolor{keywordtype}{double}\ estimate\_upper\_bound(\textcolor{keyword}{const}\ std::vector<Pallet>\ \&pallets,}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ index,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ curr\_weight,}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ curr\_value,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ max\_weight);}
+\DoxyCodeLine{00062\ \ \ \textcolor{keywordtype}{void}\ bb\_helper(\textcolor{keyword}{const}\ std::vector<Pallet>\ \&pallets,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ index,}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ curr\_weight,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ curr\_value,}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ max\_weight,\ std::vector<bool>\ \&curr\_used,}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<bool>\ \&best\_used,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \&best\_value,}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::chrono::steady\_clock::time\_point\ deadline,}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \&timed\_out);}
+\DoxyCodeLine{00068\ \};}
+
+\end{DoxyCode}

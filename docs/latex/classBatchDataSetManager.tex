@@ -1,0 +1,83 @@
+\doxysection{Batch\+Data\+Set\+Manager Class Reference}
+\hypertarget{classBatchDataSetManager}{}\label{classBatchDataSetManager}\index{BatchDataSetManager@{BatchDataSetManager}}
+
+
+Manages loading, displaying, and tracking datasets for batch mode operations.  
+
+
+
+
+{\ttfamily \#include $<$Batch\+Data\+Set\+Manager.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classBatchDataSetManager_aa18125ae89c12146abe5fe247aff4b73}{Batch\+Data\+Set\+Manager}} (std\+::vector$<$ \mbox{\hyperlink{classPallet}{Pallet}} $>$ \&pallets, \mbox{\hyperlink{classTruck}{Truck}} \&truck)
+\begin{DoxyCompactList}\small\item\em Constructs a \doxylink{classBatchDataSetManager}{Batch\+Data\+Set\+Manager} with references to the main data structures. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classBatchDataSetManager_a99d24ec47d4166c7bdc0ccf67b041c12}{select\+\_\+and\+\_\+load\+\_\+dataset}} ()
+\begin{DoxyCompactList}\small\item\em Prompts the user to select and load a dataset from available files. \end{DoxyCompactList}\item 
+\Hypertarget{classBatchDataSetManager_a5542b515b11bb0ac2d8c6fb057192170}\label{classBatchDataSetManager_a5542b515b11bb0ac2d8c6fb057192170} 
+void {\bfseries show\+\_\+dataset} ()
+\begin{DoxyCompactList}\small\item\em Displays the currently loaded dataset (pallets and truck info). \end{DoxyCompactList}\item 
+const std\+::vector$<$ \mbox{\hyperlink{classPallet}{Pallet}} $>$ \& \mbox{\hyperlink{classBatchDataSetManager_ad40ff41eaa84f8a534c1455485890905}{get\+\_\+pallets}} () const
+\begin{DoxyCompactList}\small\item\em Returns a const reference to the loaded pallets vector. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Manages loading, displaying, and tracking datasets for batch mode operations. 
+
+Handles user interaction for selecting datasets, loading CSV files, and displaying current data. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classBatchDataSetManager_aa18125ae89c12146abe5fe247aff4b73}\label{classBatchDataSetManager_aa18125ae89c12146abe5fe247aff4b73} 
+\index{BatchDataSetManager@{BatchDataSetManager}!BatchDataSetManager@{BatchDataSetManager}}
+\index{BatchDataSetManager@{BatchDataSetManager}!BatchDataSetManager@{BatchDataSetManager}}
+\doxysubsubsection{\texorpdfstring{BatchDataSetManager()}{BatchDataSetManager()}}
+{\footnotesize\ttfamily Batch\+Data\+Set\+Manager\+::\+Batch\+Data\+Set\+Manager (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \mbox{\hyperlink{classPallet}{Pallet}} $>$ \&}]{pallets,  }\item[{\mbox{\hyperlink{classTruck}{Truck}} \&}]{truck }\end{DoxyParamCaption})}
+
+
+
+Constructs a \doxylink{classBatchDataSetManager}{Batch\+Data\+Set\+Manager} with references to the main data structures. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pallets} & Reference to the vector of pallets \\
+\hline
+{\em truck} & Reference to the truck object \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classBatchDataSetManager_ad40ff41eaa84f8a534c1455485890905}\label{classBatchDataSetManager_ad40ff41eaa84f8a534c1455485890905} 
+\index{BatchDataSetManager@{BatchDataSetManager}!get\_pallets@{get\_pallets}}
+\index{get\_pallets@{get\_pallets}!BatchDataSetManager@{BatchDataSetManager}}
+\doxysubsubsection{\texorpdfstring{get\_pallets()}{get\_pallets()}}
+{\footnotesize\ttfamily const std\+::vector$<$ \mbox{\hyperlink{classPallet}{Pallet}} $>$ \& Batch\+Data\+Set\+Manager\+::get\+\_\+pallets (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Returns a const reference to the loaded pallets vector. 
+
+\begin{DoxyReturn}{Returns}
+Const reference to vector of pallets 
+\end{DoxyReturn}
+\Hypertarget{classBatchDataSetManager_a99d24ec47d4166c7bdc0ccf67b041c12}\label{classBatchDataSetManager_a99d24ec47d4166c7bdc0ccf67b041c12} 
+\index{BatchDataSetManager@{BatchDataSetManager}!select\_and\_load\_dataset@{select\_and\_load\_dataset}}
+\index{select\_and\_load\_dataset@{select\_and\_load\_dataset}!BatchDataSetManager@{BatchDataSetManager}}
+\doxysubsubsection{\texorpdfstring{select\_and\_load\_dataset()}{select\_and\_load\_dataset()}}
+{\footnotesize\ttfamily int Batch\+Data\+Set\+Manager\+::select\+\_\+and\+\_\+load\+\_\+dataset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Prompts the user to select and load a dataset from available files. 
+
+\begin{DoxyReturn}{Returns}
+1 if a dataset was loaded, 0 otherwise 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Batch/Batch\+Data\+Set\+Manager.\+h\item 
+src/\+Batch/Batch\+Data\+Set\+Manager.\+cpp\end{DoxyCompactItemize}

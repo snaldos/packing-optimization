@@ -1,0 +1,97 @@
+\doxysection{Pallet Class Reference}
+\hypertarget{classPallet}{}\label{classPallet}\index{Pallet@{Pallet}}
+
+
+Represents a pallet with an ID, weight, and profit value.  
+
+
+
+
+{\ttfamily \#include $<$Pallet.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classPallet_a4a4402e27189e7bc70e1f11145ecc18f}{Pallet}} (std\+::string id, unsigned int weight, int profit)
+\begin{DoxyCompactList}\small\item\em Constructs a \doxylink{classPallet}{Pallet} with the given ID, weight, and profit. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{classPallet_a3eef66578a3c1a0c495345d4625ff0f9}{get\+\_\+id}} () const
+\begin{DoxyCompactList}\small\item\em Gets the unique identifier of the pallet. \end{DoxyCompactList}\item 
+unsigned int \mbox{\hyperlink{classPallet_a983fabdb166c55be645f794af44a4a44}{get\+\_\+weight}} () const
+\begin{DoxyCompactList}\small\item\em Gets the weight of the pallet. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classPallet_a914036cde6bfb0eee38386519c68fcb1}{get\+\_\+profit}} () const
+\begin{DoxyCompactList}\small\item\em Gets the profit value of the pallet. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Represents a pallet with an ID, weight, and profit value. 
+
+Used as an item in the knapsack problem, where each pallet has a unique identifier, a weight, and an associated profit. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classPallet_a4a4402e27189e7bc70e1f11145ecc18f}\label{classPallet_a4a4402e27189e7bc70e1f11145ecc18f} 
+\index{Pallet@{Pallet}!Pallet@{Pallet}}
+\index{Pallet@{Pallet}!Pallet@{Pallet}}
+\doxysubsubsection{\texorpdfstring{Pallet()}{Pallet()}}
+{\footnotesize\ttfamily Pallet\+::\+Pallet (\begin{DoxyParamCaption}\item[{std\+::string}]{id,  }\item[{unsigned int}]{weight,  }\item[{int}]{profit }\end{DoxyParamCaption})}
+
+
+
+Constructs a \doxylink{classPallet}{Pallet} with the given ID, weight, and profit. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em id} & Unique identifier \\
+\hline
+{\em weight} & Weight of the pallet \\
+\hline
+{\em profit} & Profit value \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classPallet_a3eef66578a3c1a0c495345d4625ff0f9}\label{classPallet_a3eef66578a3c1a0c495345d4625ff0f9} 
+\index{Pallet@{Pallet}!get\_id@{get\_id}}
+\index{get\_id@{get\_id}!Pallet@{Pallet}}
+\doxysubsubsection{\texorpdfstring{get\_id()}{get\_id()}}
+{\footnotesize\ttfamily std\+::string Pallet\+::get\+\_\+id (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Gets the unique identifier of the pallet. 
+
+\begin{DoxyReturn}{Returns}
+\doxylink{classPallet}{Pallet} ID as a string 
+\end{DoxyReturn}
+\Hypertarget{classPallet_a914036cde6bfb0eee38386519c68fcb1}\label{classPallet_a914036cde6bfb0eee38386519c68fcb1} 
+\index{Pallet@{Pallet}!get\_profit@{get\_profit}}
+\index{get\_profit@{get\_profit}!Pallet@{Pallet}}
+\doxysubsubsection{\texorpdfstring{get\_profit()}{get\_profit()}}
+{\footnotesize\ttfamily int Pallet\+::get\+\_\+profit (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Gets the profit value of the pallet. 
+
+\begin{DoxyReturn}{Returns}
+Profit as an integer 
+\end{DoxyReturn}
+\Hypertarget{classPallet_a983fabdb166c55be645f794af44a4a44}\label{classPallet_a983fabdb166c55be645f794af44a4a44} 
+\index{Pallet@{Pallet}!get\_weight@{get\_weight}}
+\index{get\_weight@{get\_weight}!Pallet@{Pallet}}
+\doxysubsubsection{\texorpdfstring{get\_weight()}{get\_weight()}}
+{\footnotesize\ttfamily unsigned int Pallet\+::get\+\_\+weight (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Gets the weight of the pallet. 
+
+\begin{DoxyReturn}{Returns}
+Weight as an unsigned integer 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Data\+Structures/Pallet.\+h\item 
+src/\+Data\+Structures/Pallet.\+cpp\end{DoxyCompactItemize}

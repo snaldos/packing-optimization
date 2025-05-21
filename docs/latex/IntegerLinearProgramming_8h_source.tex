@@ -1,0 +1,26 @@
+\doxysection{Integer\+Linear\+Programming.\+h}
+\hypertarget{IntegerLinearProgramming_8h_source}{}\label{IntegerLinearProgramming_8h_source}\index{src/Algorithms/ILP/IntegerLinearProgramming.h@{src/Algorithms/ILP/IntegerLinearProgramming.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ INTEGER\_LINEAR\_PROGRAMMING\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ INTEGER\_LINEAR\_PROGRAMMING\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <chrono>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <ortools/linear\_solver/linear\_solver.h>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}../../DataStructures/Pallet.h"{}}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}../../DataStructures/Truck.h"{}}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classIntegerLinearProgramming}{IntegerLinearProgramming}}\ \{}
+\DoxyCodeLine{00025\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00038\ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classIntegerLinearProgramming_adff4aea22cf06cafcc50dc3c41599d69}{solve\_ilp\_cpp}}(\textcolor{keyword}{const}\ std::vector<Pallet>\ \&pallets,}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTruck}{Truck}}\ \&truck,}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<Pallet>\ \&used\_pallets,}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \&message,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ timeout\_ms);}
+\DoxyCodeLine{00042\ \};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ INTEGER\_LINEAR\_PROGRAMMING\_H}}
+
+\end{DoxyCode}

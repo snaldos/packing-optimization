@@ -1,0 +1,76 @@
+\doxysection{Utils Namespace Reference}
+\hypertarget{namespaceUtils}{}\label{namespaceUtils}\index{Utils@{Utils}}
+
+
+Utility functions for file and directory operations.  
+
+
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string \mbox{\hyperlink{namespaceUtils_aa8e473f48114c9c8455036f7d5683ff3}{get\+\_\+absolute\+\_\+dir}} (std\+::string path)
+\begin{DoxyCompactList}\small\item\em Returns the absolute directory for a given relative path. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespaceUtils_a24a7a69a50bbb3619ca246d199b950c9}{remove\+\_\+directory}} (const std\+::string \&path)
+\begin{DoxyCompactList}\small\item\em Removes a directory and its contents. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespaceUtils_af5cf110502834b4528d3f11005e313c1}{ensure\+\_\+directory}} (const std\+::string \&dir)
+\begin{DoxyCompactList}\small\item\em Ensures that a directory exists, creating it if necessary. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Utility functions for file and directory operations. 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{namespaceUtils_af5cf110502834b4528d3f11005e313c1}\label{namespaceUtils_af5cf110502834b4528d3f11005e313c1} 
+\index{Utils@{Utils}!ensure\_directory@{ensure\_directory}}
+\index{ensure\_directory@{ensure\_directory}!Utils@{Utils}}
+\doxysubsubsection{\texorpdfstring{ensure\_directory()}{ensure\_directory()}}
+{\footnotesize\ttfamily bool Utils\+::ensure\+\_\+directory (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{dir }\end{DoxyParamCaption})}
+
+
+
+Ensures that a directory exists, creating it if necessary. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dir} & Path to the directory \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the directory exists or was created successfully, false otherwise 
+\end{DoxyReturn}
+\Hypertarget{namespaceUtils_aa8e473f48114c9c8455036f7d5683ff3}\label{namespaceUtils_aa8e473f48114c9c8455036f7d5683ff3} 
+\index{Utils@{Utils}!get\_absolute\_dir@{get\_absolute\_dir}}
+\index{get\_absolute\_dir@{get\_absolute\_dir}!Utils@{Utils}}
+\doxysubsubsection{\texorpdfstring{get\_absolute\_dir()}{get\_absolute\_dir()}}
+{\footnotesize\ttfamily std\+::string Utils\+::get\+\_\+absolute\+\_\+dir (\begin{DoxyParamCaption}\item[{std\+::string}]{path }\end{DoxyParamCaption})}
+
+
+
+Returns the absolute directory for a given relative path. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & Relative or absolute path \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Absolute path as a string 
+\end{DoxyReturn}
+\Hypertarget{namespaceUtils_a24a7a69a50bbb3619ca246d199b950c9}\label{namespaceUtils_a24a7a69a50bbb3619ca246d199b950c9} 
+\index{Utils@{Utils}!remove\_directory@{remove\_directory}}
+\index{remove\_directory@{remove\_directory}!Utils@{Utils}}
+\doxysubsubsection{\texorpdfstring{remove\_directory()}{remove\_directory()}}
+{\footnotesize\ttfamily bool Utils\+::remove\+\_\+directory (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{path }\end{DoxyParamCaption})}
+
+
+
+Removes a directory and its contents. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & Path to the directory \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the directory was removed successfully, false otherwise 
+\end{DoxyReturn}

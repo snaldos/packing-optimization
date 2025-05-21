@@ -1,0 +1,40 @@
+\doxysection{Batch\+Data\+Set\+Manager.\+h}
+\hypertarget{BatchDataSetManager_8h_source}{}\label{BatchDataSetManager_8h_source}\index{src/Batch/BatchDataSetManager.h@{src/Batch/BatchDataSetManager.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ BATCH\_DATASET\_MANAGER\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ BATCH\_DATASET\_MANAGER\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <fstream>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <sstream>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}../DataStructures/Pallet.h"{}}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}../DataStructures/Truck.h"{}}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}../Parser/CSVParser.h"{}}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}../Parser/ParserUtils.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}../Utils.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}BatchUtils.h"{}}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classBatchDataSetManager}{BatchDataSetManager}}\ \{}
+\DoxyCodeLine{00025\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00032\ \ \ \ \mbox{\hyperlink{classBatchDataSetManager}{BatchDataSetManager}}(std::vector<Pallet>\ \&pallets,\ \mbox{\hyperlink{classTruck}{Truck}}\ \&truck);}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00038\ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classBatchDataSetManager_a99d24ec47d4166c7bdc0ccf67b041c12}{select\_and\_load\_dataset}}();}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00043\ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classBatchDataSetManager_a5542b515b11bb0ac2d8c6fb057192170}{show\_dataset}}();}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00049\ \ \ \ \textcolor{keyword}{const}\ std::vector<Pallet>\ \&\mbox{\hyperlink{classBatchDataSetManager_ad40ff41eaa84f8a534c1455485890905}{get\_pallets}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00057\ \ \ \ \textcolor{keywordtype}{bool}\ load\_dataset(std::string\ identifier);}
+\DoxyCodeLine{00058\ \ \ \ \mbox{\hyperlink{classCSVParser}{CSVParser}}\ csv\_data\_parser;\ \ \ \ \ \ }
+\DoxyCodeLine{00059\ \ \ \ std::vector<Pallet>\ \&pallets;\ \ \ }
+\DoxyCodeLine{00060\ \ \ \ \mbox{\hyperlink{classTruck}{Truck}}\ \&truck;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00061\ \ \ \ std::string\ current\_identifier;\ }
+\DoxyCodeLine{00062\ \};}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BATCH\_DATASET\_MANAGER\_H}}
+
+\end{DoxyCode}

@@ -1,0 +1,91 @@
+\doxysection{Dynamic\+Programming Class Reference}
+\hypertarget{classDynamicProgramming}{}\label{classDynamicProgramming}\index{DynamicProgramming@{DynamicProgramming}}
+
+
+Implements dynamic programming algorithms for the 0/1 Knapsack Problem.  
+
+
+
+
+{\ttfamily \#include $<$Dynamic\+Programming.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+unsigned int \mbox{\hyperlink{classDynamicProgramming_abceb71ce77d70d2696530b8a8fc34514}{dp\+\_\+solve}} (const std\+::vector$<$ \mbox{\hyperlink{classPallet}{Pallet}} $>$ \&pallets, const \mbox{\hyperlink{classTruck}{Truck}} \&truck, std\+::vector$<$ \mbox{\hyperlink{classPallet}{Pallet}} $>$ \&used\+\_\+pallets, Table\+Type type, std\+::string \&message, unsigned int timeout\+\_\+ms)
+\begin{DoxyCompactList}\small\item\em Solves the knapsack problem using DP (vector or hashmap), reconstructs solution. \end{DoxyCompactList}\item 
+unsigned int \mbox{\hyperlink{classDynamicProgramming_a381233244c71ead8e704584ff88ba822}{dp\+\_\+solve}} (const std\+::vector$<$ \mbox{\hyperlink{classPallet}{Pallet}} $>$ \&pallets, const \mbox{\hyperlink{classTruck}{Truck}} \&truck, std\+::string \&message, unsigned int timeout\+\_\+ms)
+\begin{DoxyCompactList}\small\item\em Solves the knapsack problem using DP optimized (2 rolling rows), only max profit. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Implements dynamic programming algorithms for the 0/1 Knapsack Problem. 
+
+Supports both bottom-\/up (vector table) and top-\/down (hashmap memoization) approaches.
+
+
+\begin{DoxyItemize}
+\item DP Vector\+: O(n\+W) time, O(n\+W) space (can reconstruct solution).
+\item DP Hash\+Map\+: O(s) time, O(s) space, where s is the number of unique (i, w) states (sparse for some datasets).
+\item DP Optimized (2 rows)\+: O(n\+W) time, O(\+W) space (only computes max profit, no reconstruction). 
+\end{DoxyItemize}
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classDynamicProgramming_a381233244c71ead8e704584ff88ba822}\label{classDynamicProgramming_a381233244c71ead8e704584ff88ba822} 
+\index{DynamicProgramming@{DynamicProgramming}!dp\_solve@{dp\_solve}}
+\index{dp\_solve@{dp\_solve}!DynamicProgramming@{DynamicProgramming}}
+\doxysubsubsection{\texorpdfstring{dp\_solve()}{dp\_solve()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily unsigned int Dynamic\+Programming\+::dp\+\_\+solve (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{classPallet}{Pallet}} $>$ \&}]{pallets,  }\item[{const \mbox{\hyperlink{classTruck}{Truck}} \&}]{truck,  }\item[{std\+::string \&}]{message,  }\item[{unsigned int}]{timeout\+\_\+ms }\end{DoxyParamCaption})}
+
+
+
+Solves the knapsack problem using DP optimized (2 rolling rows), only max profit. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pallets} & List of pallets \\
+\hline
+{\em truck} & \doxylink{classTruck}{Truck} (capacity) \\
+\hline
+{\em message} & Output\+: status and timing info \\
+\hline
+{\em timeout\+\_\+ms} & Timeout in milliseconds \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Maximum profit
+\end{DoxyReturn}
+Time complexity\+: O(n\+W) Space complexity\+: O(\+W) \Hypertarget{classDynamicProgramming_abceb71ce77d70d2696530b8a8fc34514}\label{classDynamicProgramming_abceb71ce77d70d2696530b8a8fc34514} 
+\index{DynamicProgramming@{DynamicProgramming}!dp\_solve@{dp\_solve}}
+\index{dp\_solve@{dp\_solve}!DynamicProgramming@{DynamicProgramming}}
+\doxysubsubsection{\texorpdfstring{dp\_solve()}{dp\_solve()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily unsigned int Dynamic\+Programming\+::dp\+\_\+solve (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{classPallet}{Pallet}} $>$ \&}]{pallets,  }\item[{const \mbox{\hyperlink{classTruck}{Truck}} \&}]{truck,  }\item[{std\+::vector$<$ \mbox{\hyperlink{classPallet}{Pallet}} $>$ \&}]{used\+\_\+pallets,  }\item[{Table\+Type}]{type,  }\item[{std\+::string \&}]{message,  }\item[{unsigned int}]{timeout\+\_\+ms }\end{DoxyParamCaption})}
+
+
+
+Solves the knapsack problem using DP (vector or hashmap), reconstructs solution. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pallets} & List of pallets \\
+\hline
+{\em truck} & \doxylink{classTruck}{Truck} (capacity) \\
+\hline
+{\em used\+\_\+pallets} & Output\+: selected pallets \\
+\hline
+{\em type} & Table\+Type\+::\+Vector or Table\+Type\+::\+Hash\+Map \\
+\hline
+{\em message} & Output\+: status and timing info \\
+\hline
+{\em timeout\+\_\+ms} & Timeout in milliseconds \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Maximum profit 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Algorithms/\+DP/Dynamic\+Programming.\+h\item 
+src/\+Algorithms/\+DP/Dynamic\+Programming.\+cpp\end{DoxyCompactItemize}

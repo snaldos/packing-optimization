@@ -1,0 +1,58 @@
+\doxysection{ILPBridge\+Py Class Reference}
+\hypertarget{classILPBridgePy}{}\label{classILPBridgePy}\index{ILPBridgePy@{ILPBridgePy}}
+
+
+Bridges C++ and Python to solve the 0/1 Knapsack Problem using ILP (via Pu\+LP).  
+
+
+
+
+{\ttfamily \#include $<$ILPBridge\+Py.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+unsigned int \mbox{\hyperlink{classILPBridgePy_a58f526b317aec89a708e5353d214f95b}{solve\+\_\+ilp\+\_\+py}} (const std\+::vector$<$ \mbox{\hyperlink{classPallet}{Pallet}} $>$ \&pallets, const \mbox{\hyperlink{classTruck}{Truck}} \&truck, std\+::vector$<$ \mbox{\hyperlink{classPallet}{Pallet}} $>$ \&used\+\_\+pallets, std\+::string \&message, unsigned int timeout\+\_\+ms)
+\begin{DoxyCompactList}\small\item\em Solves the knapsack problem using ILP (Python/\+Pu\+LP backend). \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Bridges C++ and Python to solve the 0/1 Knapsack Problem using ILP (via Pu\+LP). 
+
+Serializes the problem to JSON, calls a Python script to solve it using Pu\+LP, and parses the result.
+
+Time complexity\+: Depends on the Python ILP solver; exponential in the worst case, but often efficient for moderate n. Space complexity\+: Depends on the solver\textquotesingle{}s internal representation (typically O(n)). 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classILPBridgePy_a58f526b317aec89a708e5353d214f95b}\label{classILPBridgePy_a58f526b317aec89a708e5353d214f95b} 
+\index{ILPBridgePy@{ILPBridgePy}!solve\_ilp\_py@{solve\_ilp\_py}}
+\index{solve\_ilp\_py@{solve\_ilp\_py}!ILPBridgePy@{ILPBridgePy}}
+\doxysubsubsection{\texorpdfstring{solve\_ilp\_py()}{solve\_ilp\_py()}}
+{\footnotesize\ttfamily unsigned int ILPBridge\+Py\+::solve\+\_\+ilp\+\_\+py (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{classPallet}{Pallet}} $>$ \&}]{pallets,  }\item[{const \mbox{\hyperlink{classTruck}{Truck}} \&}]{truck,  }\item[{std\+::vector$<$ \mbox{\hyperlink{classPallet}{Pallet}} $>$ \&}]{used\+\_\+pallets,  }\item[{std\+::string \&}]{message,  }\item[{unsigned int}]{timeout\+\_\+ms }\end{DoxyParamCaption})}
+
+
+
+Solves the knapsack problem using ILP (Python/\+Pu\+LP backend). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pallets} & List of pallets \\
+\hline
+{\em truck} & \doxylink{classTruck}{Truck} (capacity) \\
+\hline
+{\em used\+\_\+pallets} & Output\+: selected pallets \\
+\hline
+{\em message} & Output\+: status and timing info \\
+\hline
+{\em timeout\+\_\+ms} & Timeout in milliseconds \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Maximum profit
+\end{DoxyReturn}
+Time complexity\+: Exponential in the worst case (depends on solver and instance). Space complexity\+: O(n) 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Algorithms/\+ILP/ILPBridge\+Py.\+h\item 
+src/\+Algorithms/\+ILP/ILPBridge\+Py.\+cpp\end{DoxyCompactItemize}

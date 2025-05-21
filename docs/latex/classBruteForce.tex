@@ -1,0 +1,88 @@
+\doxysection{Brute\+Force Class Reference}
+\hypertarget{classBruteForce}{}\label{classBruteForce}\index{BruteForce@{BruteForce}}
+
+
+Implements brute-\/force and backtracking algorithms for the 0/1 Knapsack Problem.  
+
+
+
+
+{\ttfamily \#include $<$Brute\+Force.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+unsigned int \mbox{\hyperlink{classBruteForce_a77bfd3a8470b726eb33eb0a81a5066ba}{bt\+\_\+solve}} (std\+::vector$<$ \mbox{\hyperlink{classPallet}{Pallet}} $>$ pallets, const \mbox{\hyperlink{classTruck}{Truck}} \&truck, std\+::vector$<$ \mbox{\hyperlink{classPallet}{Pallet}} $>$ \&used\+\_\+pallets, std\+::string \&message, unsigned int timeout\+\_\+ms)
+\begin{DoxyCompactList}\small\item\em Solves the knapsack problem using brute force (backtracking). \end{DoxyCompactList}\item 
+unsigned int \mbox{\hyperlink{classBruteForce_aca00aa5c7805aba3bfde91772722f024}{bf\+\_\+solve}} (const std\+::vector$<$ \mbox{\hyperlink{classPallet}{Pallet}} $>$ \&pallets, const \mbox{\hyperlink{classTruck}{Truck}} \&truck, std\+::vector$<$ \mbox{\hyperlink{classPallet}{Pallet}} $>$ \&used\+\_\+pallets, std\+::string \&message, unsigned int timeout\+\_\+ms)
+\begin{DoxyCompactList}\small\item\em Solves the knapsack problem using brute force (explicit subset generation). \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Implements brute-\/force and backtracking algorithms for the 0/1 Knapsack Problem. 
+
+
+\begin{DoxyItemize}
+\item Brute-\/force (explicit subset generation)\+: O(2\texorpdfstring{$^\wedge$}{\string^}n \texorpdfstring{$\ast$}{*} n) time, O(n) space for best solution.
+\item Backtracking\+: O(2\texorpdfstring{$^\wedge$}{\string^}n) time in worst case, but can be faster with pruning; O(n) space for recursion and best solution. 
+\end{DoxyItemize}
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classBruteForce_aca00aa5c7805aba3bfde91772722f024}\label{classBruteForce_aca00aa5c7805aba3bfde91772722f024} 
+\index{BruteForce@{BruteForce}!bf\_solve@{bf\_solve}}
+\index{bf\_solve@{bf\_solve}!BruteForce@{BruteForce}}
+\doxysubsubsection{\texorpdfstring{bf\_solve()}{bf\_solve()}}
+{\footnotesize\ttfamily unsigned int Brute\+Force\+::bf\+\_\+solve (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{classPallet}{Pallet}} $>$ \&}]{pallets,  }\item[{const \mbox{\hyperlink{classTruck}{Truck}} \&}]{truck,  }\item[{std\+::vector$<$ \mbox{\hyperlink{classPallet}{Pallet}} $>$ \&}]{used\+\_\+pallets,  }\item[{std\+::string \&}]{message,  }\item[{unsigned int}]{timeout\+\_\+ms }\end{DoxyParamCaption})}
+
+
+
+Solves the knapsack problem using brute force (explicit subset generation). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pallets} & List of pallets \\
+\hline
+{\em truck} & \doxylink{classTruck}{Truck} (capacity) \\
+\hline
+{\em used\+\_\+pallets} & Output\+: selected pallets \\
+\hline
+{\em message} & Output\+: status and timing info \\
+\hline
+{\em timeout\+\_\+ms} & Timeout in milliseconds \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Maximum profit
+\end{DoxyReturn}
+Time complexity\+: O(2\texorpdfstring{$^\wedge$}{\string^}n \texorpdfstring{$\ast$}{*} n) Space complexity\+: O(n) \Hypertarget{classBruteForce_a77bfd3a8470b726eb33eb0a81a5066ba}\label{classBruteForce_a77bfd3a8470b726eb33eb0a81a5066ba} 
+\index{BruteForce@{BruteForce}!bt\_solve@{bt\_solve}}
+\index{bt\_solve@{bt\_solve}!BruteForce@{BruteForce}}
+\doxysubsubsection{\texorpdfstring{bt\_solve()}{bt\_solve()}}
+{\footnotesize\ttfamily unsigned int Brute\+Force\+::bt\+\_\+solve (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \mbox{\hyperlink{classPallet}{Pallet}} $>$}]{pallets,  }\item[{const \mbox{\hyperlink{classTruck}{Truck}} \&}]{truck,  }\item[{std\+::vector$<$ \mbox{\hyperlink{classPallet}{Pallet}} $>$ \&}]{used\+\_\+pallets,  }\item[{std\+::string \&}]{message,  }\item[{unsigned int}]{timeout\+\_\+ms }\end{DoxyParamCaption})}
+
+
+
+Solves the knapsack problem using brute force (backtracking). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pallets} & List of pallets \\
+\hline
+{\em truck} & \doxylink{classTruck}{Truck} (capacity) \\
+\hline
+{\em used\+\_\+pallets} & Output\+: selected pallets \\
+\hline
+{\em message} & Output\+: status and timing info \\
+\hline
+{\em timeout\+\_\+ms} & Timeout in milliseconds \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Maximum profit
+\end{DoxyReturn}
+Time complexity\+: O(2\texorpdfstring{$^\wedge$}{\string^}n) (worst case) Space complexity\+: O(n) 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Algorithms/\+BF/Brute\+Force.\+h\item 
+src/\+Algorithms/\+BF/Brute\+Force.\+cpp\end{DoxyCompactItemize}

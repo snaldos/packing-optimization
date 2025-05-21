@@ -1,0 +1,57 @@
+\doxysection{CSVParser Class Reference}
+\hypertarget{classCSVParser}{}\label{classCSVParser}\index{CSVParser@{CSVParser}}
+
+
+Parses CSV files to extract pallet and truck data.  
+
+
+
+
+{\ttfamily \#include $<$CSVParser.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classCSVParser_a7e51d51fb2f3df494ef183268deeb2e2}\label{classCSVParser_a7e51d51fb2f3df494ef183268deeb2e2} 
+{\bfseries CSVParser} ()=default
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classCSVParser_a80106c02a2168271e5b52398ef84a4d8}{parse}} (const std\+::string \&pallets\+\_\+file, const std\+::string \&truck\+\_\+file, std\+::vector$<$ \mbox{\hyperlink{classPallet}{Pallet}} $>$ \&pallets, \mbox{\hyperlink{classTruck}{Truck}} \&truck)
+\begin{DoxyCompactList}\small\item\em Parses the given CSV files and populates the pallets and truck objects. \end{DoxyCompactList}\item 
+\Hypertarget{classCSVParser_aea7b20161913ac6994ebd971365b09f9}\label{classCSVParser_aea7b20161913ac6994ebd971365b09f9} 
+{\bfseries \texorpdfstring{$\sim$}{\string~}\+CSVParser} ()=default
+\begin{DoxyCompactList}\small\item\em Default destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Parses CSV files to extract pallet and truck data. 
+
+Provides methods to read and parse CSV files containing pallet and truck information, populating vectors of \doxylink{classPallet}{Pallet} objects and \doxylink{classTruck}{Truck} objects for use in algorithms. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classCSVParser_a80106c02a2168271e5b52398ef84a4d8}\label{classCSVParser_a80106c02a2168271e5b52398ef84a4d8} 
+\index{CSVParser@{CSVParser}!parse@{parse}}
+\index{parse@{parse}!CSVParser@{CSVParser}}
+\doxysubsubsection{\texorpdfstring{parse()}{parse()}}
+{\footnotesize\ttfamily void CSVParser\+::parse (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{pallets\+\_\+file,  }\item[{const std\+::string \&}]{truck\+\_\+file,  }\item[{std\+::vector$<$ \mbox{\hyperlink{classPallet}{Pallet}} $>$ \&}]{pallets,  }\item[{\mbox{\hyperlink{classTruck}{Truck}} \&}]{truck }\end{DoxyParamCaption})}
+
+
+
+Parses the given CSV files and populates the pallets and truck objects. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pallets\+\_\+file} & Path to the pallets CSV file \\
+\hline
+{\em truck\+\_\+file} & Path to the truck CSV file \\
+\hline
+{\em pallets} & Output vector of \doxylink{classPallet}{Pallet} objects \\
+\hline
+{\em truck} & Output \doxylink{classTruck}{Truck} object \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Parser/CSVParser.\+h\item 
+src/\+Parser/CSVParser.\+cpp\end{DoxyCompactItemize}

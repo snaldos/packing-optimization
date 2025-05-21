@@ -1,0 +1,164 @@
+\doxysection{Vector\+DPTable Class Reference}
+\hypertarget{classVectorDPTable}{}\label{classVectorDPTable}\index{VectorDPTable@{VectorDPTable}}
+
+
+Concrete DP table implementation using a 2D vector for bottom-\/up DP.  
+
+
+
+
+{\ttfamily \#include $<$Vector\+DPTable.\+h$>$}
+
+
+
+Inheritance diagram for Vector\+DPTable\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=166pt]{classVectorDPTable__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Vector\+DPTable\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=166pt]{classVectorDPTable__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classVectorDPTable_a4b4c263878916824821124931ef4b0a4}{Vector\+DPTable}} (unsigned int n, unsigned int max\+\_\+weight)
+\begin{DoxyCompactList}\small\item\em Construct a new \doxylink{classVectorDPTable}{Vector\+DPTable} object. \end{DoxyCompactList}\item 
+unsigned int \mbox{\hyperlink{classVectorDPTable_a8d2e13b4edc84e9382484f5db69dc6d4}{get}} (unsigned int i, unsigned int w) const override
+\begin{DoxyCompactList}\small\item\em Get the value stored for subproblem (i, w). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classVectorDPTable_a5ccecc852d588baf0cf74d7c29cec9e7}{set}} (unsigned int i, unsigned int w, unsigned int value) override
+\begin{DoxyCompactList}\small\item\em Set the value for subproblem (i, w). \end{DoxyCompactList}\item 
+std\+::size\+\_\+t \mbox{\hyperlink{classVectorDPTable_a82bffc9ec8f5e5f398844ab87e640510}{get\+\_\+num\+\_\+entries}} () const override
+\begin{DoxyCompactList}\small\item\em Get the number of entries stored in the table. \end{DoxyCompactList}\item 
+std\+::size\+\_\+t \mbox{\hyperlink{classVectorDPTable_a808d05d30787cb7a26138ac37fdf0164}{get\+\_\+memory\+\_\+usage}} () const override
+\begin{DoxyCompactList}\small\item\em Get the estimated memory usage of the table in bytes. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDPTable}{DPTable}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+DPTable} ()=default
+\begin{DoxyCompactList}\small\item\em Virtual destructor for safe cleanup. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Concrete DP table implementation using a 2D vector for bottom-\/up DP. 
+
+Stores subproblem solutions in a dense (n+1) x (max\+\_\+weight+1) table. Used for classic bottom-\/up dynamic programming approaches to knapsack.
+
+Time complexity for access/set\+: O(1) Space complexity\+: O(n\+W) 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classVectorDPTable_a4b4c263878916824821124931ef4b0a4}\label{classVectorDPTable_a4b4c263878916824821124931ef4b0a4} 
+\index{VectorDPTable@{VectorDPTable}!VectorDPTable@{VectorDPTable}}
+\index{VectorDPTable@{VectorDPTable}!VectorDPTable@{VectorDPTable}}
+\doxysubsubsection{\texorpdfstring{VectorDPTable()}{VectorDPTable()}}
+{\footnotesize\ttfamily Vector\+DPTable\+::\+Vector\+DPTable (\begin{DoxyParamCaption}\item[{unsigned int}]{n,  }\item[{unsigned int}]{max\+\_\+weight }\end{DoxyParamCaption})}
+
+
+
+Construct a new \doxylink{classVectorDPTable}{Vector\+DPTable} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em n} & Number of items \\
+\hline
+{\em max\+\_\+weight} & Maximum capacity \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classVectorDPTable_a8d2e13b4edc84e9382484f5db69dc6d4}\label{classVectorDPTable_a8d2e13b4edc84e9382484f5db69dc6d4} 
+\index{VectorDPTable@{VectorDPTable}!get@{get}}
+\index{get@{get}!VectorDPTable@{VectorDPTable}}
+\doxysubsubsection{\texorpdfstring{get()}{get()}}
+{\footnotesize\ttfamily unsigned int Vector\+DPTable\+::get (\begin{DoxyParamCaption}\item[{unsigned int}]{i,  }\item[{unsigned int}]{w }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Get the value stored for subproblem (i, w). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & Item index \\
+\hline
+{\em w} & Remaining capacity \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Value for subproblem (i, w) 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classDPTable_a991a5d3928263a3cafbbd728e0798022}{DPTable}}.
+
+\Hypertarget{classVectorDPTable_a808d05d30787cb7a26138ac37fdf0164}\label{classVectorDPTable_a808d05d30787cb7a26138ac37fdf0164} 
+\index{VectorDPTable@{VectorDPTable}!get\_memory\_usage@{get\_memory\_usage}}
+\index{get\_memory\_usage@{get\_memory\_usage}!VectorDPTable@{VectorDPTable}}
+\doxysubsubsection{\texorpdfstring{get\_memory\_usage()}{get\_memory\_usage()}}
+{\footnotesize\ttfamily std\+::size\+\_\+t Vector\+DPTable\+::get\+\_\+memory\+\_\+usage (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Get the estimated memory usage of the table in bytes. 
+
+\begin{DoxyReturn}{Returns}
+Memory usage in bytes 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classDPTable_a0b054344dbe8052bdbe3445a2d0d3dc2}{DPTable}}.
+
+\Hypertarget{classVectorDPTable_a82bffc9ec8f5e5f398844ab87e640510}\label{classVectorDPTable_a82bffc9ec8f5e5f398844ab87e640510} 
+\index{VectorDPTable@{VectorDPTable}!get\_num\_entries@{get\_num\_entries}}
+\index{get\_num\_entries@{get\_num\_entries}!VectorDPTable@{VectorDPTable}}
+\doxysubsubsection{\texorpdfstring{get\_num\_entries()}{get\_num\_entries()}}
+{\footnotesize\ttfamily std\+::size\+\_\+t Vector\+DPTable\+::get\+\_\+num\+\_\+entries (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Get the number of entries stored in the table. 
+
+\begin{DoxyReturn}{Returns}
+Number of entries 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classDPTable_ad394a3fded2204dfa4bb7ce6f4144db1}{DPTable}}.
+
+\Hypertarget{classVectorDPTable_a5ccecc852d588baf0cf74d7c29cec9e7}\label{classVectorDPTable_a5ccecc852d588baf0cf74d7c29cec9e7} 
+\index{VectorDPTable@{VectorDPTable}!set@{set}}
+\index{set@{set}!VectorDPTable@{VectorDPTable}}
+\doxysubsubsection{\texorpdfstring{set()}{set()}}
+{\footnotesize\ttfamily void Vector\+DPTable\+::set (\begin{DoxyParamCaption}\item[{unsigned int}]{i,  }\item[{unsigned int}]{w,  }\item[{unsigned int}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Set the value for subproblem (i, w). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & Item index \\
+\hline
+{\em w} & Remaining capacity \\
+\hline
+{\em value} & Value to store \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{classDPTable_ae79fcd1ce417245f47cad4aa37f24a49}{DPTable}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Algorithms/\+DP/Vector\+DPTable.\+h\item 
+src/\+Algorithms/\+DP/Vector\+DPTable.\+cpp\end{DoxyCompactItemize}

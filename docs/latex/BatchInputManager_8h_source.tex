@@ -1,0 +1,57 @@
+\doxysection{Batch\+Input\+Manager.\+h}
+\hypertarget{BatchInputManager_8h_source}{}\label{BatchInputManager_8h_source}\index{src/Batch/BatchInputManager.h@{src/Batch/BatchInputManager.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ BATCH\_INPUT\_MANAGER\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ BATCH\_INPUT\_MANAGER\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <sys/stat.h>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <sys/types.h>}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <fstream>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <sstream>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <unordered\_map>}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}../Algorithms/APPROX/Greedy.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}../Algorithms/BB/BranchAndBound.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}../Algorithms/BF/BruteForce.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}../Algorithms/DP/DynamicProgramming.h"{}}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ "{}../Algorithms/ILP/ILPBridgePy.h"{}}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}../Algorithms/ILP/IntegerLinearProgramming.h"{}}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ "{}../DataStructures/Pallet.h"{}}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ "{}../DataStructures/Truck.h"{}}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ "{}../Parser/ParserUtils.h"{}}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ "{}../Utils.h"{}}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ "{}BatchState.h"{}}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#include\ "{}BatchUtils.h"{}}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00035\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classBatchInputManager}{BatchInputManager}}\ \{}
+\DoxyCodeLine{00036\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00044\ \ \ \ \textcolor{keywordtype}{void}\ generate\_output\_file(std::string\ \&filename,}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<Pallet>\ \&used\_pallets,}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \&max\_profit,\ std::string\ \&message);}
+\DoxyCodeLine{00047\ \ \ \ std::vector<Pallet>\ \&pallets;\ }
+\DoxyCodeLine{00048\ \ \ \ \mbox{\hyperlink{classTruck}{Truck}}\ \&truck;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00049\ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ timeout\_ms\ =}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ 60000;\ }
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00059\ \ \ \ \mbox{\hyperlink{classBatchInputManager}{BatchInputManager}}(std::vector<Pallet>\ \&pallets,\ \mbox{\hyperlink{classTruck}{Truck}}\ \&truck);}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00065\ \ \ \ BatchState\ \mbox{\hyperlink{classBatchInputManager_a1025a9cea2e9a2904c51962724f377b2}{getInputMode}}();}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00070\ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classBatchInputManager_ad64104848d0c2ffff350da4433d596ef}{processInput}}();}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00076\ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classBatchInputManager_af48b4229832a2db406f6d8351ea38950}{set\_timeout\_ms}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ ms)\ \{\ timeout\_ms\ =\ ms;\ \}}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00082\ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classBatchInputManager_af73cecc52dc2a040157b68e94ff7b106}{get\_timeout\_ms}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ timeout\_ms;\ \}}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00087\ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classBatchInputManager_a91282efdf7f34ad73484a197c8a5755a}{select\_timeout}}();}
+\DoxyCodeLine{00088\ \};}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BATCH\_INPUT\_MANAGER\_H}}
+
+\end{DoxyCode}

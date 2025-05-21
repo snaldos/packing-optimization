@@ -1,0 +1,78 @@
+\doxysection{Parser\+Utils Namespace Reference}
+\hypertarget{namespaceParserUtils}{}\label{namespaceParserUtils}\index{ParserUtils@{ParserUtils}}
+
+
+Utility functions for parsing and processing strings in CSV and user input.  
+
+
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{namespaceParserUtils_abb79d7ccce4151eba0634b4e50be3d91}{split}} (const std\+::string \&line, char delimiter)
+\begin{DoxyCompactList}\small\item\em Splits a string by a delimiter character. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{namespaceParserUtils_abc7af9ed0352e8852009259c959271e8}{trim}} (const std\+::string \&s)
+\begin{DoxyCompactList}\small\item\em Trims whitespace from both ends of a string. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespaceParserUtils_a76050385c30c3829c636496a1544ea2d}{is\+\_\+number}} (const std\+::string \&s)
+\begin{DoxyCompactList}\small\item\em Checks if a string represents a valid number. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Utility functions for parsing and processing strings in CSV and user input. 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{namespaceParserUtils_a76050385c30c3829c636496a1544ea2d}\label{namespaceParserUtils_a76050385c30c3829c636496a1544ea2d} 
+\index{ParserUtils@{ParserUtils}!is\_number@{is\_number}}
+\index{is\_number@{is\_number}!ParserUtils@{ParserUtils}}
+\doxysubsubsection{\texorpdfstring{is\_number()}{is\_number()}}
+{\footnotesize\ttfamily bool Parser\+Utils\+::is\+\_\+number (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{s }\end{DoxyParamCaption})}
+
+
+
+Checks if a string represents a valid number. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & Input string \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the string is a number, false otherwise 
+\end{DoxyReturn}
+\Hypertarget{namespaceParserUtils_abb79d7ccce4151eba0634b4e50be3d91}\label{namespaceParserUtils_abb79d7ccce4151eba0634b4e50be3d91} 
+\index{ParserUtils@{ParserUtils}!split@{split}}
+\index{split@{split}!ParserUtils@{ParserUtils}}
+\doxysubsubsection{\texorpdfstring{split()}{split()}}
+{\footnotesize\ttfamily std\+::vector$<$ std\+::string $>$ Parser\+Utils\+::split (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{line,  }\item[{char}]{delimiter }\end{DoxyParamCaption})}
+
+
+
+Splits a string by a delimiter character. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em line} & Input string \\
+\hline
+{\em delimiter} & Delimiter character \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Vector of tokens 
+\end{DoxyReturn}
+\Hypertarget{namespaceParserUtils_abc7af9ed0352e8852009259c959271e8}\label{namespaceParserUtils_abc7af9ed0352e8852009259c959271e8} 
+\index{ParserUtils@{ParserUtils}!trim@{trim}}
+\index{trim@{trim}!ParserUtils@{ParserUtils}}
+\doxysubsubsection{\texorpdfstring{trim()}{trim()}}
+{\footnotesize\ttfamily std\+::string Parser\+Utils\+::trim (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{s }\end{DoxyParamCaption})}
+
+
+
+Trims whitespace from both ends of a string. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & Input string \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Trimmed string 
+\end{DoxyReturn}

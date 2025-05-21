@@ -1,0 +1,50 @@
+\doxysection{Batch\+State\+Manager Class Reference}
+\hypertarget{classBatchStateManager}{}\label{classBatchStateManager}\index{BatchStateManager@{BatchStateManager}}
+
+
+Manages the state transitions for batch mode user interaction.  
+
+
+
+
+{\ttfamily \#include $<$Batch\+State\+Manager.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classBatchStateManager_ab5d01430ee2f789cfc423c943cb9f9b5}{Batch\+State\+Manager}} (std\+::vector$<$ \mbox{\hyperlink{classPallet}{Pallet}} $>$ \&pallets, \mbox{\hyperlink{classTruck}{Truck}} \&truck)
+\begin{DoxyCompactList}\small\item\em Constructs a \doxylink{classBatchStateManager}{Batch\+State\+Manager} with references to the main data structures. \end{DoxyCompactList}\item 
+\Hypertarget{classBatchStateManager_aa90411850e7ae60fbdd1084b415d5ace}\label{classBatchStateManager_aa90411850e7ae60fbdd1084b415d5ace} 
+void {\bfseries update\+\_\+state} ()
+\begin{DoxyCompactList}\small\item\em Main loop to update and handle the current batch state. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Manages the state transitions for batch mode user interaction. 
+
+Handles the main loop for selecting datasets, running algorithms, showing datasets, and changing timeouts. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classBatchStateManager_ab5d01430ee2f789cfc423c943cb9f9b5}\label{classBatchStateManager_ab5d01430ee2f789cfc423c943cb9f9b5} 
+\index{BatchStateManager@{BatchStateManager}!BatchStateManager@{BatchStateManager}}
+\index{BatchStateManager@{BatchStateManager}!BatchStateManager@{BatchStateManager}}
+\doxysubsubsection{\texorpdfstring{BatchStateManager()}{BatchStateManager()}}
+{\footnotesize\ttfamily Batch\+State\+Manager\+::\+Batch\+State\+Manager (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \mbox{\hyperlink{classPallet}{Pallet}} $>$ \&}]{pallets,  }\item[{\mbox{\hyperlink{classTruck}{Truck}} \&}]{truck }\end{DoxyParamCaption})}
+
+
+
+Constructs a \doxylink{classBatchStateManager}{Batch\+State\+Manager} with references to the main data structures. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pallets} & Reference to the vector of pallets \\
+\hline
+{\em truck} & Reference to the truck object \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Batch/Batch\+State\+Manager.\+h\item 
+src/\+Batch/Batch\+State\+Manager.\+cpp\end{DoxyCompactItemize}

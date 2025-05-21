@@ -1,0 +1,43 @@
+\doxysection{Brute\+Force.\+h}
+\hypertarget{BruteForce_8h_source}{}\label{BruteForce_8h_source}\index{src/Algorithms/BF/BruteForce.h@{src/Algorithms/BF/BruteForce.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ BRUTE\_FORCE\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ BRUTE\_FORCE\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <algorithm>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <chrono>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <cmath>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <cstdint>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}../../DataStructures/Pallet.h"{}}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}../../DataStructures/Truck.h"{}}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00023\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classBruteForce}{BruteForce}}\ \{}
+\DoxyCodeLine{00024\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00037\ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classBruteForce_a77bfd3a8470b726eb33eb0a81a5066ba}{bt\_solve}}(std::vector<Pallet>\ pallets,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTruck}{Truck}}\ \&truck,}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<Pallet>\ \&used\_pallets,}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \&message,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ timeout\_ms);}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00054\ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classBruteForce_aca00aa5c7805aba3bfde91772722f024}{bf\_solve}}(\textcolor{keyword}{const}\ std::vector<Pallet>\ \&pallets,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTruck}{Truck}}\ \&truck,}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<Pallet>\ \&used\_pallets,}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \&message,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ timeout\_ms);}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00072\ \ \ \ \textcolor{keywordtype}{void}\ bt\_helper(\textcolor{keyword}{const}\ std::vector<Pallet>\ \&pallets,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ index,}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ curr\_weight,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ curr\_value,}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ max\_weight,\ std::vector<bool>\ \&curr\_used,}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<bool>\ \&best\_used,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \&best\_value,}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::chrono::steady\_clock::time\_point\ deadline,}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \&timed\_out);}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00089\ \ \ \ \textcolor{keywordtype}{double}\ estimate\_upper\_bound(\textcolor{keyword}{const}\ std::vector<Pallet>\ \&pallets,}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ index,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ curr\_weight,}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ curr\_value,}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ max\_weight);}
+\DoxyCodeLine{00093\ \};}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00095\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ BRUTE\_FORCE\_H}}
+
+\end{DoxyCode}

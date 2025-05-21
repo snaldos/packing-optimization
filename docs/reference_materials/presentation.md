@@ -43,35 +43,7 @@ Packing optimization is a classic problem in combinatorial optimization, with ap
 
 ## Class Diagram & File Involvement
 
-```mermaid
-classDiagram
-    class BatchStateManager {-- BatchStateManager.h }
-    class BatchDataSetManager {-- BatchDataSetManager.h }
-    class BatchInputManager {-- BatchInputManager.h }
-    class CSVParser {-- CSVParser.h }
-    class Pallet {-- Pallet.h }
-    class Truck {-- Truck.h }
-    class BruteForce {-- BruteForce.h }
-    class BranchAndBound {-- BranchAndBound.h }
-    class DynamicProgramming {-- DynamicProgramming.h }
-    class Greedy {-- Greedy.h }
-    class IntegerLinearProgramming {-- IntegerLinearProgramming.h }
-
-    BatchStateManager --> BatchDataSetManager
-    BatchStateManager --> BatchInputManager
-    BatchDataSetManager --> CSVParser
-    BatchDataSetManager --> Pallet
-    BatchDataSetManager --> Truck
-    BatchInputManager --> BruteForce
-    BatchInputManager --> BranchAndBound
-    BatchInputManager --> DynamicProgramming
-    BatchInputManager --> Greedy
-    BatchInputManager --> IntegerLinearProgramming
-    BatchInputManager --> Pallet
-    BatchInputManager --> Truck
-    CSVParser --> Pallet
-    CSVParser --> Truck
-```
+![Class Diagram (UML)](../uml/uml.png)
 
 - This diagram shows how the batch system manages dataset loading, parsing, and algorithm execution, and which files are involved in each class in a simplified way.
 
@@ -144,7 +116,7 @@ classDiagram
 
 ## Comparative Analysis
 
-![Algorithm Timing Comparison (log scale)](../reference_materials/notes/time_comparison/times_plot.png)
+![Algorithm Timing Comparison (log scale)](notes/time_comparison/times_plot.png)
 
 *Figure: Timing comparison of all algorithms on all datasets. The y-axis is logarithmic, so each step represents a multiplication (e.g., 10, 100, 1000, ...). This allows both fast and slow algorithms to be compared on the same plot.*
 

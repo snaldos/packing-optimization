@@ -1,0 +1,51 @@
+
+@startuml
+class BatchStateManager {
+  BatchStateManager.h
+}
+class BatchDataSetManager {
+  BatchDataSetManager.h
+}
+class BatchInputManager {
+  BatchInputManager.h
+}
+class CSVParser {
+  CSVParser.h
+}
+class Pallet {
+  Pallet.h
+}
+class Truck {
+  Truck.h
+}
+class BruteForce {
+  BruteForce.h
+}
+class BranchAndBound {
+  BranchAndBound.h
+}
+class DynamicProgramming {
+  DynamicProgramming.h
+}
+class Greedy {
+  Greedy.h
+}
+class IntegerLinearProgramming {
+  IntegerLinearProgramming.h
+}
+
+BatchStateManager -- BatchDataSetManager
+BatchStateManager -- BatchInputManager
+BatchDataSetManager -- CSVParser
+BatchDataSetManager -- Pallet
+BatchDataSetManager -- Truck
+BatchInputManager -- BruteForce
+BatchInputManager -- BranchAndBound
+BatchInputManager -- DynamicProgramming
+BatchInputManager -- Greedy
+BatchInputManager -- IntegerLinearProgramming
+BatchInputManager -- Pallet
+BatchInputManager -- Truck
+CSVParser -- Pallet
+CSVParser -- Truck
+@enduml

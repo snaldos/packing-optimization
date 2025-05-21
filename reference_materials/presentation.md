@@ -122,6 +122,10 @@ classDiagram
 
 ## Comparative Analysis
 
+![Algorithm Timing Comparison (log scale)](../reference_materials/notes/time_comparison/times_plot.png)
+
+*Figure: Timing comparison of all algorithms on all datasets. The y-axis is logarithmic, so each step represents a multiplication (e.g., 10, 100, 1000, ...). This allows both fast and slow algorithms to be compared on the same plot.*
+
 - **BF/BT:** Only for very small datasets. Exponential time.
 - **BB:** Dominates in practice, solving almost all datasets in microseconds. Only fails to be fast on rare, specially crafted pathological cases (e.g., many similar ratios or ambiguous choices).
 - **DP Vector:** Best for small/medium, dense problems. Memory grows with capacity.

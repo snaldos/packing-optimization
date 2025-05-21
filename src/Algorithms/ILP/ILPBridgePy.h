@@ -25,8 +25,32 @@
 
 */
 
+/**
+ * @class ILPBridgePy
+ * @brief Bridges C++ and Python to solve the 0/1 Knapsack Problem using ILP
+ * (via PuLP).
+ *
+ * Serializes the problem to JSON, calls a Python script to solve it using PuLP,
+ * and parses the result.
+ *
+ * Time complexity: Depends on the Python ILP solver; exponential in the worst
+ * case, but often efficient for moderate n. Space complexity: Depends on the
+ * solver's internal representation (typically O(n)).
+ */
 class ILPBridgePy {
  public:
+   /**
+    * @brief Solves the knapsack problem using ILP (Python/PuLP backend).
+    * @param pallets List of pallets
+    * @param truck Truck (capacity)
+    * @param used_pallets Output: selected pallets
+    * @param message Output: status and timing info
+    * @param timeout_ms Timeout in milliseconds
+    * @return Maximum profit
+    * @details
+    * Time complexity: Exponential in the worst case (depends on solver and
+    * instance). Space complexity: O(n)
+    */
    unsigned int solve_ilp_py(const std::vector<Pallet> &pallets,
                              const Truck &truck,
                              std::vector<Pallet> &used_pallets,

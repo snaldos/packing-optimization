@@ -41,11 +41,13 @@ private:
    * @param curr_weight Current total weight
    * @param curr_value Current total value
    * @param max_weight Maximum capacity
+   * @param force_ratio_sort Whether to sort by ratio for the upper bound
    * @return Upper bound on achievable value
    */
   double estimate_upper_bound(const std::vector<Pallet> &pallets,
                               unsigned int index, unsigned int curr_weight,
-                              unsigned int curr_value, unsigned int max_weight);
+                              unsigned int curr_value, unsigned int max_weight,
+                              bool force_ratio_sort);
   /**
    * @brief Helper function for recursive branch-and-bound.
    * @param pallets List of pallets
@@ -58,11 +60,12 @@ private:
    * @param best_value Best value found so far
    * @param deadline Timeout deadline
    * @param timed_out Set to true if timeout occurs
+   * @param force_ratio_sort Whether to sort by ratio for the upper bound
    */
   void bb_helper(const std::vector<Pallet> &pallets, unsigned int index,
                  unsigned int curr_weight, unsigned int curr_value,
                  unsigned int max_weight, std::vector<bool> &curr_used,
                  std::vector<bool> &best_used, unsigned int &best_value,
                  std::chrono::steady_clock::time_point deadline,
-                 bool &timed_out);
+                 bool &timed_out, bool force_ratio_sort);
 };

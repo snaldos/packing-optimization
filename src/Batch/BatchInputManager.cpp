@@ -132,6 +132,10 @@ void BatchInputManager::processInput() {
     unsigned int max_profit = 0;
     std::string message;
 
+    // TODO: For statistics, could add a function that based on message would
+    // put it in csv format and append it to a csv file to then run a python
+    // script to graph it
+
     switch (choice) {
     case 1:
       filename = "bf.txt";

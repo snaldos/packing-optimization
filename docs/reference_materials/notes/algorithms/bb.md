@@ -14,11 +14,11 @@ Finds an optimal solution, but for large datasets (like 06) the solution may not
 
 This dataset traps approaches where the pallets are sorted by value to weight ratio. Thanks to the heuristic, BT chooses to first try sorting by value and because of that, works wonders executing in microseconds what could have taken minutes or more.
 
-## DATASET 19, 21
+## DATASET 19
 
 This dataset traps approaches where the pallets are sorted by value to weight ratio. It also is formulated in a way that avoids the heuristic magic so it takes a while and then sorts by value, finishing rather quickly.
 
-## DATASET 25
+## DATASET 21, 25
 
 This dataset finally finds a way to trap in time the clever backtrack and put an end to its winning streak, leaving execution after 1 minute of trying.
 It traps both approaches where the pallets are sorted by value to weight ratio and approaches where the pallets are sorted by value.

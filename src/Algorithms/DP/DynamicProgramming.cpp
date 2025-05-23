@@ -1,71 +1,95 @@
 #include "DynamicProgramming.h"
+#include "DPEntry.h"
 
-std::unique_ptr<DPTable> DynamicProgramming::create_table(
-    TableType type, unsigned int n, unsigned int max_weight) {
+std::unique_ptr<DPTable>
+DynamicProgramming::create_table(TableType type, unsigned int n,
+                                 unsigned int max_weight) {
   if (type == TableType::Vector)
     return std::make_unique<VectorDPTable>(n, max_weight);
   else
     return std::make_unique<HashMapDPTable>();
 }
 
-unsigned int DynamicProgramming::dp_solve_top_down(
+DPEntry DynamicProgramming::dp_solve_top_down(
     const std::vector<Pallet> &pallets, std::unique_ptr<DPTable> &dp,
     unsigned int i, unsigned int w,
     std::chrono::steady_clock::time_point deadline, bool &timed_out) {
   if (std::chrono::steady_clock::now() > deadline) {
     timed_out = true;
-    return 0;
+    return DPEntry{};
   }
-  if (i == 0 || w == 0) return 0;
+  if (i == 0 || w == 0)
+    return DPEntry{};
 
-  unsigned int cached = dp->get(i, w);
-  if (cached != NOT_COMPUTED) return cached;
+  DPEntry cached = dp->get(i, w);
+  if (cached.profit != NOT_COMPUTED_ENTRY.profit)
+    return cached;
 
-  unsigned int result;
-  if (pallets[i - 1].get_weight() > w) {
+  const Pallet &p = pallets[i - 1];
+  DPEntry result;
+
+  if (p.get_weight() > w) {
     result = dp_solve_top_down(pallets, dp, i - 1, w, deadline, timed_out);
   } else {
-    unsigned int included =
-        pallets[i - 1].get_profit() +
-        dp_solve_top_down(pallets, dp, i - 1, w - pallets[i - 1].get_weight(),
-                          deadline, timed_out);
-    unsigned int excluded =
+    DPEntry exclude =
         dp_solve_top_down(pallets, dp, i - 1, w, deadline, timed_out);
-    result = std::max(included, excluded);
+    DPEntry include = dp_solve_top_down(pallets, dp, i - 1, w - p.get_weight(),
+                                        deadline, timed_out);
+    include.profit += p.get_profit();
+    include.weight += p.get_weight();
+    include.count += 1;
+    result = std::max(include, exclude);
   }
-
   dp->set(i, w, result);
   return result;
 }
 
-unsigned int DynamicProgramming::dp_solve_top_down(
+DPEntry DynamicProgramming::dp_solve_top_down(
     const std::vector<Pallet> &pallets, std::unique_ptr<DPTable> &dp,
     unsigned int i, unsigned int w, std::vector<Pallet> &used_pallets,
     std::chrono::steady_clock::time_point deadline, bool &timed_out) {
-  unsigned int result =
-      dp_solve_top_down(pallets, dp, i, w, deadline, timed_out);
+  DPEntry result = dp_solve_top_down(pallets, dp, i, w, deadline, timed_out);
   if (timed_out)
-    return 0;
-  // Backtrack for used pallets (HashMap style)
+    return DPEntry{};
   used_pallets.clear();
-  std::function<unsigned int(unsigned int, unsigned int)> get_or_compute;
-  get_or_compute = [&](unsigned int i, unsigned int w) -> unsigned int {
-    unsigned int v = dp->get(i, w);
-    if (v != NOT_COMPUTED) return v;
-    if (i == 0 || w == 0) return 0;
-    if (pallets[i - 1].get_weight() > w) return get_or_compute(i - 1, w);
-    unsigned int included =
-        pallets[i - 1].get_profit() +
-        get_or_compute(i - 1, w - pallets[i - 1].get_weight());
-    unsigned int excluded = get_or_compute(i - 1, w);
-    return std::max(included, excluded);
+  // Use get_or_compute to ensure all needed entries are available for
+  // backtracking
+  std::function<DPEntry(unsigned int, unsigned int)> get_or_compute =
+      [&](unsigned int i, unsigned int w) -> DPEntry {
+    DPEntry entry = dp->get(i, w);
+    if (entry.profit != NOT_COMPUTED_ENTRY.profit)
+      return entry;
+    if (i == 0 || w == 0)
+      return DPEntry{};
+    const Pallet &p = pallets[i - 1];
+    DPEntry result;
+    if (p.get_weight() > w) {
+      result = get_or_compute(i - 1, w);
+    } else {
+      DPEntry exclude = get_or_compute(i - 1, w);
+      DPEntry include = get_or_compute(i - 1, w - p.get_weight());
+      include.profit += p.get_profit();
+      include.weight += p.get_weight();
+      include.count += 1;
+      result = std::max(include, exclude);
+    }
+    dp->set(i, w, result);
+    return result;
   };
   while (i > 0 && w > 0) {
-    unsigned int curr = get_or_compute(i, w);
-    unsigned int excl = get_or_compute(i - 1, w);
-    if (curr != excl) {
-      used_pallets.push_back(pallets[i - 1]);
-      w -= pallets[i - 1].get_weight();
+    DPEntry curr = get_or_compute(i, w);
+    const Pallet &p = pallets[i - 1];
+    if (p.get_weight() <= w) {
+      DPEntry incl = get_or_compute(i - 1, w - p.get_weight());
+      // Only include if including this pallet actually produces curr
+      if (curr.profit == incl.profit + p.get_profit() &&
+          curr.weight == incl.weight + p.get_weight() &&
+          curr.count == incl.count + 1) {
+        used_pallets.push_back(p);
+        w -= p.get_weight();
+        i--;
+        continue;
+      }
     }
     i--;
   }
@@ -73,7 +97,7 @@ unsigned int DynamicProgramming::dp_solve_top_down(
   return result;
 }
 
-unsigned int DynamicProgramming::dp_solve_bottom_up(
+DPEntry DynamicProgramming::dp_solve_bottom_up(
     const std::vector<Pallet> &pallets, std::unique_ptr<DPTable> &dp,
     unsigned int n, unsigned int max_weight, std::vector<Pallet> &used_pallets,
     std::chrono::steady_clock::time_point deadline, bool &timed_out) {
@@ -81,27 +105,38 @@ unsigned int DynamicProgramming::dp_solve_bottom_up(
     for (unsigned int w = 0; w <= max_weight; w++) {
       if (std::chrono::steady_clock::now() > deadline) {
         timed_out = true;
-        return 0;
+        return DPEntry{};
       }
-      if (pallets[i - 1].get_weight() <= w) {
-        unsigned int included = pallets[i - 1].get_profit() +
-                                dp->get(i - 1, w - pallets[i - 1].get_weight());
-        unsigned int excluded = dp->get(i - 1, w);
-        unsigned int value = std::max(included, excluded);
-        dp->set(i, w, value);
-      } else {
-        unsigned int value = dp->get(i - 1, w);
-        dp->set(i, w, value);
+      const Pallet &p = pallets[i - 1];
+      DPEntry exclude = dp->get(i - 1, w);
+      DPEntry best = exclude;
+      if (p.get_weight() <= w) {
+        DPEntry include = dp->get(i - 1, w - p.get_weight());
+        include.profit += p.get_profit();
+        include.weight += p.get_weight();
+        include.count += 1;
+        if (exclude < include)
+          best = include;
       }
+      dp->set(i, w, best);
     }
   }
-  // Backtrack for used pallets (Vector style)
   used_pallets.clear();
   unsigned int i = n, w = max_weight;
   while (i > 0 && w > 0) {
-    if (dp->get(i, w) != dp->get(i - 1, w)) {
-      used_pallets.push_back(pallets[i - 1]);
-      w -= pallets[i - 1].get_weight();
+    DPEntry curr = dp->get(i, w);
+    const Pallet &p = pallets[i - 1];
+    if (p.get_weight() <= w) {
+      DPEntry incl = dp->get(i - 1, w - p.get_weight());
+      // Only include if including this pallet actually produces curr
+      if (curr.profit == incl.profit + p.get_profit() &&
+          curr.weight == incl.weight + p.get_weight() &&
+          curr.count == incl.count + 1) {
+        used_pallets.push_back(p);
+        w -= p.get_weight();
+        i--;
+        continue;
+      }
     }
     i--;
   }
@@ -119,15 +154,12 @@ unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet> &pallets,
   auto dp = create_table(type, pallets.size(), truck.get_capacity());
   unsigned int n = pallets.size();
   unsigned int max_weight = truck.get_capacity();
-  unsigned int result = 0;
   bool timed_out = false;
-
+  DPEntry result;
   if (type == TableType::Vector) {
-    // Use bottom-up approach
     result = dp_solve_bottom_up(pallets, dp, n, max_weight, used_pallets,
                                 deadline, timed_out);
   } else {
-    // Use top-down recursive with memoization for sparse table
     result = dp_solve_top_down(pallets, dp, n, max_weight, used_pallets,
                                deadline, timed_out);
   }
@@ -160,7 +192,7 @@ unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet> &pallets,
             " μs | Memory used for " + std::to_string(num_entries) +
             " entries: " + memory_str;
 
-  return result;
+  return result.profit;
 }
 
 unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet> &pallets,
@@ -217,5 +249,5 @@ unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet> &pallets,
       " μs | Memory used for " + std::to_string(num_entries) +
       " entries: " + memory_str;
 
-  return prev[W];  // Note: `prev` holds the last filled row after final swap
+  return prev[W]; // Note: `prev` holds the last filled row after final swap
 }

@@ -1,3 +1,5 @@
+#include "DPEntry.h"
+
 #ifndef DP_TABLE_H
 #define DP_TABLE_H
 
@@ -20,15 +22,15 @@ class DPTable {
     * @param w Remaining capacity
     * @return Value for subproblem (i, w), or a sentinel if not set
     */
-   virtual unsigned int get(unsigned int i, unsigned int w) const = 0;
+   virtual DPEntry get(unsigned int i, unsigned int w) const = 0;
 
    /**
     * @brief Set the value for subproblem (i, w).
     * @param i Item index
     * @param w Remaining capacity
-    * @param value Value to store
+    * @param entry Value to store
     */
-   virtual void set(unsigned int i, unsigned int w, unsigned int value) = 0;
+   virtual void set(unsigned int i, unsigned int w, const DPEntry &entry) = 0;
 
    /**
     * @brief Get the number of entries stored in the table.

@@ -1,6 +1,7 @@
 #ifndef VECTOR_DPTABLE_H
 #define VECTOR_DPTABLE_H
 
+#include "DPEntry.h"
 #include "DPTable.h"
 #include <vector>
 
@@ -16,7 +17,7 @@
  */
 class VectorDPTable : public DPTable {
  private:
-  std::vector<std::vector<unsigned int>> table;
+   std::vector<std::vector<DPEntry>> table;
 
  public:
    /**
@@ -32,15 +33,15 @@ class VectorDPTable : public DPTable {
     * @param w Remaining capacity
     * @return Value for subproblem (i, w)
     */
-   unsigned int get(unsigned int i, unsigned int w) const override;
+   DPEntry get(unsigned int i, unsigned int w) const override;
 
    /**
     * @brief Set the value for subproblem (i, w).
     * @param i Item index
     * @param w Remaining capacity
-    * @param value Value to store
+    * @param entry Value to store
     */
-   void set(unsigned int i, unsigned int w, unsigned int value) override;
+   void set(unsigned int i, unsigned int w, const DPEntry &entry) override;
 
    /**
     * @brief Get the number of entries stored in the table.

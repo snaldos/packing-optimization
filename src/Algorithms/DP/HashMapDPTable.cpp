@@ -1,21 +1,20 @@
 #include "HashMapDPTable.h"
+#include "DPEntry.h"
 
-HashMapDPTable::HashMapDPTable() {
-  // Optionally reserve space if needed
-}
+HashMapDPTable::HashMapDPTable() {}
 
-unsigned int HashMapDPTable::get(unsigned int i, unsigned int w) const {
+DPEntry HashMapDPTable::get(unsigned int i, unsigned int w) const {
   auto it = table.find({i, w});
-  return it != table.end() ? it->second : NOT_COMPUTED;
+  return it != table.end() ? it->second : NOT_COMPUTED_ENTRY;
 }
 
-void HashMapDPTable::set(unsigned int i, unsigned int w, unsigned int value) {
-  table[{i, w}] = value;
+void HashMapDPTable::set(unsigned int i, unsigned int w, const DPEntry &entry) {
+  table[{i, w}] = entry;
 }
 
 std::size_t HashMapDPTable::get_num_entries() const { return table.size(); }
 
 std::size_t HashMapDPTable::get_memory_usage() const {
-  using Entry = std::pair<std::pair<unsigned int, unsigned int>, unsigned int>;
+  using Entry = std::pair<std::pair<unsigned int, unsigned int>, DPEntry>;
   return get_num_entries() * sizeof(Entry);
 }

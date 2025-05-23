@@ -181,7 +181,7 @@ Dataset, Algorithm, Time (μs), Flag
 20, ILP-PY, 83223, 0
 21, BF, -1, 1
 21, BT, -1, 1
-21, BB, 26, 1
+21, BB, -1, 1
 21, DP-Vector, 5321, 0
 21, DP-HashMap, 22311, 0
 21, DP-Optimized, 2576, 0

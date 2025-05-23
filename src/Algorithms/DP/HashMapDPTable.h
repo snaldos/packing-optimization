@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <utility>
 
+#include "DPEntry.h"
 #include "DPTable.h"
 
 constexpr unsigned int NOT_COMPUTED = UINT_MAX;
@@ -28,9 +29,8 @@ struct PairHash {
  */
 class HashMapDPTable : public DPTable {
  private:
-  std::unordered_map<std::pair<unsigned int, unsigned int>, unsigned int,
-                     PairHash>
-      table;
+   std::unordered_map<std::pair<unsigned int, unsigned int>, DPEntry, PairHash>
+       table;
 
  public:
    /**
@@ -44,15 +44,15 @@ class HashMapDPTable : public DPTable {
     * @param w Remaining capacity
     * @return Value for subproblem (i, w), or NOT_COMPUTED if not set
     */
-   unsigned int get(unsigned int i, unsigned int w) const override;
+   DPEntry get(unsigned int i, unsigned int w) const override;
 
    /**
     * @brief Set the value for subproblem (i, w).
     * @param i Item index
     * @param w Remaining capacity
-    * @param value Value to store
+    * @param entry Value to store
     */
-   void set(unsigned int i, unsigned int w, unsigned int value) override;
+   void set(unsigned int i, unsigned int w, const DPEntry &entry) override;
 
    /**
     * @brief Get the number of entries stored in the table.

@@ -10,6 +10,7 @@
 
 #include "../../DataStructures/Pallet.h"
 #include "../../DataStructures/Truck.h"
+#include "DPEntry.h"
 #include "DPTable.h"
 #include "HashMapDPTable.h"
 #include "VectorDPTable.h"
@@ -55,10 +56,11 @@ class DynamicProgramming {
     * Time complexity: O(s), where s is the number of unique (i, w) states.
     * Space complexity: O(s).
     */
-   unsigned int dp_solve_top_down(
-       const std::vector<Pallet> &pallets, std::unique_ptr<DPTable> &dp,
-       unsigned int i, unsigned int w,
-       std::chrono::steady_clock::time_point deadline, bool &timed_out);
+   DPEntry dp_solve_top_down(const std::vector<Pallet> &pallets,
+                             std::unique_ptr<DPTable> &dp, unsigned int i,
+                             unsigned int w,
+                             std::chrono::steady_clock::time_point deadline,
+                             bool &timed_out);
 
    /**
     * @brief Top-down DP with memoization (HashMap), reconstructs used pallets.
@@ -74,10 +76,11 @@ class DynamicProgramming {
     * Time complexity: O(s), where s is the number of unique (i, w) states.
     * Space complexity: O(s).
     */
-   unsigned int dp_solve_top_down(
-       const std::vector<Pallet> &pallets, std::unique_ptr<DPTable> &dp,
-       unsigned int i, unsigned int w, std::vector<Pallet> &used_pallets,
-       std::chrono::steady_clock::time_point deadline, bool &timed_out);
+   DPEntry dp_solve_top_down(const std::vector<Pallet> &pallets,
+                             std::unique_ptr<DPTable> &dp, unsigned int i,
+                             unsigned int w, std::vector<Pallet> &used_pallets,
+                             std::chrono::steady_clock::time_point deadline,
+                             bool &timed_out);
 
    /**
     * @brief Bottom-up DP (vector table), reconstructs used pallets.
@@ -93,11 +96,12 @@ class DynamicProgramming {
     * Time complexity: O(nW)
     * Space complexity: O(nW)
     */
-   unsigned int dp_solve_bottom_up(
-       const std::vector<Pallet> &pallets, std::unique_ptr<DPTable> &dp,
-       unsigned int n, unsigned int max_weight,
-       std::vector<Pallet> &used_pallets,
-       std::chrono::steady_clock::time_point deadline, bool &timed_out);
+   DPEntry dp_solve_bottom_up(const std::vector<Pallet> &pallets,
+                              std::unique_ptr<DPTable> &dp, unsigned int n,
+                              unsigned int max_weight,
+                              std::vector<Pallet> &used_pallets,
+                              std::chrono::steady_clock::time_point deadline,
+                              bool &timed_out);
 
  public:
    /**

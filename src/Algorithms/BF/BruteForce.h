@@ -66,6 +66,8 @@ class BruteForce {
     * @param curr_used Current selection vector
     * @param best_used Best selection vector
     * @param best_value Best value found so far
+    * @param best_weight Best weight found so far (for tie-breaking)
+    * @param best_count Best count found so far (for tie-breaking)
     * @param deadline Timeout deadline
     * @param timed_out Set to true if timeout occurs
     */
@@ -73,6 +75,7 @@ class BruteForce {
                   unsigned int curr_weight, unsigned int curr_value,
                   unsigned int max_weight, std::vector<bool> &curr_used,
                   std::vector<bool> &best_used, unsigned int &best_value,
+                  unsigned int &best_weight, unsigned int &best_count,
                   std::chrono::steady_clock::time_point deadline,
                   bool &timed_out);
 

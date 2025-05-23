@@ -1,4 +1,6 @@
-#pragma once
+#ifndef BRANCH_AND_BOUND_H
+#define BRANCH_AND_BOUND_H
+
 #include "../../DataStructures/Pallet.h"
 #include "../../DataStructures/Truck.h"
 #include <algorithm>
@@ -71,3 +73,5 @@ private:
                  std::chrono::steady_clock::time_point deadline,
                  bool &timed_out, bool force_ratio_sort);
 };
+
+#endif // BRANCH_AND_BOUND_H

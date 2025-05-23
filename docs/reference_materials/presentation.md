@@ -17,6 +17,7 @@ Packing optimization is a classic problem in combinatorial optimization, with ap
   - [Class Diagram \& File Involvement](#class-diagram--file-involvement)
   - [Reading the Dataset](#reading-the-dataset)
   - [Implemented Functionalities \& Algorithms](#implemented-functionalities--algorithms)
+  - [Note on Solution Meaningfulness \& Trade-offs](#note-on-solution-meaningfulness--trade-offs)
   - [Strategy Analysis](#strategy-analysis)
   - [Data Structures Used](#data-structures-used)
   - [Time \& Space Complexities](#time--space-complexities)
@@ -59,17 +60,27 @@ Packing optimization is a classic problem in combinatorial optimization, with ap
 
 ## Implemented Functionalities & Algorithms
 
-- **Brute Force (BF):** Exhaustively checks all possible combinations to guarantee the optimal solution. Impractical for large datasets due to exponential time.
+- **Brute Force (BF):** Exhaustively checks all possible combinations to guarantee the optimal solution. In case of ties (equal profit), it selects the solution with the lowest total weight, and if still tied, the fewest number of pallets—yielding the most real-world meaningful result. Impractical for large datasets due to exponential time.
 - **Backtracking (BT):** Prunes branches exceeding constraints, exploring only feasible combinations. Faster than brute force, but still exponential in worst case.
 - **Branch & Bound (BB):** Uses upper bounds to prune the search space. In practice, BB is the fastest and most robust approach for almost all real-world datasets, consistently outperforming other methods by solving most instances in microseconds. Only specially crafted pathological cases can slow it down significantly.
 - **Dynamic Programming (DP):**
-  - **DP Vector (Bottom-Up):** Fills a table for all capacities, reconstructs solution, ideal for dense problems.
-  - **DP HashMap (Top-Down):** Memoized recursion, efficient for sparse problems, saves memory when few states are used.
+  - **DP Vector (Bottom-Up):** Fills a table for all capacities, reconstructs solution, ideal for dense problems. Returns the best-suited solution: among all optimal (max-profit) solutions, it chooses the one with the lowest total weight, and if still tied, the fewest pallets.
+  - **DP HashMap (Top-Down):** Memoized recursion, efficient for sparse problems, saves memory when few states are used. Also applies the same tie-breaking as DP Vector.
   - **DP Optimized (2 Rows):** Uses only two rows for memory efficiency, computes only max profit (no reconstruction).
 - **Greedy Approximation:** Selects items by profit-to-weight ratio. Fastest, but not always optimal.
 - **Integer Linear Programming (ILP):**
   - **Python (PuLP):** Flexible, slower, customizable.
   - **C++ (OR-Tools):** Fastest, robust, can be tuned for secondary objectives.
+
+---
+
+## Note on Solution Meaningfulness & Trade-offs
+
+- **DP (Vector/HashMap), Brute Force and Backtracking** always return not just any optimal solution, but the "best-fitted" (most meaningful) one: maximizing profit, then minimizing total weight, then minimizing the number of pallets. This is especially valuable in real-world logistics, where lighter or fewer pallets are preferable for cost, handling, or space reasons.
+- **Other algorithms (e.g., Branch & Bound, ILP)** may return any optimal solution, but are not guaranteed to find the best-fitted one according to these secondary criteria. This is because they prioritize speed and aggressive pruning, which can skip over equally optimal but more practical solutions.
+- **Trade-off:** The enhanced tie-breaking in DP and BF adds a small computational overhead, but ensures the returned solution is not just mathematically optimal, but also practically best-suited for real applications. In contrast, faster algorithms may sacrifice this extra layer of optimality for performance.
+
+- **Greedy:** The greedy algorithm is extremely fast and, in many cases, can produce solutions that are very close to optimal. However, it is not guaranteed to be optimal or to provide the best-fitted solution. Since greedy is a non-constant factor approximation for the 0/1 knapsack problem, its reliability cannot be blindly trusted—there are datasets where it performs well, but also cases where it can miss the optimal or most meaningful solution by a significant margin. Use with caution when solution quality is critical.
 
 ---
 

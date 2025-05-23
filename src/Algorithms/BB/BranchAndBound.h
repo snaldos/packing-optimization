@@ -1,9 +1,10 @@
 #pragma once
-#include <vector>
-#include <string>
-#include <chrono>
 #include "../../DataStructures/Pallet.h"
 #include "../../DataStructures/Truck.h"
+#include <algorithm>
+#include <chrono>
+#include <string>
+#include <vector>
 
 /**
  * @class BranchAndBound
@@ -32,6 +33,7 @@ public:
   unsigned int bb_solve(std::vector<Pallet> pallets, const Truck &truck,
                         std::vector<Pallet> &used_pallets, std::string &message,
                         unsigned int timeout_ms);
+
 private:
   /**
    * @brief Estimates an upper bound for the current subproblem using fractional

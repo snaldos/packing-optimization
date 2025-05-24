@@ -162,7 +162,8 @@ void BatchInputManager::processInput() {
       std::cout << "Enable lexicographical tie-breaking for DP-VECTOR? (y/N): ";
       std::string input;
       std::getline(std::cin, input);
-      if (!input.empty()) lex_choice = std::tolower(input[0]);
+      if (!input.empty())
+        lex_choice = std::tolower(input[0]);
       bool lex = (lex_choice == 'y');
       filename = "dp_vector.txt";
       max_profit = DynamicProgramming(lex).dp_solve(
@@ -173,14 +174,17 @@ void BatchInputManager::processInput() {
     case 5: {
       // DP-HASHMAP
       char lex_choice = 'n';
-      std::cout << "Enable lexicographical tie-breaking for DP-HASHMAP? (y/N): ";
+      std::cout
+          << "Enable lexicographical tie-breaking for DP-HASHMAP? (y/N): ";
       std::string input;
       std::getline(std::cin, input);
-      if (!input.empty()) lex_choice = std::tolower(input[0]);
+      if (!input.empty())
+        lex_choice = std::tolower(input[0]);
       bool lex = (lex_choice == 'y');
       filename = "dp_hashmap.txt";
       max_profit = DynamicProgramming(lex).dp_solve(
-          pallets, truck, used_pallets, TableType::HashMap, message, timeout_ms);
+          pallets, truck, used_pallets, TableType::HashMap, message,
+          timeout_ms);
       generate_output_file(filename, used_pallets, max_profit, message);
       break;
     }
@@ -212,5 +216,8 @@ void BatchInputManager::processInput() {
       std::cout << "Exiting process input...\n";
       return; // Exit the function and the loop
     }
+
+    // After generating output file, append stats to CSV using Python script
+    // std::string algorithm = options[choice - 1];
   }
 }

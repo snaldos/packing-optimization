@@ -25,11 +25,13 @@ class BatchDataSetManager {
  public:
    /**
     * @brief Constructs a BatchDataSetManager with references to the main data
-    * structures.
+    * structures and a shared identifier.
     * @param pallets Reference to the vector of pallets
     * @param truck Reference to the truck object
+    * @param identifier Reference to the shared dataset identifier
     */
-   BatchDataSetManager(std::vector<Pallet> &pallets, Truck &truck);
+   BatchDataSetManager(std::vector<Pallet> &pallets, Truck &truck,
+                       std::string &identifier);
 
    /**
     * @brief Prompts the user to select and load a dataset from available files.
@@ -58,7 +60,8 @@ class BatchDataSetManager {
    CSVParser csv_data_parser;      ///< CSV parser for reading data files
    std::vector<Pallet> &pallets;   ///< Reference to the vector of pallets
    Truck &truck;                   ///< Reference to the truck object
-   std::string current_identifier; ///< Tracks the current dataset identifier
+   std::string
+       &current_identifier; ///< Reference to the shared dataset identifier
 };
 
 #endif  // BATCH_DATASET_MANAGER_H

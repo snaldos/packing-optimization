@@ -48,15 +48,18 @@ class BatchInputManager {
    Truck &truck;                 ///< Reference to the truck object
    unsigned int timeout_ms =
        60000; ///< Timeout in milliseconds (default 1 minute)
+   std::string &identifier; ///< Reference to the shared dataset identifier
 
  public:
    /**
     * @brief Constructs a BatchInputManager with references to the main data
-    * structures.
+    * structures and a shared identifier.
     * @param pallets Reference to the vector of pallets
     * @param truck Reference to the truck object
+    * @param identifier Reference to the shared dataset identifier
     */
-   BatchInputManager(std::vector<Pallet> &pallets, Truck &truck);
+   BatchInputManager(std::vector<Pallet> &pallets, Truck &truck,
+                     std::string &identifier);
 
    /**
     * @brief Gets the current input mode/state from the user.

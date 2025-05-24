@@ -1,7 +1,8 @@
 #include "BatchInputManager.h"
 
-BatchInputManager::BatchInputManager(std::vector<Pallet> &pallets, Truck &truck)
-    : pallets(pallets), truck(truck) {}
+BatchInputManager::BatchInputManager(std::vector<Pallet> &pallets, Truck &truck,
+                                     std::string &identifier)
+    : pallets(pallets), truck(truck), identifier(identifier) {}
 
 BatchState BatchInputManager::getInputMode() {
   std::string prompt = "Choose an option (empty line to exit): ";

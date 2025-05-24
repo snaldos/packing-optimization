@@ -1,8 +1,8 @@
 #include "BatchDataSetManager.h"
 
 BatchDataSetManager::BatchDataSetManager(std::vector<Pallet> &pallets,
-                                         Truck &truck)
-    : pallets(pallets), truck(truck) {}
+                                         Truck &truck, std::string &identifier)
+    : pallets(pallets), truck(truck), current_identifier(identifier) {}
 
 const std::vector<Pallet> &BatchDataSetManager::get_pallets() const {
   return pallets;

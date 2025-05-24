@@ -5,9 +5,10 @@ std::unique_ptr<DPTable>
 DynamicProgramming::create_table(TableType type, unsigned int n,
                                  unsigned int max_weight) {
   if (type == TableType::Vector)
-    return std::make_unique<VectorDPTable>(n, max_weight);
+    return std::make_unique<VectorDPTable>(n, max_weight,
+                                           lexicographical_order);
   else
-    return std::make_unique<HashMapDPTable>();
+    return std::make_unique<HashMapDPTable>(lexicographical_order);
 }
 
 DPEntry DynamicProgramming::dp_solve_top_down(
@@ -38,6 +39,11 @@ DPEntry DynamicProgramming::dp_solve_top_down(
     include.profit += p.get_profit();
     include.weight += p.get_weight();
     include.count += 1;
+    if (lexicographical_order) {
+      include.ids.push_back(p.get_id());
+      // Removed std::sort: preserve order of inclusion for correct
+      // lexicographical comparison
+    }
     result = std::max(include, exclude);
   }
   dp->set(i, w, result);
@@ -71,6 +77,9 @@ DPEntry DynamicProgramming::dp_solve_top_down(
       include.profit += p.get_profit();
       include.weight += p.get_weight();
       include.count += 1;
+      if (lexicographical_order) {
+        include.ids.push_back(p.get_id());
+      }
       result = std::max(include, exclude);
     }
     dp->set(i, w, result);
@@ -81,14 +90,26 @@ DPEntry DynamicProgramming::dp_solve_top_down(
     const Pallet &p = pallets[i - 1];
     if (p.get_weight() <= w) {
       DPEntry incl = get_or_compute(i - 1, w - p.get_weight());
-      // Only include if including this pallet actually produces curr
-      if (curr.profit == incl.profit + p.get_profit() &&
-          curr.weight == incl.weight + p.get_weight() &&
-          curr.count == incl.count + 1) {
-        used_pallets.push_back(p);
-        w -= p.get_weight();
-        i--;
-        continue;
+      if (lexicographical_order) {
+        std::vector<std::string> incl_ids = incl.ids;
+        incl_ids.push_back(p.get_id());
+        if (curr.profit == incl.profit + p.get_profit() &&
+            curr.weight == incl.weight + p.get_weight() &&
+            curr.count == incl.count + 1 && curr.ids == incl_ids) {
+          used_pallets.push_back(p);
+          w -= p.get_weight();
+          i--;
+          continue;
+        }
+      } else {
+        if (curr.profit == incl.profit + p.get_profit() &&
+            curr.weight == incl.weight + p.get_weight() &&
+            curr.count == incl.count + 1) {
+          used_pallets.push_back(p);
+          w -= p.get_weight();
+          i--;
+          continue;
+        }
       }
     }
     i--;
@@ -115,6 +136,9 @@ DPEntry DynamicProgramming::dp_solve_bottom_up(
         include.profit += p.get_profit();
         include.weight += p.get_weight();
         include.count += 1;
+        if (lexicographical_order) {
+          include.ids.push_back(p.get_id());
+        }
         if (exclude < include)
           best = include;
       }
@@ -128,14 +152,26 @@ DPEntry DynamicProgramming::dp_solve_bottom_up(
     const Pallet &p = pallets[i - 1];
     if (p.get_weight() <= w) {
       DPEntry incl = dp->get(i - 1, w - p.get_weight());
-      // Only include if including this pallet actually produces curr
-      if (curr.profit == incl.profit + p.get_profit() &&
-          curr.weight == incl.weight + p.get_weight() &&
-          curr.count == incl.count + 1) {
-        used_pallets.push_back(p);
-        w -= p.get_weight();
-        i--;
-        continue;
+      if (lexicographical_order) {
+        std::vector<std::string> incl_ids = incl.ids;
+        incl_ids.push_back(p.get_id());
+        if (curr.profit == incl.profit + p.get_profit() &&
+            curr.weight == incl.weight + p.get_weight() &&
+            curr.count == incl.count + 1 && curr.ids == incl_ids) {
+          used_pallets.push_back(p);
+          w -= p.get_weight();
+          i--;
+          continue;
+        }
+      } else {
+        if (curr.profit == incl.profit + p.get_profit() &&
+            curr.weight == incl.weight + p.get_weight() &&
+            curr.count == incl.count + 1) {
+          used_pallets.push_back(p);
+          w -= p.get_weight();
+          i--;
+          continue;
+        }
       }
     }
     i--;
@@ -190,7 +226,9 @@ unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet> &pallets,
             std::string(type == TableType::Vector ? "Vector" : "HashMap") +
             " Table)] Execution time: " + std::to_string(duration) +
             " μs | Memory used for " + std::to_string(num_entries) +
-            " entries: " + memory_str;
+            " entries: " + memory_str +
+            (lexicographical_order ? " | Lexicographical tie-breaking: ON"
+                                   : " | Lexicographical tie-breaking: OFF");
 
   return result.profit;
 }

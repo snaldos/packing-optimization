@@ -8,7 +8,7 @@ Finds the correct max profit with minimal memory and very fast execution. Cannot
 
 ## DATASET 06
 
-Correct max profit (2047) with 4096 entries (16 KB, 412 ms). This is a case when using this is significantly more memory efficient going from 31MB to 16KB, an astounding difference.
+Correct max profit (2047) with 4096 entries. This is a case when using this is significantly more memory efficient.
 
 ## DATASET 17
 
@@ -16,4 +16,4 @@ For such a small dataset using this optimized approach ends up being redundant s
 
 ## DATASET 26
 
-With a very large truck capacity (100,000), the two-row DP optimized approach still requires two rows of length 100,001, resulting in significant memory usage (781 KB) and a long execution time (150 ms). Although it is more memory efficient than the full DP vector table, the time complexity remains pseudo-polynomial, scaling with the capacity rather than the number of items. This makes it impractical for problems with large capacities, even if the number of items is small.
+With a very large truck capacity (100,000), the two-row DP optimized approach still requires two rows of length 100,001, resulting in significant memory usage and a long execution time. Although it is more memory efficient than the full DP vector table, the time complexity remains pseudo-polynomial, scaling with the capacity rather than the number of items. This makes it impractical for problems with large capacities, even if the number of items is small.

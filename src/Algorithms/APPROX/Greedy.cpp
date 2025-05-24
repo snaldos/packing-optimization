@@ -16,6 +16,9 @@ unsigned int Greedy::approx_solve(const std::vector<Pallet> &pallets,
         double ratio_a = (double)a.get_profit() / a.get_weight();
         double ratio_b = (double)b.get_profit() / b.get_weight();
         if (ratio_a == ratio_b) {
+          if (a.get_profit() == b.get_profit()) {
+            return a.get_id() < b.get_id(); // Lexicographical order by ID
+          }
           return a.get_profit() >
                  b.get_profit();  // Larger profits first if ratios are the same
         }

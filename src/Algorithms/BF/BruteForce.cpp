@@ -1,5 +1,4 @@
 #include "BruteForce.h"
-#include <climits>
 
 // Simple backtracking helper (no upper bound, no sorting)
 void BruteForce::bt_helper(const std::vector<Pallet> &pallets,
@@ -21,13 +20,24 @@ void BruteForce::bt_helper(const std::vector<Pallet> &pallets,
     return;
   if (index == pallets.size()) {
     unsigned int curr_count = 0;
-    for (bool used : curr_used)
-      if (used)
+    std::vector<Pallet> curr_pallets;
+    std::vector<Pallet> best_pallets;
+    for (unsigned int i = 0; i < pallets.size(); ++i) {
+      if (curr_used[i]) {
         curr_count++;
+        curr_pallets.push_back(pallets[i]);
+      }
+      if (best_used[i]) {
+        best_pallets.push_back(pallets[i]);
+      }
+    }
     if (curr_value > best_value ||
         (curr_value == best_value && curr_weight < best_weight) ||
         (curr_value == best_value && curr_weight == best_weight &&
-         curr_count < best_count)) {
+         curr_count < best_count) ||
+        (curr_value == best_value && curr_weight == best_weight &&
+         curr_count == best_count &&
+         is_lex_smaller(curr_pallets, best_pallets))) {
       best_value = curr_value;
       best_weight = curr_weight;
       best_count = curr_count;
@@ -129,7 +139,10 @@ unsigned int BruteForce::bf_solve(const std::vector<Pallet> &pallets,
       if (curr_value > best_value ||
           (curr_value == best_value && curr_weight < best_weight) ||
           (curr_value == best_value && curr_weight == best_weight &&
-           curr_count < best_count)) {
+           curr_count < best_count) ||
+          (curr_value == best_value && curr_weight == best_weight &&
+           curr_count == best_count &&
+           is_lex_smaller(current_pallets, best_pallets))) {
         best_value = curr_value;
         best_weight = curr_weight;
         best_count = curr_count;
@@ -154,4 +167,25 @@ unsigned int BruteForce::bf_solve(const std::vector<Pallet> &pallets,
 
   message = "[BF] Execution time: " + std::to_string(duration) + " μs";
   return best_value;
+}
+
+/**
+ * @brief Lexicographical comparison of two vectors of Pallets by their IDs.
+ * @param a First vector of pallets
+ * @param b Second vector of pallets
+ * @return true if a is lexicographically smaller than b
+ */
+bool BruteForce::is_lex_smaller(const std::vector<Pallet> &a,
+                                const std::vector<Pallet> &b) const {
+  std::vector<std::string> ids_a;
+  std::vector<std::string> ids_b;
+  ids_a.reserve(a.size());
+  ids_b.reserve(b.size());
+  for (const auto &p : a)
+    ids_a.push_back(p.get_id());
+  for (const auto &p : b)
+    ids_b.push_back(p.get_id());
+  // Do NOT sort: preserve order of inclusion for correct lexicographical
+  // comparison
+  return ids_a < ids_b;
 }

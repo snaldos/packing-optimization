@@ -18,14 +18,16 @@
 class VectorDPTable : public DPTable {
  private:
    std::vector<std::vector<DPEntry>> table;
+   bool lexicographical_order = false;
 
  public:
    /**
     * @brief Construct a new VectorDPTable object.
     * @param n Number of items
     * @param max_weight Maximum capacity
+    * @param lexicographical_order If true, account for ids vector in memory usage
     */
-   VectorDPTable(unsigned int n, unsigned int max_weight);
+   VectorDPTable(unsigned int n, unsigned int max_weight, bool lexicographical_order = false);
 
    /**
     * @brief Get the value stored for subproblem (i, w).

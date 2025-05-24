@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <chrono>
+#include <climits>
 #include <cmath>
 #include <cstdint>
 #include <vector>
@@ -93,6 +94,15 @@ class BruteForce {
                                unsigned int index, unsigned int curr_weight,
                                unsigned int curr_value,
                                unsigned int max_weight);
+
+   /**
+    * @brief Lexicographical comparison of two vectors of Pallets by their IDs.
+    * @param a First vector of pallets
+    * @param b Second vector of pallets
+    * @return true if a is lexicographically smaller than b
+    */
+   bool is_lex_smaller(const std::vector<Pallet> &a,
+                       const std::vector<Pallet> &b) const;
 };
 
 #endif  // BRUTE_FORCE_H

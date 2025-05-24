@@ -67,6 +67,9 @@ Packing optimization is a classic problem in combinatorial optimization, with ap
   - **DP Vector (Bottom-Up):** Fills a table for all capacities, reconstructs solution, ideal for dense problems. Returns the best-suited solution: among all optimal (max-profit) solutions, it chooses the one with the lowest total weight, and if still tied, the fewest pallets.
   - **DP HashMap (Top-Down):** Memoized recursion, efficient for sparse problems, saves memory when few states are used. Also applies the same tie-breaking as DP Vector.
   - **DP Optimized (2 Rows):** Uses only two rows for memory efficiency, computes only max profit (no reconstruction).
+
+  > **Note:** For both DP Vector and DP HashMap, lexicographical tie-breaking (choosing the lexicographically smallest set of pallet IDs among all equally optimal solutions) is optional and disabled by default. Enabling this feature guarantees the most consistent and predictable solution, but can significantly increase memory usage, especially for large problems. Enable it only when full optimality (including lexicographical order) is required and memory usage is not a concern.
+
 - **Greedy Approximation:** Selects items by profit-to-weight ratio. Fastest, but not always optimal.
 - **Integer Linear Programming (ILP):**
   - **Python (PuLP):** Flexible, slower, customizable.
@@ -76,7 +79,7 @@ Packing optimization is a classic problem in combinatorial optimization, with ap
 
 ## Note on Solution Meaningfulness & Trade-offs
 
-- **DP (Vector/HashMap), Brute Force and Backtracking** always return not just any optimal solution, but the "best-fitted" (most meaningful) one: maximizing profit, then minimizing total weight, then minimizing the number of pallets. This is especially valuable in real-world logistics, where lighter or fewer pallets are preferable for cost, handling, or space reasons.
+- **DP (Vector/HashMap), Brute Force and Backtracking** always return not just any optimal solution, but the "best-fitted" (most meaningful) one: maximizing profit, then minimizing total weight, then minimizing the number of pallets, and—if there is still a tie—choosing the solution with the lexicographically smallest set of pallet IDs. This ensures that, even among all equally optimal solutions, the result is the most consistent and predictable for real-world use cases (e.g., always picking the same set of pallets for the same input).
 - **Other algorithms (e.g., Branch & Bound, ILP)** may return any optimal solution, but are not guaranteed to find the best-fitted one according to these secondary criteria. This is because they prioritize speed and aggressive pruning, which can skip over equally optimal but more practical solutions.
 - **Trade-off:** The enhanced tie-breaking in DP and BF adds a small computational overhead, but ensures the returned solution is not just mathematically optimal, but also practically best-suited for real applications. In contrast, faster algorithms may sacrifice this extra layer of optimality for performance.
 
@@ -129,7 +132,7 @@ Packing optimization is a classic problem in combinatorial optimization, with ap
 
 ![Algorithm Timing Comparison (log scale)](notes/time_comparison/times_plot.png)
 
-*Figure: Timing comparison of all algorithms on all datasets. The y-axis is logarithmic, so each step represents a multiplication (e.g., 10, 100, 1000, ...). This allows both fast and slow algorithms to be compared on the same plot.*
+_Figure: Timing comparison of all algorithms on all datasets. The y-axis is logarithmic, so each step represents a multiplication (e.g., 10, 100, 1000, ...). This allows both fast and slow algorithms to be compared on the same plot._
 
 - **BF/BT:** Only for very small datasets. Exponential time.
 - **BB:** Dominates in practice, solving almost all datasets in microseconds. Only fails to be fast on rare, specially crafted pathological cases (e.g., many similar ratios or ambiguous choices).
@@ -143,15 +146,15 @@ Packing optimization is a classic problem in combinatorial optimization, with ap
 
 ## Summary Table: Strengths & Weaknesses
 
-| Strategy       | Strengths                   | Weaknesses                            |
-| -------------- | --------------------------- | ------------------------------------- |
-| Brute Force    | Always optimal              | Exponential time, impractical         |
-| Backtracking   | Prunes, faster than BF      | Still exponential, times out          |
-| Branch & Bound | Fast, prunes aggressively   | Can be trapped, not always meaningful |
-| DP Vector      | Fast, reconstructs solution | High memory for large W               |
-| DP HashMap     | Memory efficient for sparse | Slower for dense, hash overhead       |
-| DP Optimized   | Minimal memory              | No solution reconstruction            |
-| Greedy         | Fastest, simple             | Not always optimal                    |
+| Strategy       | Strengths                   | Weaknesses                                               |
+| -------------- | --------------------------- | -------------------------------------------------------- |
+| Brute Force    | Always optimal              | Exponential time, impractical                            |
+| Backtracking   | Prunes, faster than BF      | Still exponential, times out                             |
+| Branch & Bound | Fast, prunes aggressively   | Can be trapped, not always meaningful                    |
+| DP Vector      | Fast, reconstructs solution | High memory for large W                                  |
+| DP HashMap     | Memory efficient for sparse | Slower for dense, hash overhead                          |
+| DP Optimized   | Minimal memory              | No solution reconstruction                               |
+| Greedy         | Fastest, simple             | Not always optimal                                       |
 | ILP            | Always optimal, robust      | Complex setup, can be overkill for small/medium problems |
 
 ---
@@ -209,17 +212,19 @@ Packing optimization is a classic problem in combinatorial optimization, with ap
 
   - After running, a result file (e.g., `output/bf.txt`) is generated with the solution details, such as:
 
-    ```
+    ```txt
     id, profit, weight
-    3, 10, 50
+    4, 8, 33
     5, 9, 33
     7, 7, 11
+    8, 2, 7
     9, 3, 3
 
-    Total Weight: 97
+    Total Weight: 87
     Maximum Profit: 29
 
-    [BF] Execution time: 648 μs
+    [BF] Execution time: 230 μs
+
     ```
 
 - **Navigation:**

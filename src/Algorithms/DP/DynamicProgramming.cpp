@@ -233,13 +233,21 @@ unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet> &pallets,
               " Table)] Timeout after " + std::to_string(timeout_ms) + " ms.";
     return 0;
     }
+    std::string draw_str;
+    if (draw_condition) {
+      draw_str = " | Draw condition: ON";
+      if (lexicographical_order)
+        draw_str += " (Lexicographical: ON)";
+      else
+        draw_str += " (Lexicographical: OFF)";
+    } else {
+      draw_str = " | Draw condition: OFF";
+    }
     message = "[DP (" +
               std::string(type == TableType::Vector ? "Vector" : "HashMap") +
               " Table)] Execution time: " + std::to_string(duration) +
               " μs | Memory used for " + std::to_string(num_entries) +
-              " entries: " + memory_str +
-              (lexicographical_order ? " | Lexicographical tie-breaking: ON"
-                                     : " | Lexicographical tie-breaking: OFF");
+              " entries: " + memory_str + draw_str;
     return result->get_profit();
 }
 

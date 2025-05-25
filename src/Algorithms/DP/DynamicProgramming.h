@@ -115,12 +115,12 @@ private:
 public:
   /**
    * @brief Construct a new DynamicProgramming object.
+   * @param draw_condition If true, enable drawing condition (default: false)
    * @param lexicographical_order If true, enable lexicographical tie-breaking
    * (default: false)
-   * @param draw_condition If true, enable drawing condition (default: false)
    */
-  DynamicProgramming(bool lexicographical_order = false,
-                     bool draw_condition = false)
+  DynamicProgramming(bool draw_condition = false,
+                     bool lexicographical_order = false)
       : lexicographical_order(lexicographical_order),
         draw_condition(draw_condition) {}
 

@@ -8,6 +8,7 @@
   - [Running the Application](#running-the-application)
   - [Dataset Format](#dataset-format)
   - [Code Documentation](#code-documentation)
+  - [Note on OR-Tools and Protobuf Compatibility](#note-on-or-tools-and-protobuf-compatibility)
 
 ---
 
@@ -29,7 +30,7 @@ Build the C++ project using CMake:
 mkdir build
 cd build
 cmake ..
-make
+cmake --build .
 ```
 
 ---
@@ -78,5 +79,13 @@ To generate or update the documentation:
 2. Open `docs/html/index.html` in your browser to view the documentation.
 
 The `Doxyfile` is included in the repository for reproducibility. Generated documentation (in `docs/html/` and `docs/latex/`) should not be committed to version control.
+
+---
+
+## Note on OR-Tools and Protobuf Compatibility
+
+If you encounter build errors related to protobuf or OR-Tools, it is recommended to **avoid using a system-wide OR-Tools installation**. This project is configured to fetch and build a compatible version of OR-Tools automatically. Using a system-wide OR-Tools may cause version conflicts, especially if you have multiple versions of protobuf (e.g., from Anaconda or other sources) on your system.
+
+If you need to use a system-wide OR-Tools, ensure that its protobuf version matches your build environment exactly. Otherwise, keep the system-wide search commented out in `CMakeLists.txt` for reliable builds.
 
 ---

@@ -19,7 +19,7 @@ FetchContent_MakeAvailable(json)
 include(FetchContent)
 
 # Try system-wide OR-Tools first
-find_package(ortools QUIET)
+# find_package(ortools QUIET)
 
 # If not found, try prebuilt in local dir
 if(NOT ortools_FOUND)

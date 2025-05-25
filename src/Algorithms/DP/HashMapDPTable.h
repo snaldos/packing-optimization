@@ -43,11 +43,9 @@ private:
 public:
   /**
    * @brief Construct a new HashMapDPTable object.
-   * @param lexicographical_order If true, account for ids vector in memory
-   * usage
+   * @param entry_factory Factory function to create DPEntryBase objects
    */
-  HashMapDPTable(bool lexicographical_order,
-                 std::function<std::unique_ptr<DPEntryBase>()> entry_factory);
+  HashMapDPTable(std::function<std::unique_ptr<DPEntryBase>()> entry_factory);
 
   /**
    * @brief Get the value stored for subproblem (i, w).

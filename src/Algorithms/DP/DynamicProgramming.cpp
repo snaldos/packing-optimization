@@ -4,112 +4,135 @@
 std::unique_ptr<DPTable>
 DynamicProgramming::create_table(TableType type, unsigned int n,
                                  unsigned int max_weight) {
-  if (type == TableType::Vector)
-    return std::make_unique<VectorDPTable>(n, max_weight,
-                                           lexicographical_order);
+  // Use explicit return type for lambda to avoid deduction issues
+  std::function<std::unique_ptr<DPEntryBase>()> entry_factory;
+  if (!draw_condition)
+    entry_factory = []() { return std::make_unique<DPSimpleEntry>(0); };
+  else if (!lexicographical_order)
+    entry_factory = []() { return std::make_unique<DPEntryDraw>(0, 0, 0); };
   else
-    return std::make_unique<HashMapDPTable>(lexicographical_order);
+    entry_factory = []() {
+      return std::make_unique<DPEntryLex>(0, 0, 0, std::vector<std::string>{});
+    };
+
+  if (type == TableType::Vector)
+    return std::make_unique<VectorDPTable>(n, max_weight, entry_factory);
+  else
+    return std::make_unique<HashMapDPTable>(entry_factory);
 }
 
-DPEntry DynamicProgramming::dp_solve_top_down(
+// Helper: create a new DPEntryBase for the include case
+static std::unique_ptr<DPEntryBase>
+make_include_entry(const DPEntryBase &base, const Pallet &p,
+                   bool draw_condition, bool lexicographical_order) {
+  if (!draw_condition) {
+    return std::make_unique<DPSimpleEntry>(base.get_profit() + p.get_profit());
+  } else if (!lexicographical_order) {
+    return std::make_unique<DPEntryDraw>(base.get_profit() + p.get_profit(),
+                                         base.get_weight() + p.get_weight(),
+                                         base.get_count() + 1);
+  } else {
+    std::vector<std::string> ids = base.get_ids();
+    ids.push_back(p.get_id());
+    return std::make_unique<DPEntryLex>(base.get_profit() + p.get_profit(),
+                                        base.get_weight() + p.get_weight(),
+                                        base.get_count() + 1, ids);
+  }
+}
+
+// --- Polymorphic Top-Down DP (no reconstruction) ---
+std::unique_ptr<DPEntryBase> DynamicProgramming::dp_solve_top_down(
     const std::vector<Pallet> &pallets, std::unique_ptr<DPTable> &dp,
     unsigned int i, unsigned int w,
     std::chrono::steady_clock::time_point deadline, bool &timed_out) {
   if (std::chrono::steady_clock::now() > deadline) {
     timed_out = true;
-    return DPEntry{};
+    return DPEntryBase::make_not_computed(draw_condition,
+                                          lexicographical_order);
   }
   if (i == 0 || w == 0)
-    return DPEntry{};
+    return DPEntryBase::make_empty(draw_condition, lexicographical_order);
 
-  DPEntry cached = dp->get(i, w);
-  if (cached.profit != NOT_COMPUTED_ENTRY.profit)
-    return cached;
+  const DPEntryBase &cached = dp->get(i, w);
+  // NOT_COMPUTED sentinel: profit == UINT_MAX
+  if (cached.get_profit() != UINT_MAX)
+    return cached.clone();
 
   const Pallet &p = pallets[i - 1];
-  DPEntry result;
-
-  if (p.get_weight() > w) {
-    result = dp_solve_top_down(pallets, dp, i - 1, w, deadline, timed_out);
+  std::unique_ptr<DPEntryBase> exclude =
+      dp_solve_top_down(pallets, dp, i - 1, w, deadline, timed_out);
+  std::unique_ptr<DPEntryBase> include;
+  if (p.get_weight() <= w) {
+    auto base = dp_solve_top_down(pallets, dp, i - 1, w - p.get_weight(),
+                                  deadline, timed_out);
+    include =
+        make_include_entry(*base, p, draw_condition, lexicographical_order);
   } else {
-    DPEntry exclude =
-        dp_solve_top_down(pallets, dp, i - 1, w, deadline, timed_out);
-    DPEntry include = dp_solve_top_down(pallets, dp, i - 1, w - p.get_weight(),
-                                        deadline, timed_out);
-    include.profit += p.get_profit();
-    include.weight += p.get_weight();
-    include.count += 1;
-    if (lexicographical_order) {
-      include.ids.push_back(p.get_id());
-      // Removed std::sort: preserve order of inclusion for correct
-      // lexicographical comparison
-    }
-    result = std::max(include, exclude);
+    include = DPEntryBase::make_empty(draw_condition, lexicographical_order);
   }
-  dp->set(i, w, result);
+  std::unique_ptr<DPEntryBase> result;
+  if (*exclude < *include)
+    result = std::move(include);
+  else
+    result = std::move(exclude);
+  dp->set(i, w, result->clone());
   return result;
 }
 
-DPEntry DynamicProgramming::dp_solve_top_down(
+// --- Polymorphic Top-Down DP (with reconstruction) ---
+std::unique_ptr<DPEntryBase> DynamicProgramming::dp_solve_top_down(
     const std::vector<Pallet> &pallets, std::unique_ptr<DPTable> &dp,
     unsigned int i, unsigned int w, std::vector<Pallet> &used_pallets,
     std::chrono::steady_clock::time_point deadline, bool &timed_out) {
-  DPEntry result = dp_solve_top_down(pallets, dp, i, w, deadline, timed_out);
+  auto result = dp_solve_top_down(pallets, dp, i, w, deadline, timed_out);
   if (timed_out)
-    return DPEntry{};
+    return DPEntryBase::make_not_computed(draw_condition,
+                                          lexicographical_order);
   used_pallets.clear();
-  // Use get_or_compute to ensure all needed entries are available for
-  // backtracking
-  std::function<DPEntry(unsigned int, unsigned int)> get_or_compute =
-      [&](unsigned int i, unsigned int w) -> DPEntry {
-    DPEntry entry = dp->get(i, w);
-    if (entry.profit != NOT_COMPUTED_ENTRY.profit)
+  // get_or_compute lambda for safe backtracking
+  std::function<const DPEntryBase &(unsigned int, unsigned int)>
+      get_or_compute =
+          [&](unsigned int i, unsigned int w) -> const DPEntryBase & {
+    const DPEntryBase &entry = dp->get(i, w);
+    if (entry.get_profit() != UINT_MAX)
       return entry;
-    if (i == 0 || w == 0)
-      return DPEntry{};
-    const Pallet &p = pallets[i - 1];
-    DPEntry result;
-    if (p.get_weight() > w) {
-      result = get_or_compute(i - 1, w);
-    } else {
-      DPEntry exclude = get_or_compute(i - 1, w);
-      DPEntry include = get_or_compute(i - 1, w - p.get_weight());
-      include.profit += p.get_profit();
-      include.weight += p.get_weight();
-      include.count += 1;
-      if (lexicographical_order) {
-        include.ids.push_back(p.get_id());
-      }
-      result = std::max(include, exclude);
+    if (i == 0 || w == 0) {
+      auto empty =
+          DPEntryBase::make_empty(draw_condition, lexicographical_order);
+      dp->set(i, w, empty->clone());
+      return dp->get(i, w);
     }
-    dp->set(i, w, result);
-    return result;
+    const Pallet &p = pallets[i - 1];
+    std::unique_ptr<DPEntryBase> exclude = get_or_compute(i - 1, w).clone();
+    std::unique_ptr<DPEntryBase> include;
+    if (p.get_weight() <= w) {
+      auto base = get_or_compute(i - 1, w - p.get_weight()).clone();
+      include =
+          make_include_entry(*base, p, draw_condition, lexicographical_order);
+    } else {
+      include = DPEntryBase::make_empty(draw_condition, lexicographical_order);
+    }
+    std::unique_ptr<DPEntryBase> result;
+    if (*exclude < *include)
+      result = std::move(include);
+    else
+      result = std::move(exclude);
+    dp->set(i, w, result->clone());
+    return dp->get(i, w);
   };
+  // Backtrack to reconstruct solution
   while (i > 0 && w > 0) {
-    DPEntry curr = get_or_compute(i, w);
+    const DPEntryBase &curr = get_or_compute(i, w);
     const Pallet &p = pallets[i - 1];
     if (p.get_weight() <= w) {
-      DPEntry incl = get_or_compute(i - 1, w - p.get_weight());
-      if (lexicographical_order) {
-        std::vector<std::string> incl_ids = incl.ids;
-        incl_ids.push_back(p.get_id());
-        if (curr.profit == incl.profit + p.get_profit() &&
-            curr.weight == incl.weight + p.get_weight() &&
-            curr.count == incl.count + 1 && curr.ids == incl_ids) {
-          used_pallets.push_back(p);
-          w -= p.get_weight();
-          i--;
-          continue;
-        }
-      } else {
-        if (curr.profit == incl.profit + p.get_profit() &&
-            curr.weight == incl.weight + p.get_weight() &&
-            curr.count == incl.count + 1) {
-          used_pallets.push_back(p);
-          w -= p.get_weight();
-          i--;
-          continue;
-        }
+      const DPEntryBase &incl = get_or_compute(i - 1, w - p.get_weight());
+      std::unique_ptr<DPEntryBase> incl_plus =
+          make_include_entry(incl, p, draw_condition, lexicographical_order);
+      if (curr.equals(*incl_plus)) {
+        used_pallets.push_back(p);
+        w -= p.get_weight();
+        i--;
+        continue;
       }
     }
     i--;
@@ -118,7 +141,8 @@ DPEntry DynamicProgramming::dp_solve_top_down(
   return result;
 }
 
-DPEntry DynamicProgramming::dp_solve_bottom_up(
+// --- Polymorphic Bottom-Up DP (with reconstruction) ---
+std::unique_ptr<DPEntryBase> DynamicProgramming::dp_solve_bottom_up(
     const std::vector<Pallet> &pallets, std::unique_ptr<DPTable> &dp,
     unsigned int n, unsigned int max_weight, std::vector<Pallet> &used_pallets,
     std::chrono::steady_clock::time_point deadline, bool &timed_out) {
@@ -126,60 +150,51 @@ DPEntry DynamicProgramming::dp_solve_bottom_up(
     for (unsigned int w = 0; w <= max_weight; w++) {
       if (std::chrono::steady_clock::now() > deadline) {
         timed_out = true;
-        return DPEntry{};
+        return DPEntryBase::make_not_computed(draw_condition,
+                                              lexicographical_order);
       }
       const Pallet &p = pallets[i - 1];
-      DPEntry exclude = dp->get(i - 1, w);
-      DPEntry best = exclude;
+      const DPEntryBase &exclude = dp->get(i - 1, w);
+      std::unique_ptr<DPEntryBase> include;
       if (p.get_weight() <= w) {
-        DPEntry include = dp->get(i - 1, w - p.get_weight());
-        include.profit += p.get_profit();
-        include.weight += p.get_weight();
-        include.count += 1;
-        if (lexicographical_order) {
-          include.ids.push_back(p.get_id());
-        }
-        if (exclude < include)
-          best = include;
+        const DPEntryBase &base = dp->get(i - 1, w - p.get_weight());
+        include =
+            make_include_entry(base, p, draw_condition, lexicographical_order);
+      } else {
+        include =
+            DPEntryBase::make_empty(draw_condition, lexicographical_order);
       }
-      dp->set(i, w, best);
+      std::unique_ptr<DPEntryBase> best;
+      if (exclude < *include)
+        best = std::move(include);
+      else
+        best = exclude.clone();
+      dp->set(i, w, best->clone());
     }
   }
   used_pallets.clear();
   unsigned int i = n, w = max_weight;
   while (i > 0 && w > 0) {
-    DPEntry curr = dp->get(i, w);
+    const DPEntryBase &curr = dp->get(i, w);
     const Pallet &p = pallets[i - 1];
     if (p.get_weight() <= w) {
-      DPEntry incl = dp->get(i - 1, w - p.get_weight());
-      if (lexicographical_order) {
-        std::vector<std::string> incl_ids = incl.ids;
-        incl_ids.push_back(p.get_id());
-        if (curr.profit == incl.profit + p.get_profit() &&
-            curr.weight == incl.weight + p.get_weight() &&
-            curr.count == incl.count + 1 && curr.ids == incl_ids) {
-          used_pallets.push_back(p);
-          w -= p.get_weight();
-          i--;
-          continue;
-        }
-      } else {
-        if (curr.profit == incl.profit + p.get_profit() &&
-            curr.weight == incl.weight + p.get_weight() &&
-            curr.count == incl.count + 1) {
-          used_pallets.push_back(p);
-          w -= p.get_weight();
-          i--;
-          continue;
-        }
+      const DPEntryBase &incl = dp->get(i - 1, w - p.get_weight());
+      std::unique_ptr<DPEntryBase> incl_plus =
+          make_include_entry(incl, p, draw_condition, lexicographical_order);
+      if (curr.equals(*incl_plus)) {
+        used_pallets.push_back(p);
+        w -= p.get_weight();
+        i--;
+        continue;
       }
     }
     i--;
   }
   std::reverse(used_pallets.begin(), used_pallets.end());
-  return dp->get(n, max_weight);
+  return dp->get(n, max_weight).clone();
 }
 
+// --- Dispatcher: always uses polymorphic interface ---
 unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet> &pallets,
                                           const Truck &truck,
                                           std::vector<Pallet> &used_pallets,
@@ -191,7 +206,7 @@ unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet> &pallets,
   unsigned int n = pallets.size();
   unsigned int max_weight = truck.get_capacity();
   bool timed_out = false;
-  DPEntry result;
+  std::unique_ptr<DPEntryBase> result;
   if (type == TableType::Vector) {
     result = dp_solve_bottom_up(pallets, dp, n, max_weight, used_pallets,
                                 deadline, timed_out);
@@ -199,12 +214,10 @@ unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet> &pallets,
     result = dp_solve_top_down(pallets, dp, n, max_weight, used_pallets,
                                deadline, timed_out);
   }
-
   auto end_time = std::chrono::steady_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
                       end_time - start_time)
                       .count();
-
   std::size_t num_entries = dp->get_num_entries();
   std::size_t memory = dp->get_memory_usage();
   std::string memory_str;
@@ -214,25 +227,23 @@ unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet> &pallets,
     memory_str = std::to_string(memory / 1024) + " KB";
   else
     memory_str = std::to_string(memory / (1024 * 1024)) + " MB";
-
   if (timed_out) {
     message = "[DP (" +
               std::string(type == TableType::Vector ? "Vector" : "HashMap") +
               " Table)] Timeout after " + std::to_string(timeout_ms) + " ms.";
     return 0;
-  }
-
-  message = "[DP (" +
-            std::string(type == TableType::Vector ? "Vector" : "HashMap") +
-            " Table)] Execution time: " + std::to_string(duration) +
-            " μs | Memory used for " + std::to_string(num_entries) +
-            " entries: " + memory_str +
-            (lexicographical_order ? " | Lexicographical tie-breaking: ON"
-                                   : " | Lexicographical tie-breaking: OFF");
-
-  return result.profit;
+    }
+    message = "[DP (" +
+              std::string(type == TableType::Vector ? "Vector" : "HashMap") +
+              " Table)] Execution time: " + std::to_string(duration) +
+              " μs | Memory used for " + std::to_string(num_entries) +
+              " entries: " + memory_str +
+              (lexicographical_order ? " | Lexicographical tie-breaking: ON"
+                                     : " | Lexicographical tie-breaking: OFF");
+    return result->get_profit();
 }
 
+// --- Legacy 2-row DP (kept for reference, not polymorphic) ---
 unsigned int DynamicProgramming::dp_solve(const std::vector<Pallet> &pallets,
                                           const Truck &truck,
                                           std::string &message,

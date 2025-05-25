@@ -8,7 +8,6 @@ const DPEntryLex not_computed_lex(UINT_MAX, 0, 0, {});
 } // namespace
 
 HashMapDPTable::HashMapDPTable(
-    bool /*lexicographical_order*/,
     std::function<std::unique_ptr<DPEntryBase>()> entry_factory)
     : entry_factory(std::move(entry_factory)) {}
 

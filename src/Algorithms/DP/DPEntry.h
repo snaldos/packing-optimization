@@ -14,6 +14,18 @@ public:
   virtual ~DPEntryBase() = default;
   virtual bool operator<(const DPEntryBase &other) const = 0;
   virtual unsigned int get_profit() const = 0;
+  virtual unsigned int get_weight() const { return 0; }
+  virtual unsigned int get_count() const { return 0; }
+  virtual const std::vector<std::string> &get_ids() const {
+    static const std::vector<std::string> empty_ids;
+    return empty_ids;
+  }
+  virtual std::unique_ptr<DPEntryBase> clone() const = 0;
+  virtual bool equals(const DPEntryBase &other) const = 0;
+  static std::unique_ptr<DPEntryBase> make_empty(bool draw_condition,
+                                                 bool lexicographical_order);
+  static std::unique_ptr<DPEntryBase>
+  make_not_computed(bool draw_condition, bool lexicographical_order);
 };
 
 /**
@@ -28,6 +40,12 @@ public:
     return profit < static_cast<const DPSimpleEntry &>(other).profit;
   }
   unsigned int get_profit() const override { return profit; }
+  std::unique_ptr<DPEntryBase> clone() const override {
+    return std::make_unique<DPSimpleEntry>(*this);
+  }
+  bool equals(const DPEntryBase &other) const override {
+    return profit == static_cast<const DPSimpleEntry &>(other).profit;
+  }
   static const DPSimpleEntry NOT_COMPUTED;
 };
 
@@ -52,6 +70,15 @@ public:
     return count > o.count;
   }
   unsigned int get_profit() const override { return profit; }
+  unsigned int get_weight() const override { return weight; }
+  unsigned int get_count() const override { return count; }
+  std::unique_ptr<DPEntryBase> clone() const override {
+    return std::make_unique<DPEntryDraw>(*this);
+  }
+  bool equals(const DPEntryBase &other) const override {
+    const DPEntryDraw &o = static_cast<const DPEntryDraw &>(other);
+    return profit == o.profit && weight == o.weight && count == o.count;
+  }
   static const DPEntryDraw NOT_COMPUTED;
 };
 
@@ -80,6 +107,17 @@ public:
     return ids > o.ids;
   }
   unsigned int get_profit() const override { return profit; }
+  unsigned int get_weight() const override { return weight; }
+  unsigned int get_count() const override { return count; }
+  const std::vector<std::string> &get_ids() const override { return ids; }
+  std::unique_ptr<DPEntryBase> clone() const override {
+    return std::make_unique<DPEntryLex>(*this);
+  }
+  bool equals(const DPEntryBase &other) const override {
+    const DPEntryLex &o = static_cast<const DPEntryLex &>(other);
+    return profit == o.profit && weight == o.weight && count == o.count &&
+           ids == o.ids;
+  }
   static const DPEntryLex NOT_COMPUTED;
 };
 

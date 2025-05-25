@@ -158,21 +158,35 @@ void BatchInputManager::processInput() {
       break;
     case 4: {
       // DP-VECTOR
-      char lex_choice = 'n';
-      std::cout << "Enable lexicographical tie-breaking for DP-VECTOR? (y/N): ";
-      std::string input;
-      std::getline(std::cin, input);
-      if (!input.empty())
-        lex_choice = std::tolower(input[0]);
-      bool lex = (lex_choice == 'y');
+      bool draw = false, lex = false;
+      // Ask user for draw condition
+      char draw_condition = 'n';
+      std::cout << "Enable draw condition for DP-VECTOR? (y/N): ";
+      std::string input_draw;
+      std::getline(std::cin, input_draw);
+      if (!input_draw.empty())
+        draw_condition = std::tolower(input_draw[0]);
+      draw = (draw_condition == 'y');
+      // Lexicographical order
+      if (draw) {
+        char lex_choice = 'n';
+        std::cout
+            << "Enable lexicographical tie-breaking for DP-VECTOR? (y/N): ";
+        std::string input;
+        std::getline(std::cin, input);
+        if (!input.empty())
+          lex_choice = std::tolower(input[0]);
+        lex = (lex_choice == 'y');
+      }
       filename = "dp_vector.txt";
-      max_profit = DynamicProgramming(lex).dp_solve(
+      max_profit = DynamicProgramming(draw, lex).dp_solve(
           pallets, truck, used_pallets, TableType::Vector, message, timeout_ms);
       generate_output_file(filename, used_pallets, max_profit, message);
       break;
     }
     case 5: {
       // DP-HASHMAP
+      bool draw = false, lex = false;
       // Ask user for draw condition
       char draw_condition = 'n';
       std::cout << "Enable draw condition for DP-HASHMAP? (y/N): ";
@@ -180,16 +194,18 @@ void BatchInputManager::processInput() {
       std::getline(std::cin, input_draw);
       if (!input_draw.empty())
         draw_condition = std::tolower(input_draw[0]);
-      bool draw = (draw_condition == 'y');
+      draw = (draw_condition == 'y');
       // Lexicographical order
-      char lex_choice = 'n';
-      std::cout
-          << "Enable lexicographical tie-breaking for DP-HASHMAP? (y/N): ";
-      std::string input_lex;
-      std::getline(std::cin, input_lex);
-      if (!input_lex.empty())
-        lex_choice = std::tolower(input_lex[0]);
-      bool lex = (lex_choice == 'y');
+      if (draw) {
+        char lex_choice = 'n';
+        std::cout
+            << "Enable lexicographical tie-breaking for DP-HASHMAP? (y/N): ";
+        std::string input_lex;
+        std::getline(std::cin, input_lex);
+        if (!input_lex.empty())
+          lex_choice = std::tolower(input_lex[0]);
+        lex = (lex_choice == 'y');
+      }
       filename = "dp_hashmap.txt";
       max_profit = DynamicProgramming(draw, lex).dp_solve(
           pallets, truck, used_pallets, TableType::HashMap, message,

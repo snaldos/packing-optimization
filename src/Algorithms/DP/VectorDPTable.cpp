@@ -11,6 +11,20 @@ VectorDPTable::VectorDPTable(
     unsigned int n, unsigned int max_weight,
     std::function<std::unique_ptr<DPEntryBase>()> entry_factory)
     : entry_factory(std::move(entry_factory)) {
+  // Probe the entry type to determine its size
+  if (this->entry_factory) {
+    auto probe = this->entry_factory();
+    if (dynamic_cast<DPSimpleEntry *>(probe.get()))
+      entry_size = sizeof(unsigned int);
+    else if (dynamic_cast<DPEntryDraw *>(probe.get()))
+      entry_size = 3 * sizeof(unsigned int);
+    else if (dynamic_cast<DPEntryLex *>(probe.get()))
+      entry_size = 3 * sizeof(unsigned int) + sizeof(std::vector<std::string>);
+    else
+      entry_size = sizeof(std::unique_ptr<DPEntryBase>);
+  } else {
+    entry_size = sizeof(std::unique_ptr<DPEntryBase>);
+  }
   table.resize(n + 1);
   for (auto &row : table) {
     row.resize(max_weight + 1);
@@ -50,5 +64,5 @@ std::size_t VectorDPTable::get_num_entries() const {
 
 std::size_t VectorDPTable::get_memory_usage() const {
   std::size_t count = get_num_entries();
-  return count * sizeof(std::unique_ptr<DPEntryBase>);
+  return count * entry_size;
 }

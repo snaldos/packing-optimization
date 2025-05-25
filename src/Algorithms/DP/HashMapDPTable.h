@@ -39,6 +39,7 @@ private:
       table;
   // Factory for creating new entries
   std::function<std::unique_ptr<DPEntryBase>()> entry_factory;
+  std::size_t entry_size = 0; ///< Size of the DP entry type
 
 public:
   /**

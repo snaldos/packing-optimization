@@ -1,5 +1,4 @@
 #include "DynamicProgramming.h"
-#include "DPEntry.h"
 
 std::unique_ptr<DPTable>
 DynamicProgramming::create_table(TableType type, unsigned int n,

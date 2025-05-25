@@ -17,6 +17,7 @@ class VectorDPTable : public DPTable {
        table; ///< 2D vector to store DP entries
    std::function<std::unique_ptr<DPEntryBase>()>
        entry_factory; ///< Factory function for creating DP entries
+   std::size_t entry_size = 0; ///< Size of the DP entry type
 
  public:
    /**

@@ -9,7 +9,22 @@ const DPEntryLex not_computed_lex(UINT_MAX, 0, 0, {});
 
 HashMapDPTable::HashMapDPTable(
     std::function<std::unique_ptr<DPEntryBase>()> entry_factory)
-    : entry_factory(std::move(entry_factory)) {}
+    : entry_factory(std::move(entry_factory)) {
+  // Probe the entry type to determine its size
+  if (this->entry_factory) {
+    auto probe = this->entry_factory();
+    if (dynamic_cast<DPSimpleEntry *>(probe.get()))
+      entry_size = sizeof(unsigned int);
+    else if (dynamic_cast<DPEntryDraw *>(probe.get()))
+      entry_size = 3 * sizeof(unsigned int);
+    else if (dynamic_cast<DPEntryLex *>(probe.get()))
+      entry_size = 3 * sizeof(unsigned int) + sizeof(std::vector<std::string>);
+    else
+      entry_size = sizeof(std::unique_ptr<DPEntryBase>);
+  } else {
+    entry_size = sizeof(std::unique_ptr<DPEntryBase>);
+  }
+}
 
 const DPEntryBase &HashMapDPTable::get(unsigned int i, unsigned int w) const {
   auto it = table.find({i, w});
@@ -35,5 +50,10 @@ void HashMapDPTable::set(unsigned int i, unsigned int w,
 std::size_t HashMapDPTable::get_num_entries() const { return table.size(); }
 
 std::size_t HashMapDPTable::get_memory_usage() const {
-  return table.size() * sizeof(std::unique_ptr<DPEntryBase>);
+  // Each entry: value + key (pair of unsigned int)
+  std::size_t entry_mem =
+      table.size() * (entry_size + 2 * sizeof(unsigned int));
+  // Hash table bucket array: each bucket is a pointer
+  std::size_t bucket_mem = table.bucket_count() * sizeof(void *);
+  return entry_mem + bucket_mem;
 }

@@ -68,7 +68,14 @@ Packing optimization is a classic problem in combinatorial optimization, with ap
   - **DP HashMap (Top-Down):** Memoized recursion, efficient for sparse problems, saves memory when few states are used. Also applies the same tie-breaking as DP Vector.
   - **DP Optimized (2 Rows):** Uses only two rows for memory efficiency, computes only max profit (no reconstruction).
 
-  > **Note:** For both DP Vector and DP HashMap, lexicographical tie-breaking (choosing the lexicographically smallest set of pallet IDs among all equally optimal solutions) is optional and disabled by default. Enabling this feature guarantees the most consistent and predictable solution, but can significantly increase memory usage, especially for large problems. Enable it only when full optimality (including lexicographical order) is required and memory usage is not a concern.
+  > **Note:** For both DP Vector and DP HashMap, the solution is not just any optimal one, but is selected according to a configurable sequence of tie-breaking criteria:
+  >
+  > 1. **Maximum profit** (always primary)
+  > 2. **Minimum total weight** (if the "draw condition" flag is enabled)
+  > 3. **Minimum number of pallets** (if the "draw condition" flag is enabled)
+  > 4. **Lexicographically smallest set of pallet IDs** (if the "lexicographical order" flag is enabled)
+  >
+  > By default, only profit is considered. Enabling the draw condition flag adds weight and count as secondary criteria, and enabling the lexicographical order flag adds a final, deterministic tie-breaker. This ensures that, even among all equally optimal solutions, the result is the most consistent and predictable for real-world use cases. Note that enabling lexicographical tie-breaking can significantly increase memory usage, especially for large problems, and should only be used when full optimality (including lexicographical order) is required.
 
 - **Greedy Approximation:** Selects items by profit-to-weight ratio. Fastest, but not always optimal.
 - **Integer Linear Programming (ILP):**

@@ -1,5 +1,4 @@
 #include "VectorDPTable.h"
-#include <stdexcept>
 
 namespace {
 const DPSimpleEntry not_computed_simple(UINT_MAX);

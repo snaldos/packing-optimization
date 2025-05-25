@@ -1,27 +1,40 @@
 #include "HashMapDPTable.h"
-#include "DPEntry.h"
+#include <stdexcept>
 
-HashMapDPTable::HashMapDPTable(bool lexicographical_order)
-    : lexicographical_order(lexicographical_order) {}
+namespace {
+const DPSimpleEntry not_computed_simple(UINT_MAX);
+const DPEntryDraw not_computed_regular(UINT_MAX, 0, 0);
+const DPEntryLex not_computed_lex(UINT_MAX, 0, 0, {});
+} // namespace
 
-DPEntry HashMapDPTable::get(unsigned int i, unsigned int w) const {
+HashMapDPTable::HashMapDPTable(
+    bool /*lexicographical_order*/,
+    std::function<std::unique_ptr<DPEntryBase>()> entry_factory)
+    : entry_factory(std::move(entry_factory)) {}
+
+const DPEntryBase &HashMapDPTable::get(unsigned int i, unsigned int w) const {
   auto it = table.find({i, w});
-  return it != table.end() ? it->second : NOT_COMPUTED_ENTRY;
+  if (it != table.end())
+    return *(it->second);
+  if (entry_factory) {
+    auto probe = entry_factory();
+    if (dynamic_cast<DPSimpleEntry *>(probe.get()))
+      return not_computed_simple;
+    if (dynamic_cast<DPEntryDraw *>(probe.get()))
+      return not_computed_regular;
+    if (dynamic_cast<DPEntryLex *>(probe.get()))
+      return not_computed_lex;
+  }
+  throw std::runtime_error("Unknown DPEntryBase type in HashMapDPTable::get");
 }
 
-void HashMapDPTable::set(unsigned int i, unsigned int w, const DPEntry &entry) {
-  table[{i, w}] = entry;
+void HashMapDPTable::set(unsigned int i, unsigned int w,
+                         std::unique_ptr<DPEntryBase> entry) {
+  table[{i, w}] = std::move(entry);
 }
 
 std::size_t HashMapDPTable::get_num_entries() const { return table.size(); }
 
 std::size_t HashMapDPTable::get_memory_usage() const {
-  using Entry = std::pair<std::pair<unsigned int, unsigned int>, DPEntry>;
-  size_t entry_size = sizeof(Entry);
-  if (!lexicographical_order) {
-    entry_size -= sizeof(std::vector<std::string>);
-  }
-  // Add the bucket array size (each bucket is a pointer)
-  size_t bucket_mem = table.bucket_count() * sizeof(void*);
-  return get_num_entries() * entry_size + bucket_mem;
+  return table.size() * sizeof(std::unique_ptr<DPEntryBase>);
 }

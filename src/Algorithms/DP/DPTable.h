@@ -4,15 +4,12 @@
 #define DP_TABLE_H
 
 #include <cstddef>
+#include <memory>
 
 /**
  * @class DPTable
  * @brief Abstract interface for dynamic programming tables used in knapsack
  * algorithms.
- *
- * Provides a common interface for both vector-based and hashmap-based DP
- * tables. Used to store and retrieve subproblem solutions for dynamic
- * programming approaches.
  */
 class DPTable {
  public:
@@ -22,7 +19,7 @@ class DPTable {
     * @param w Remaining capacity
     * @return Value for subproblem (i, w), or a sentinel if not set
     */
-   virtual DPEntry get(unsigned int i, unsigned int w) const = 0;
+   virtual const DPEntryBase &get(unsigned int i, unsigned int w) const = 0;
 
    /**
     * @brief Set the value for subproblem (i, w).
@@ -30,7 +27,8 @@ class DPTable {
     * @param w Remaining capacity
     * @param entry Value to store
     */
-   virtual void set(unsigned int i, unsigned int w, const DPEntry &entry) = 0;
+   virtual void set(unsigned int i, unsigned int w,
+                    std::unique_ptr<DPEntryBase> entry) = 0;
 
    /**
     * @brief Get the number of entries stored in the table.
@@ -50,4 +48,4 @@ class DPTable {
    virtual ~DPTable() = default;
 };
 
-#endif  // DP_TABLE_H
+#endif // DP_TABLE_H

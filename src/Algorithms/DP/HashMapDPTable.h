@@ -2,6 +2,8 @@
 #define HASHMAP_DPTABLE_H
 
 #include <climits>
+#include <functional>
+#include <memory>
 #include <unordered_map>
 #include <utility>
 
@@ -28,17 +30,15 @@ struct PairHash {
  * @brief Concrete DP table implementation using a hash map for top-down DP
  * (memoization).
  *
- * Stores subproblem solutions in a sparse hash map keyed by (i, w) pairs.
- * Used for top-down dynamic programming approaches to knapsack.
- *
- * Time complexity for access/set: O(1) average (hash map)
- * Space complexity: O(s), where s is the number of unique (i, w) states.
+ * Templated on the DP entry type (DPSimpleEntry, DPEntry, DPEntryLex).
  */
 class HashMapDPTable : public DPTable {
 private:
-  std::unordered_map<std::pair<unsigned int, unsigned int>, DPEntry, PairHash>
+  std::unordered_map<std::pair<unsigned int, unsigned int>,
+                     std::unique_ptr<DPEntryBase>, PairHash>
       table;
-  bool lexicographical_order = false;
+  // Factory for creating new entries
+  std::function<std::unique_ptr<DPEntryBase>()> entry_factory;
 
 public:
   /**
@@ -46,7 +46,8 @@ public:
    * @param lexicographical_order If true, account for ids vector in memory
    * usage
    */
-  HashMapDPTable(bool lexicographical_order = false);
+  HashMapDPTable(bool lexicographical_order,
+                 std::function<std::unique_ptr<DPEntryBase>()> entry_factory);
 
   /**
    * @brief Get the value stored for subproblem (i, w).
@@ -54,7 +55,7 @@ public:
    * @param w Remaining capacity
    * @return Value for subproblem (i, w), or NOT_COMPUTED_ENTRY if not set
    */
-  DPEntry get(unsigned int i, unsigned int w) const override;
+  const DPEntryBase &get(unsigned int i, unsigned int w) const override;
 
   /**
    * @brief Set the value for subproblem (i, w).
@@ -62,7 +63,8 @@ public:
    * @param w Remaining capacity
    * @param entry Value to store
    */
-  void set(unsigned int i, unsigned int w, const DPEntry &entry) override;
+  void set(unsigned int i, unsigned int w,
+           std::unique_ptr<DPEntryBase> entry) override;
 
   /**
    * @brief Get the number of entries stored in the table.

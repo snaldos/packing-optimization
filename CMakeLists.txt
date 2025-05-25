@@ -59,6 +59,7 @@ set(SOURCES
     src/Algorithms/DP/DynamicProgramming.cpp
     src/Algorithms/DP/VectorDPTable.cpp
     src/Algorithms/DP/HashMapDPTable.cpp
+    src/Algorithms/DP/DPEntry.cpp
     src/Algorithms/APPROX/Greedy.cpp
     src/Algorithms/ILP/ILPBridgePy.cpp
     src/Algorithms/ILP/IntegerLinearProgramming.cpp

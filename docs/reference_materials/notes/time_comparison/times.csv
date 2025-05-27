@@ -46,7 +46,7 @@ Dataset, Algorithm, Time (μs), Flag
 05, ILP-PY, 51127, 0
 06, BF, -1, 1
 06, BT, -1, 1
-06, BB, -1, 1
+06, BB, 1865, 0
 06, DP-Vector, 810080, 0
 06, DP-HashMap, 7846688, 0
 06, DP-Optimized, 413930, 0

@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
+
 project(packing_optimization VERSION 1.0)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -8,10 +9,11 @@ include_directories(${PROJECT_SOURCE_DIR}/src)
 
 # ------------------ JSON ------------------
 include(FetchContent)
+
 FetchContent_Declare(
   json
   GIT_REPOSITORY https://github.com/nlohmann/json.git
-  GIT_TAG v3.11.2
+  GIT_TAG v3.11.3
 )
 FetchContent_MakeAvailable(json)
 
